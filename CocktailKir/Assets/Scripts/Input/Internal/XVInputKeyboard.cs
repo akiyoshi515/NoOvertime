@@ -20,9 +20,19 @@ namespace XVInputInternal
             return (InputToFloat(Input.GetKey(KeyCode.W)) - InputToFloat(Input.GetKey(KeyCode.S)));
         }
 
-        public float MoveCameraH()
+        public float RotateCameraH()
         {
             return (InputToFloat(Input.GetKey(KeyCode.E)) - InputToFloat(Input.GetKey(KeyCode.Q)));
+        }
+
+        public float RotateLauncherV()
+        {
+            return (InputToFloat(Input.GetKey(KeyCode.DownArrow)) - InputToFloat(Input.GetKey(KeyCode.UpArrow)));
+        }
+
+        public float RotateLauncherH()
+        {
+            return (InputToFloat(Input.GetKey(KeyCode.RightArrow)) - InputToFloat(Input.GetKey(KeyCode.LeftArrow)));
         }
 
         public bool IsJump()

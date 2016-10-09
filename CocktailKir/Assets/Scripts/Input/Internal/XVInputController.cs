@@ -15,7 +15,17 @@ namespace XVInputInternal
             return 0.0f;
         }
 
-        public float MoveCameraH()
+        public float RotateCameraH()
+        {
+            return 0.0f;
+        }
+
+        public float RotateLauncherV()
+        {
+            return 0.0f;
+        }
+
+        public float RotateLauncherH()
         {
             return 0.0f;
         }
