@@ -22,7 +22,7 @@ public class TestBalletLines
         int idx = 0;
         lineRender.Invoke(idx++, start);
 
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 30; ++i)
         {
             float t = timeSlice * (i+1);
             Vector3 vecPower = forward * (t * s);
