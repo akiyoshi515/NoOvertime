@@ -23,6 +23,9 @@ public class TestLauncherCtrl : MonoBehaviour {
     private float m_shotPower = 10.0f;
 
     [SerializeField]
+    private float m_knockbackTime = 0.250f;
+
+    [SerializeField]
     private float m_hitPointOffset = 1.0f;
 
     [SerializeField]
@@ -38,6 +41,8 @@ public class TestLauncherCtrl : MonoBehaviour {
     private GameObject m_hitPoint = null;
 
     private LineRenderer m_lineRenderer = null;
+
+    private float m_knockback = 0.0f;
 
     void Awake()
     {
@@ -59,27 +64,20 @@ public class TestLauncherCtrl : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        IXVInput input = XVInput.GetInterface(UserID.User1);
+
+        UpdateKnockbackTime();
+
+        if (input.IsShot())
         {
             LaunchBallet();
         }
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            this.transform.Rotate(Vector3.right, -m_pitchSpeed * Time.deltaTime, Space.Self);
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            this.transform.Rotate(Vector3.right, m_pitchSpeed * Time.deltaTime, Space.Self);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            m_parent.Rotate(Vector3.up, -m_yawSpeed * Time.deltaTime, Space.World);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            m_parent.Rotate(Vector3.up, m_yawSpeed * Time.deltaTime, Space.World);
-        }
+        float pitch = input.RotateLauncherV();
+        float yaw = input.RotateLauncherH();
+
+        this.transform.Rotate(Vector3.right, pitch * m_pitchSpeed * Time.deltaTime, Space.Self);
+        m_parent.Rotate(Vector3.up, yaw * m_yawSpeed * Time.deltaTime, Space.World);
 
     }
 
@@ -100,14 +98,29 @@ public class TestLauncherCtrl : MonoBehaviour {
         m_lineRenderer.SetPositions(vec);
     }
 
+    void UpdateKnockbackTime()
+    {
+        if (m_knockback > 0.0f)
+        {
+            m_knockback -= Time.deltaTime;
+        }
+    }
+
     void LaunchBallet()
     {
+        if (m_knockback > 0.0f)
+        {
+            return;
+        }
+
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
         GameObject obj = XFunctions.Instance(m_ballet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
+
+        m_knockback += m_knockbackTime;
     }
 
 }

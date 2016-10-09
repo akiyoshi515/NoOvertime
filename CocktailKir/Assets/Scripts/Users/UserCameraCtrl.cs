@@ -26,14 +26,8 @@ public class UserCameraCtrl : MonoBehaviour {
         float delta = Time.deltaTime;
         float angle = 0.0f;
 
-        if (Input.GetKey(KeyCode.Q))
-        {
-            angle -= m_rotateSpeed * delta;
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            angle += m_rotateSpeed * delta;
-        }
+        IXVInput input = XVInput.GetInterface(UserID.User1);
+        angle = input.RotateCameraH() * m_rotateSpeed * delta;
 
         UpdatePosition();
         if (angle != 0.0f)

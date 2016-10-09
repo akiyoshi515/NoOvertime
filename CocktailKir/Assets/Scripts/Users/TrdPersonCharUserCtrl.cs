@@ -18,7 +18,7 @@ public class TrdPersonCharUserCtrl : MonoBehaviour
     {
         if (!m_isJump)
         {
-            m_isJump = Input.GetKeyDown(KeyCode.Space);
+            m_isJump = XVInput.GetInterface(UserID.User1).IsJump();
         }
     }
 
