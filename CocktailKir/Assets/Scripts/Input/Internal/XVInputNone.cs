@@ -40,6 +40,11 @@ namespace XVInputInternal
         {
             return false;
         }
+
+        public bool IsWalk()
+        {
+            return false;
+        }
     }
 
 }   // End of namespace XVInputInternal

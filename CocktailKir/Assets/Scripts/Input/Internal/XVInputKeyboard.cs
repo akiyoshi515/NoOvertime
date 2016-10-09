@@ -42,7 +42,12 @@ namespace XVInputInternal
 
         public bool IsShot()
         {
-            return Input.GetKey(KeyCode.Space);
+            return Input.GetKeyDown(KeyCode.Space);
+        }
+
+        public bool IsWalk()
+        {
+            return Input.GetKey(KeyCode.LeftShift);
         }
     }
 

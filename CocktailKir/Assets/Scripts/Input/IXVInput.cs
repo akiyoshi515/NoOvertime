@@ -13,4 +13,5 @@ public interface IXVInput
     bool IsJump();
     bool IsShot();
 
+    bool IsWalk();
 }

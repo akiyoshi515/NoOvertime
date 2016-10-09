@@ -7,6 +7,7 @@ public class TrdPersonCharUserCtrl : MonoBehaviour
     private TrdPersonCharCtrl m_charCtrl = null;
     private Transform m_camera = null;
     private bool m_isJump = false;
+    private bool m_isWalk = false;
 
     void Start()
     {
@@ -20,6 +21,7 @@ public class TrdPersonCharUserCtrl : MonoBehaviour
         {
             m_isJump = XVInput.GetInterface(UserID.User1).IsJump();
         }
+        m_isWalk = XVInput.GetInterface(UserID.User1).IsWalk();
     }
 
     void FixedUpdate()
@@ -36,7 +38,7 @@ public class TrdPersonCharUserCtrl : MonoBehaviour
         move = v * camForward + h * m_camera.right;
         
         // Walk
-        if (Input.GetKey(KeyCode.LeftShift)) 
+        if (m_isWalk) 
         {
             move *= 0.5f; 
         }
