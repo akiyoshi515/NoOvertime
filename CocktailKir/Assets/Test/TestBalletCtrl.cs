@@ -5,7 +5,9 @@ public class TestBalletCtrl : MonoBehaviour
 {
     void OnCollisionEnter(Collision col)
     {
-        Destroy(this.gameObject);
+        if (col.collider.tag != "Ballet")
+        {
+            Destroy(this.gameObject);
+        }
     }
-
 }
