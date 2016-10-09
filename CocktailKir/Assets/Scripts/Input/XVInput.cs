@@ -8,15 +8,14 @@ public static class XVInput
 {
     private static IXVInput[] m_input = new IXVInput[4];
 
-    public static IXVInput GetInterface(int i)
+    public static IXVInput GetInterface(UserID id)
     {
-        XLogger.LogValidObject(!IsValidSlotIndex(i), "Invalid Argument: " + i.ToString());
-        return (m_input[i]);
+        return (m_input[(int)id]);
     }
 
-    public static bool CreateInterface(int i, XVInputType type)
+    public static bool CreateInterface(UserID id, XVInputType type)
     {
-        XLogger.LogValidObject(!IsValidSlotIndex(i), "Invalid Argument: " + i.ToString());
+        int i = (int)id;
 
         switch (type)
         {
@@ -25,6 +24,7 @@ public static class XVInput
                 m_input[i] = new XVInputNone();
                 break;
             case XVInputType.Keyboard:
+                XLogger.Log("Create interface= XVInputKeyboard: id= " + i.ToString());
                 m_input[i] = new XVInputKeyboard();
                 break;
             case XVInputType.Controller:
@@ -33,15 +33,6 @@ public static class XVInput
                 break;
         }
 
-        return true;
-    }
-
-    public static bool IsValidSlotIndex(int i)
-    {
-        if (((i < 0) || (i > 3)))
-        {
-            return false;
-        }
         return true;
     }
 
