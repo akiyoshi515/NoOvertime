@@ -31,7 +31,7 @@ namespace XVInputInternal
 
         public bool IsJump()
         {
-            return Input.GetKey(KeyCode.C);
+            return Input.GetKeyDown(KeyCode.C);
         }
 
         public bool IsShot()
