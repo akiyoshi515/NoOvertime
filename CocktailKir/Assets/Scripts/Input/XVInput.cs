@@ -28,12 +28,32 @@ public static class XVInput
                 m_input[i] = new XVInputKeyboard();
                 break;
             case XVInputType.Controller:
-                XLogger.LogWarning("Create interface= XVInputController: id= " + i.ToString());
+                XLogger.Log("Create interface= XVInputController: id= " + i.ToString());
                 m_input[i] = new XVInputController(id);
                 break;
         }
 
         return true;
+    }
+
+    public static string[] GetConnectedNames()
+    {
+        return Input.GetJoystickNames();
+    }
+
+    public static int GetConnectedNum()
+    {
+        string[] table = Input.GetJoystickNames();
+
+        if (table.Length == 1)
+        {
+            if (table[0] == "")
+            {
+                return 0;
+            }
+        }
+
+        return table.Length;
     }
 
 }
