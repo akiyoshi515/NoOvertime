@@ -30,12 +30,11 @@ public class TrdPersonCharUserCtrl : MonoBehaviour
         Vector3 camForward = Vector3.zero;
 
         // Input
-        float h = GetInputStateH();
-        float v = GetInputStateV();
+        Vector2 vec = GetInputState();
         
         // MoveCamera
         camForward = Vector3.Scale(m_camera.forward, new Vector3(1, 0, 1)).normalized;
-        move = v * camForward + h * m_camera.right;
+        move = vec.y * camForward + vec.x * m_camera.right;
         
         // Walk
         if (m_isWalk) 
@@ -47,14 +46,10 @@ public class TrdPersonCharUserCtrl : MonoBehaviour
         m_isJump = false;
     }
 
-    private float GetInputStateV()
+    private Vector2 GetInputState()
     {
-        return ((Input.GetKey(KeyCode.W) ? 1.0f : 0.0f) + (Input.GetKey(KeyCode.S) ? -1.0f : 0.0f));
+        return XVInput.GetInterface(UserID.User1).Move();
     }
 
-    private float GetInputStateH()
-    {
-        return ((Input.GetKey(KeyCode.D) ? 1.0f : 0.0f) + (Input.GetKey(KeyCode.A) ? -1.0f : 0.0f));
-    }
 }
 

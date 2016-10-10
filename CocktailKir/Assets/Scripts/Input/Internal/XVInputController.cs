@@ -1,48 +1,76 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using XBoxInput;
+
 namespace XVInputInternal
 {
     public class XVInputController : IXVInput
     {
-        public float MoveH()
+        XBKeyCode.UserCode m_userCode;
+
+        private float InputToFloat(bool b)
         {
-            return 0.0f;
+            return (b ? 1.0f : 0.0f);
         }
 
-        public float MoveV()
+        public XVInputController(UserID id)
         {
-            return 0.0f;
+            switch (id)
+            {
+                case UserID.User1:
+                    m_userCode = XBKeyCode.UserCode.User1;
+                    break;
+                case UserID.User2:
+                    m_userCode = XBKeyCode.UserCode.User2;
+                    break;
+                case UserID.User3:
+                    m_userCode = XBKeyCode.UserCode.User3;
+                    break;
+                case UserID.User4:
+                    m_userCode = XBKeyCode.UserCode.User4;
+                    break;
+            }
+        }
+
+        public XVInputController()
+        {
+            AkiVACO.XLogger.LogWarning("Create XBox Controller: UserCode = Any");
+            m_userCode = XBKeyCode.UserCode.Any;
+        }
+
+        public Vector2 Move()
+        {
+            return XBGamePad.GetAxis(XBKeyCode.Axis.LeftStick, m_userCode);
         }
 
         public float RotateCameraH()
         {
-            return 0.0f;
+            return (
+                InputToFloat(XBGamePad.IsPressed(XBKeyCode.Button.RightShoulder, m_userCode))
+                ) - (
+                InputToFloat(XBGamePad.IsPressed(XBKeyCode.Button.LeftShoulder, m_userCode))
+                );
         }
 
-        public float RotateLauncherV()
+        public Vector2 RotateLauncher()
         {
-            return 0.0f;
-        }
-
-        public float RotateLauncherH()
-        {
-            return 0.0f;
+            return XBGamePad.GetAxis(XBKeyCode.Axis.RightStick, m_userCode);
         }
 
         public bool IsJump()
         {
-            return false;
+            return XBGamePad.IsTriggered(XBKeyCode.Button.A, m_userCode);
         }
 
         public bool IsShot()
         {
-            return false;
+            return XBGamePad.IsTriggered(XBKeyCode.Button.X, m_userCode);
         }
 
         public bool IsWalk()
         {
-            return false;
+            return XBGamePad.IsPressed(XBKeyCode.Button.LeftShoulder, m_userCode);
         }
     }
 

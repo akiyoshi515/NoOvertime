@@ -5,15 +5,9 @@ namespace XVInputInternal
 {
     public class XVInputNone : IXVInput
     {
-
-        public float MoveH()
+        public Vector2 Move()
         {
-            return 0.0f;
-        }
-
-        public float MoveV()
-        {
-            return 0.0f;
+            return Vector2.zero;
         }
 
         public float RotateCameraH()
@@ -21,14 +15,9 @@ namespace XVInputInternal
             return 0.0f;
         }
 
-        public float RotateLauncherV()
+        public Vector2 RotateLauncher()
         {
-            return 0.0f;
-        }
-
-        public float RotateLauncherH()
-        {
-            return 0.0f;
+            return Vector2.zero;
         }
 
         public bool IsJump()

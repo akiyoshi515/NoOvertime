@@ -73,7 +73,7 @@ namespace NotargsInputManagerUtil
 
             int joystickNum = playerIndex + 1;
 
-            string strIndex = playerIndex.ToString();
+            string strIndex = joystickNum.ToString();
 
             // 左スティック
             {

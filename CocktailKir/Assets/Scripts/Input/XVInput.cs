@@ -29,7 +29,7 @@ public static class XVInput
                 break;
             case XVInputType.Controller:
                 XLogger.LogWarning("Create interface= XVInputController: id= " + i.ToString());
-                m_input[i] = new XVInputController();
+                m_input[i] = new XVInputController(id);
                 break;
         }
 

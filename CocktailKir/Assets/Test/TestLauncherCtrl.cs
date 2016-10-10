@@ -73,12 +73,10 @@ public class TestLauncherCtrl : MonoBehaviour {
             LaunchBallet();
         }
 
-        float pitch = input.RotateLauncherV();
-        float yaw = input.RotateLauncherH();
+        Vector2 vec = input.RotateLauncher();
 
-        this.transform.Rotate(Vector3.right, pitch * m_pitchSpeed * Time.deltaTime, Space.Self);
-        m_parent.Rotate(Vector3.up, yaw * m_yawSpeed * Time.deltaTime, Space.World);
-
+        this.transform.Rotate(Vector3.right, -vec.y * m_pitchSpeed * Time.deltaTime, Space.Self);
+        m_parent.Rotate(Vector3.up, vec.x * m_yawSpeed * Time.deltaTime, Space.World);
     }
 
     void LateUpdate()

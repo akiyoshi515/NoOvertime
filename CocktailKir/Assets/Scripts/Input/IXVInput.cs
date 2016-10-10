@@ -3,15 +3,14 @@ using System.Collections;
 
 public interface IXVInput
 {
-    float MoveH();
-    float MoveV();
+    Vector2 Move();
     float RotateCameraH();
 
-    float RotateLauncherV();
-    float RotateLauncherH();
+    Vector2 RotateLauncher();
 
     bool IsJump();
     bool IsShot();
 
     bool IsWalk();
+
 }

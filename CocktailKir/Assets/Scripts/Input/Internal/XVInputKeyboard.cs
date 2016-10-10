@@ -10,14 +10,11 @@ namespace XVInputInternal
             return (b ? 1.0f : 0.0f);
         }
 
-        public float MoveH()
+        public Vector2 Move()
         {
-            return (InputToFloat(Input.GetKey(KeyCode.D)) - InputToFloat(Input.GetKey(KeyCode.A)));
-        }
-
-        public float MoveV()
-        {
-            return (InputToFloat(Input.GetKey(KeyCode.W)) - InputToFloat(Input.GetKey(KeyCode.S)));
+            return new Vector2(
+                (InputToFloat(Input.GetKey(KeyCode.D)) - InputToFloat(Input.GetKey(KeyCode.A))),
+                (InputToFloat(Input.GetKey(KeyCode.W)) - InputToFloat(Input.GetKey(KeyCode.S))));
         }
 
         public float RotateCameraH()
@@ -25,14 +22,11 @@ namespace XVInputInternal
             return (InputToFloat(Input.GetKey(KeyCode.E)) - InputToFloat(Input.GetKey(KeyCode.Q)));
         }
 
-        public float RotateLauncherV()
+        public Vector2 RotateLauncher()
         {
-            return (InputToFloat(Input.GetKey(KeyCode.DownArrow)) - InputToFloat(Input.GetKey(KeyCode.UpArrow)));
-        }
-
-        public float RotateLauncherH()
-        {
-            return (InputToFloat(Input.GetKey(KeyCode.RightArrow)) - InputToFloat(Input.GetKey(KeyCode.LeftArrow)));
+            return new Vector2(
+                (InputToFloat(Input.GetKey(KeyCode.RightArrow)) - InputToFloat(Input.GetKey(KeyCode.LeftArrow))),
+                (InputToFloat(Input.GetKey(KeyCode.UpArrow)) - InputToFloat(Input.GetKey(KeyCode.DownArrow))));
         }
 
         public bool IsJump()
