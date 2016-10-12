@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(CharBaseCtrl))]
-public class TrdPersonCharAICtrl : MonoBehaviour
+public class CharNaviCtrl : MonoBehaviour
 {
     public NavMeshAgent naviAgent
     {
