@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(TrdPersonCharCtrl))]
+[RequireComponent(typeof(CharBaseCtrl))]
 public class TrdPersonCharUserCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 {
-    private TrdPersonCharCtrl m_charCtrl = null;
+    private CharBaseCtrl m_charCtrl = null;
     private Transform m_camera = null;
     private bool m_isJump = false;
     private bool m_isWalk = false;
@@ -12,7 +12,7 @@ public class TrdPersonCharUserCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     void Start()
     {
         m_camera = Camera.main.transform;
-        m_charCtrl = this.GetComponent<TrdPersonCharCtrl>();
+        m_charCtrl = this.GetComponent<CharBaseCtrl>();
     }
 
     void Update()

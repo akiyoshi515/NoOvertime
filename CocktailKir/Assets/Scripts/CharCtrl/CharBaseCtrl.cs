@@ -2,7 +2,7 @@
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class TrdPersonCharCtrl : MonoBehaviour
+public class CharBaseCtrl : MonoBehaviour
 {
     [SerializeField]
     private float m_moveSpeed = 5.0f;

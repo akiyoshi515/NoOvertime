@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(NavLineAgent))]
-[RequireComponent(typeof(TrdPersonCharCtrl))]
+[RequireComponent(typeof(CharBaseCtrl))]
 public class TrdPersonCharAILineCtrl : MonoBehaviour
 {
     public NavMeshAgent naviAgent
@@ -12,7 +12,7 @@ public class TrdPersonCharAILineCtrl : MonoBehaviour
         private set;
     }
 
-    public TrdPersonCharCtrl charCtrl
+    public CharBaseCtrl charCtrl
     {
         get;
         private set; 
@@ -23,7 +23,7 @@ public class TrdPersonCharAILineCtrl : MonoBehaviour
     void Start()
     {
         naviAgent = this.GetComponentInChildren<NavMeshAgent>();
-        charCtrl = this.GetComponent<TrdPersonCharCtrl>();
+        charCtrl = this.GetComponent<CharBaseCtrl>();
         m_navLineAgent = this.GetComponent<NavLineAgent>();
         m_navLineAgent.NextIndex();
 

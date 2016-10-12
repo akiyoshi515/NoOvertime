@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(TrdPersonCharCtrl))]
+[RequireComponent(typeof(CharBaseCtrl))]
 public class TrdPersonCharAICtrl : MonoBehaviour
 {
     public NavMeshAgent naviAgent
@@ -11,7 +11,7 @@ public class TrdPersonCharAICtrl : MonoBehaviour
         private set;
     }
 
-    public TrdPersonCharCtrl charCtrl
+    public CharBaseCtrl charCtrl
     {
         get;
         private set; 
@@ -28,7 +28,7 @@ public class TrdPersonCharAICtrl : MonoBehaviour
     void Start()
     {
         naviAgent = this.GetComponentInChildren<NavMeshAgent>();
-        charCtrl = this.GetComponent<TrdPersonCharCtrl>();
+        charCtrl = this.GetComponent<CharBaseCtrl>();
 
         naviAgent.updateRotation = false;
         naviAgent.updatePosition = true;
