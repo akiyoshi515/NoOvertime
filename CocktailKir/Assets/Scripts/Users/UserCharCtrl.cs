@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharBaseCtrl))]
-public class TrdPersonCharUserCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
+public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 {
     private CharBaseCtrl m_charCtrl = null;
     private Transform m_camera = null;
