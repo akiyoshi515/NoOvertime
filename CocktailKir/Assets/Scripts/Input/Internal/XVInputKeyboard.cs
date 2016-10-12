@@ -12,37 +12,66 @@ namespace XVInputInternal
 
         public Vector2 Move()
         {
-            return new Vector2(
-                (InputToFloat(Input.GetKey(KeyCode.D)) - InputToFloat(Input.GetKey(KeyCode.A))),
-                (InputToFloat(Input.GetKey(KeyCode.W)) - InputToFloat(Input.GetKey(KeyCode.S))));
+            if (IsLauncherStance())
+            {
+                return Vector2.zero;
+            }
+            else
+            {
+                return new Vector2(
+                    (InputToFloat(Input.GetKey(KeyCode.RightArrow)) - InputToFloat(Input.GetKey(KeyCode.LeftArrow))),
+                    (InputToFloat(Input.GetKey(KeyCode.UpArrow)) - InputToFloat(Input.GetKey(KeyCode.DownArrow))));
+            }
         }
 
         public float RotateCameraH()
         {
-            return (InputToFloat(Input.GetKey(KeyCode.E)) - InputToFloat(Input.GetKey(KeyCode.Q)));
+            return (InputToFloat(Input.GetKey(KeyCode.D)) - InputToFloat(Input.GetKey(KeyCode.A)));
         }
 
         public Vector2 RotateLauncher()
         {
-            return new Vector2(
-                (InputToFloat(Input.GetKey(KeyCode.RightArrow)) - InputToFloat(Input.GetKey(KeyCode.LeftArrow))),
-                (InputToFloat(Input.GetKey(KeyCode.UpArrow)) - InputToFloat(Input.GetKey(KeyCode.DownArrow))));
+            if (IsLauncherStance())
+            {
+                return new Vector2(
+                    (InputToFloat(Input.GetKey(KeyCode.RightArrow)) - InputToFloat(Input.GetKey(KeyCode.LeftArrow))),
+                    (InputToFloat(Input.GetKey(KeyCode.UpArrow)) - InputToFloat(Input.GetKey(KeyCode.DownArrow))));
+            }
+            else
+            {
+                return Vector2.zero;
+            }
         }
 
         public bool IsJump()
         {
-            return Input.GetKeyDown(KeyCode.C);
+            return Input.GetKeyDown(KeyCode.Space);
         }
 
         public bool IsShot()
         {
-            return Input.GetKeyDown(KeyCode.Space);
+            if (IsLauncherStance())
+            {
+                return Input.GetKeyDown(KeyCode.C);
+            }
+            return false;
         }
 
         public bool IsWalk()
         {
             return Input.GetKey(KeyCode.LeftShift);
         }
+
+        public bool IsLauncherStance()
+        {
+            return Input.GetKey(KeyCode.Z);
+        }
+
+        public bool IsReload()
+        {
+            return Input.GetKey(KeyCode.X);
+        }
+
     }
 
 }   // End of namespace XVInputInternal

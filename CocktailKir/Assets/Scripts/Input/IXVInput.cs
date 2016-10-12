@@ -33,4 +33,14 @@ public interface IXVInput
     /// </summary>
     bool IsWalk();
 
+    /// <summary>
+    /// 構えキーを押しているか？
+    /// </summary>
+    bool IsLauncherStance();
+
+    /// <summary>
+    /// リロードキーを押しているか？
+    /// </summary>
+    bool IsReload();
+
 }

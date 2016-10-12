@@ -34,6 +34,16 @@ namespace XVInputInternal
         {
             return false;
         }
+
+        public bool IsLauncherStance()
+        {
+            return false;
+        }
+
+        public bool IsReload()
+        {
+            return false;
+        }
     }
 
 }   // End of namespace XVInputInternal

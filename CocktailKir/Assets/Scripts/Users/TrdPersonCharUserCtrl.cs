@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(TrdPersonCharCtrl))]
-public class TrdPersonCharUserCtrl : MonoBehaviour
+public class TrdPersonCharUserCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 {
     private TrdPersonCharCtrl m_charCtrl = null;
     private Transform m_camera = null;
@@ -51,5 +51,11 @@ public class TrdPersonCharUserCtrl : MonoBehaviour
         return XVInput.GetInterface(UserID.User1).Move();
     }
 
+    public string GetLabelString()
+    {
+        return "Sts " + (
+            XVInput.GetInterface(UserID.User1).IsLauncherStance() ? 
+            ":Ready" : (m_isWalk ? ":Walking" : "None"));
+    }
 }
 
