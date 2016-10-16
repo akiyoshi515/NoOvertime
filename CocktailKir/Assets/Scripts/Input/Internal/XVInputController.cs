@@ -82,7 +82,7 @@ namespace XVInputInternal
         {
             if (IsLauncherStance())
             {
-                return XBGamePad.IsTriggered(XBKeyCode.Button.X, m_userCode);
+                return XBGamePad.IsPressed(XBKeyCode.Button.X, m_userCode);
             }
             return false;
         }

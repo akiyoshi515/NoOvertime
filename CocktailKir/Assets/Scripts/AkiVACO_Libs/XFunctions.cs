@@ -38,6 +38,8 @@ public class XFunctions
     {
         UnityEngine.GameObject reobj = XFunctions.Instance(obj, vec, rotate);
         reobj.transform.SetParent(objParent.transform);
+        reobj.transform.localPosition = vec;
+        reobj.transform.localRotation = rotate;
         return reobj;
     }
 

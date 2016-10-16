@@ -52,7 +52,7 @@ namespace XVInputInternal
         {
             if (IsLauncherStance())
             {
-                return Input.GetKeyDown(KeyCode.C);
+                return Input.GetKey(KeyCode.C);
             }
             return false;
         }
