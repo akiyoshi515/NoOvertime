@@ -30,7 +30,7 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         Vector3 camForward = Vector3.zero;
 
         // Input
-        Vector2 vec = GetInputState();
+        Vector2 vec = XVInput.GetInterface(UserID.User1).Move();
         
         // MoveCamera
         camForward = Vector3.Scale(m_camera.forward, new Vector3(1, 0, 1)).normalized;
@@ -44,11 +44,6 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 
         m_charCtrl.Move(move, m_isJump);
         m_isJump = false;
-    }
-
-    private Vector2 GetInputState()
-    {
-        return XVInput.GetInterface(UserID.User1).Move();
     }
 
     public string GetLabelString()
