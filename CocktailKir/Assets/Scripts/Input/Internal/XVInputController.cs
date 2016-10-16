@@ -94,7 +94,9 @@ namespace XVInputInternal
 
         public bool IsLauncherStance()
         {
-            return (XBGamePad.GetTriggerRaw(XBKeyCode.Trigger.RightTrigger, m_userCode) > 0.0f);
+            return (
+                (XBGamePad.GetTriggerRaw(XBKeyCode.Trigger.RightTrigger, m_userCode) > 0.0f)
+                || (XBGamePad.GetTriggerRaw(XBKeyCode.Trigger.LeftTrigger, m_userCode) > 0.0f));
         }
 
         public bool IsReload()
