@@ -5,10 +5,14 @@ using AkiVACO;
 
 public class TestMagazine : MonoBehaviour
 {
+    [SerializeField]
+    private float m_reloadTime = 1.0f;
+
     /// <summary>
     /// 弾数
     /// </summary>
-    public int m_balletNum = 0;
+    [SerializeField]
+    private int m_balletNum = 0;
     public int balletNum
     {
         get { return m_balletNum; }
@@ -18,7 +22,8 @@ public class TestMagazine : MonoBehaviour
     /// <summary>
     /// 最大弾数
     /// </summary>
-    public int m_capacity = 0;
+    [SerializeField]
+    private int m_capacity = 0;
     public int capacity
     {
         get { return m_capacity; }
@@ -28,7 +33,8 @@ public class TestMagazine : MonoBehaviour
     /// <summary>
     /// リロード中か？
     /// </summary>
-    public bool m_isReloading = false;
+    [SerializeField]
+    private bool m_isReloading = false;
     public bool isReloading
     {
         get { return m_isReloading; }
@@ -73,9 +79,9 @@ public class TestMagazine : MonoBehaviour
         if (!isMax)
         {
             m_time += Time.deltaTime;
-            if (m_time >= 1.0f)
+            if (m_time >= m_reloadTime)
             {
-                m_time -= 1.0f;
+                m_time -= m_reloadTime;
                 this.AddBallet(1);
             }
         }
@@ -88,12 +94,12 @@ public class TestMagazine : MonoBehaviour
     public void AddBallet(int val)
     {
         XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit AddBallet: " + val.ToString());
-        XLogger.Log("Magazine AddBallet: " + val.ToString());
         balletNum += val;
         if (balletNum >= capacity)
         {
             balletNum = capacity;
         }
+        XLogger.Log("Magazine AddBallet: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
     }
 
     /// <summary>
@@ -103,13 +109,13 @@ public class TestMagazine : MonoBehaviour
     public void SubBallet(int val)
     {
         XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit SubBallet: " + val.ToString());
-        XLogger.Log("Magazine SubBallet: " + val.ToString());
         balletNum -= val;
         if (balletNum < 0)
         {
             balletNum = 0;
             XLogger.LogError("Ballet Overflow");
         }
+        XLogger.Log("Magazine SubBallet: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
     }
 
     /// <summary>
@@ -119,8 +125,8 @@ public class TestMagazine : MonoBehaviour
     public void AddCapacity(int val)
     {
         XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit AddCapacity: " + val.ToString());
-        XLogger.Log("Magazine AddCapacity: " + val.ToString());
         capacity += val;
+        XLogger.Log("Magazine AddCapacity: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
     }
 
     public void StartReload()

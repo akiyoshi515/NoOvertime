@@ -186,7 +186,7 @@ public class TestLauncherCtrl : MonoBehaviour {
             }
         }
 
-        if (m_chargeTime >= m_chargeShotTime)
+        if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.balletNum >= m_costChargeBallet))
         {
             m_csEfMaxCharge.WakeupEffect();
         }
