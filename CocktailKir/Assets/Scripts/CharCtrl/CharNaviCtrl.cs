@@ -43,11 +43,11 @@ public class CharNaviCtrl : MonoBehaviour
 
         if (naviAgent.remainingDistance > naviAgent.stoppingDistance)
         {
-            charCtrl.Move(naviAgent.desiredVelocity, false);
+            charCtrl.Move(naviAgent.desiredVelocity, false, false);
         }
         else
         {
-            charCtrl.Move(Vector3.zero, false);
+            charCtrl.Move(Vector3.zero, false, false);
         }
     }
 

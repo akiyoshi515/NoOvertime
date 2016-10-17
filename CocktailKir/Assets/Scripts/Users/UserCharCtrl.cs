@@ -42,7 +42,7 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
             move *= 0.5f; 
         }
 
-        m_charCtrl.Move(move, m_isJump);
+        m_charCtrl.Move(move, m_isJump, m_isWalk);
         m_isJump = false;
     }
 
