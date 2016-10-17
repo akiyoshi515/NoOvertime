@@ -69,7 +69,11 @@ namespace XVInputInternal
 
         public bool IsReload()
         {
-            return Input.GetKey(KeyCode.X);
+            if (IsLauncherStance())
+            {
+                return Input.GetKey(KeyCode.X);
+            }
+            return false;
         }
 
     }
