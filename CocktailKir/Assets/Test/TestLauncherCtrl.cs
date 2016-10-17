@@ -38,6 +38,9 @@ public class TestLauncherCtrl : MonoBehaviour {
     private float m_lineWidth = 0.250f;
 
     [SerializeField]
+    private GameObject m_balletEmpty = null;
+
+    [SerializeField]
     private GameObject m_ballet = null;
 
     [SerializeField]
@@ -57,9 +60,13 @@ public class TestLauncherCtrl : MonoBehaviour {
     private float m_knockback = 0.0f;
     private float m_chargeTime = 0.0f;
 
+    private int m_costBallet = 1;
+    private int m_costChargeBallet = 1;
+
     void Awake()
     {
         XLogger.LogValidObject(m_parent == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Parent"), gameObject);
+        XLogger.LogValidObject(m_balletEmpty == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteEmpty"), gameObject);
         XLogger.LogValidObject(m_ballet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Ballte"), gameObject);
         XLogger.LogValidObject(m_balletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteBouquet"), gameObject);
         XLogger.LogValidObject(m_hitPoint == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("HitPoint"), gameObject);
@@ -79,6 +86,8 @@ public class TestLauncherCtrl : MonoBehaviour {
     {
         m_lineRenderer.SetWidth(m_lineWidth, m_lineWidth);
 
+        m_costBallet = this.m_ballet.GetComponent<TestBalletCtrl>().cost;
+        m_costChargeBallet = this.m_balletBouquet.GetComponent<TestBalletCtrl>().cost;
     }
 	
 	// Update is called once per frame
@@ -141,13 +150,20 @@ public class TestLauncherCtrl : MonoBehaviour {
         {
             if (m_chargeTime > 0.0f)
             {
-                if (m_chargeTime < m_chargeShotTime)
+                if (!m_magazine.isReloading)
                 {
-                    LaunchBallet();
-                }
-                else
-                {
-                    LaunchBouquet();
+                    if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.balletNum >= m_costChargeBallet))
+                    {
+                        LaunchBouquet();
+                    }
+                    else if (m_magazine.balletNum >= m_costBallet)
+                    {
+                        LaunchBallet();
+                    }
+                    else
+                    {
+                        LaunchEmptyBallet();
+                    }
                 }
                 m_chargeTime = 0.0f;
             }
@@ -172,6 +188,20 @@ public class TestLauncherCtrl : MonoBehaviour {
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
 
+        m_magazine.SubBallet(m_costBallet);
+
+        m_knockback += m_knockbackTime;
+    }
+
+    void LaunchEmptyBallet()
+    {
+        Quaternion rot = this.gameObject.transform.rotation;
+        Vector3 pos = this.transform.position + (rot * m_launchPoint);
+
+        XFunctions.Instance(m_balletEmpty, pos, rot);
+//        Rigidbody rb = obj.GetComponent<Rigidbody>();
+//        rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
+
         m_knockback += m_knockbackTime;
     }
 
@@ -183,6 +213,8 @@ public class TestLauncherCtrl : MonoBehaviour {
         GameObject obj = XFunctions.Instance(m_balletBouquet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
+
+        m_magazine.SubBallet(m_costChargeBallet);
 
         m_knockback += m_knockbackTime;
     }
