@@ -52,10 +52,14 @@ public class TestLauncherCtrl : MonoBehaviour {
     [SerializeField]
     private GameObject m_efMaxCharge = null;
 
+    [SerializeField]
+    private GameObject m_efReload = null;
+
     private TestMagazine m_magazine = null;
 
     private LineRenderer m_lineRenderer = null;
     private IEffect m_csEfMaxCharge = null;
+    private IEffect m_csEfReload = null;
 
     private float m_knockback = 0.0f;
     private float m_chargeTime = 0.0f;
@@ -71,14 +75,17 @@ public class TestLauncherCtrl : MonoBehaviour {
         XLogger.LogValidObject(m_balletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteBouquet"), gameObject);
         XLogger.LogValidObject(m_hitPoint == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("HitPoint"), gameObject);
 
+        XLogger.LogValidObject(m_efReload == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Effect Reload"), gameObject);
         XLogger.LogValidObject(m_efMaxCharge == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Effect MaxCharge"), gameObject);
 
         m_magazine = this.GetComponent<TestMagazine>();
         m_lineRenderer = this.GetComponent<LineRenderer>();
 
         GameObject efObj = XFunctions.InstanceChild(m_efMaxCharge, Vector3.zero, Quaternion.identity, this.gameObject);
+        GameObject efReloadObj = XFunctions.InstanceChild(m_efReload, Vector3.zero, Quaternion.identity, this.gameObject);
 
         m_csEfMaxCharge = efObj.GetComponent<IEffect>();
+        m_csEfReload = efReloadObj.GetComponent<IEffect>();
     }
 
 	// Use this for initialization
@@ -97,10 +104,20 @@ public class TestLauncherCtrl : MonoBehaviour {
 
         if (input.IsReload())
         {
-            m_magazine.StartReload();
+            if (m_magazine.isMax)
+            {
+                m_csEfReload.SleepEffect();
+                m_magazine.StopReload();
+            }
+            else
+            {
+                m_csEfReload.WakeupEffect();
+                m_magazine.StartReload();
+            }
         }
         else
         {
+            m_csEfReload.SleepEffect();
             m_magazine.StopReload();
         }
 
