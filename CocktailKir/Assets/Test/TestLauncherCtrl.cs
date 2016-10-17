@@ -49,6 +49,8 @@ public class TestLauncherCtrl : MonoBehaviour {
     [SerializeField]
     private GameObject m_efMaxCharge = null;
 
+    private TestMagazine m_magazine = null;
+
     private LineRenderer m_lineRenderer = null;
     private IEffect m_csEfMaxCharge = null;
 
@@ -63,7 +65,8 @@ public class TestLauncherCtrl : MonoBehaviour {
         XLogger.LogValidObject(m_hitPoint == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("HitPoint"), gameObject);
 
         XLogger.LogValidObject(m_efMaxCharge == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Effect MaxCharge"), gameObject);
-        
+
+        m_magazine = this.GetComponent<TestMagazine>();
         m_lineRenderer = this.GetComponent<LineRenderer>();
 
         GameObject efObj = XFunctions.InstanceChild(m_efMaxCharge, Vector3.zero, Quaternion.identity, this.gameObject);
@@ -83,7 +86,14 @@ public class TestLauncherCtrl : MonoBehaviour {
     {
         IXVInput input = XVInput.GetInterface(UserID.User1);
 
-        UpdateKnockbackTime();
+        if (input.IsReload())
+        {
+            m_magazine.StartReload();
+        }
+        else
+        {
+            m_magazine.StopReload();
+        }
 
         UpdateShotBallet(input.IsShot());
 
@@ -110,17 +120,15 @@ public class TestLauncherCtrl : MonoBehaviour {
         m_lineRenderer.SetPositions(vec);
     }
 
-    void UpdateKnockbackTime()
+    void UpdateShotBallet(bool isShot)
     {
         if (m_knockback > 0.0f)
         {
             m_knockback -= Time.deltaTime;
+            return;
         }
-    }
 
-    void UpdateShotBallet(bool isShot)
-    {
-        if (m_knockback > 0.0f)
+        if (m_magazine.isReloading)
         {
             return;
         }

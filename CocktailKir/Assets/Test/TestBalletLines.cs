@@ -35,7 +35,7 @@ public class TestBalletLines
             RaycastHit[] hitInfo = Physics.RaycastAll(prev, offset, offset.magnitude);
             foreach (RaycastHit hit in hitInfo)
             {
-                if (hit.collider.tag != "Ballet")
+                if ((hit.collider.tag != "Ballet") && (hit.collider.tag != "FieldWall"))
                 {
                     if (hit.distance < minDistance)
                     {
