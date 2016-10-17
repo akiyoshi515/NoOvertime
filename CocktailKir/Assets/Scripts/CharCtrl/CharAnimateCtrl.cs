@@ -2,7 +2,7 @@
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class CharBaseCtrl : MonoBehaviour
+public class CharAnimateCtrl : MonoBehaviour
 {
     [SerializeField]
     private float m_moveSpeed = 5.0f;
@@ -20,6 +20,7 @@ public class CharBaseCtrl : MonoBehaviour
     private float m_groundCheckDistance = 0.1f;
 
     private Rigidbody m_rigidbody = null;
+    private Animator m_animator = null;
 
     private Vector3 m_groundNormal;
     private float m_oriGroundCheckDistance;
@@ -31,6 +32,8 @@ public class CharBaseCtrl : MonoBehaviour
     {
         m_rigidbody = this.GetComponent<Rigidbody>();   
         m_rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+
+        m_animator = this.transform.GetChild(0).GetComponent<Animator>();
 
         m_oriGroundCheckDistance = m_groundCheckDistance;
     }
@@ -54,6 +57,23 @@ public class CharBaseCtrl : MonoBehaviour
         v.y = m_rigidbody.velocity.y;
         m_rigidbody.velocity = v;
 
+        if (move != Vector3.zero)
+        {
+            m_animator.SetBool("Moving", true);
+            if (isWalk)
+            {
+                m_animator.SetBool("Walking", true);
+            }
+            else
+            {
+                m_animator.SetBool("Walking", false);
+            }
+        }
+        else
+        {
+            m_animator.SetBool("Moving", false);
+        }
+
         if (m_isGrounded)
         {
             UpdateGroundedMovement(vecMove, jump);
@@ -62,6 +82,7 @@ public class CharBaseCtrl : MonoBehaviour
         {
             UpdateAirMovement();
         }
+        m_animator.SetBool("Jumping", !m_isGrounded);
     }
 
     void UpdateAirMovement()
@@ -79,6 +100,7 @@ public class CharBaseCtrl : MonoBehaviour
             m_rigidbody.velocity = new Vector3(m_rigidbody.velocity.x, m_jumpPower, m_rigidbody.velocity.z);
             m_isGrounded = false;
             m_groundCheckDistance = 0.1f;
+            m_animator.SetBool("Jumping", true);
         }
     }
 
