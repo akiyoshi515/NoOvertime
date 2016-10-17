@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GuestScoreUnit
 {
-    private int[] m_scoreTable = new int[4];
+    private int[] m_charmTable = new int[4];
     private int m_topUserId = -1;   // -1 = None
 
     public int topUserId
@@ -22,10 +22,10 @@ public class GuestScoreUnit
     /// </summary>
     public void Reset()
     {
-        m_scoreTable[0] = 0;
-        m_scoreTable[1] = 0;
-        m_scoreTable[2] = 0;
-        m_scoreTable[3] = 0;
+        m_charmTable[0] = 0;
+        m_charmTable[1] = 0;
+        m_charmTable[2] = 0;
+        m_charmTable[3] = 0;
         m_topUserId = -1;
     }
 
@@ -35,10 +35,10 @@ public class GuestScoreUnit
     /// <param name="id">ユーザーID</param>
     /// <param name="s">加算スコア</param>
     /// <returns>スコアトップが更新されたか？</returns>
-    public bool Add(UserID id, int s)
+    public bool AddCharm(UserID id, int s)
     {
         int idx = (int)id;
-        m_scoreTable[idx] += s;
+        m_charmTable[idx] += s;
         if (m_topUserId == -1)
         {
             GuestScores.Add(id);
@@ -48,7 +48,7 @@ public class GuestScoreUnit
         else
         {
             // HACK 後から来たUserと一位タイの場合は前のUserが優先
-            if (m_scoreTable[idx] > m_scoreTable[m_topUserId])
+            if (m_charmTable[idx] > m_charmTable[m_topUserId])
             {
                 GuestScores.Add(id, (UserID)m_topUserId);
                 m_topUserId = idx;
