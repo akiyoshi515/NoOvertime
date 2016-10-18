@@ -1,10 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(UserData))]
 [RequireComponent(typeof(CharAnimateCtrl))]
 public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 {
     private CharAnimateCtrl m_charCtrl = null;
+    private IXVInput m_input = null;
     private Transform m_camera = null;
     private bool m_isJump = false;
     private bool m_isWalk = false;
@@ -13,15 +15,16 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     {
         m_camera = Camera.main.transform;
         m_charCtrl = this.GetComponent<CharAnimateCtrl>();
+        m_input = this.GetComponent<UserData>().input;
     }
 
     void Update()
     {
         if (!m_isJump)
         {
-            m_isJump = XVInput.GetInterface(UserID.User1).IsJump();
+            m_isJump = m_input.IsJump();
         }
-        m_isWalk = XVInput.GetInterface(UserID.User1).IsWalk();
+        m_isWalk = m_input.IsWalk();
     }
 
     void FixedUpdate()
@@ -30,7 +33,7 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         Vector3 camForward = Vector3.zero;
 
         // Input
-        Vector2 vec = XVInput.GetInterface(UserID.User1).Move();
+        Vector2 vec = m_input.Move();
         
         // MoveCamera
         camForward = Vector3.Scale(m_camera.forward, new Vector3(1, 0, 1)).normalized;
@@ -49,7 +52,7 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     public string GetLabelString()
     {
         return "Sts " + (
-            XVInput.GetInterface(UserID.User1).IsLauncherStance() ? 
+            m_input.IsLauncherStance() ? 
             ":Ready" : (m_isWalk ? ":Walking" : "None"));
     }
 }
