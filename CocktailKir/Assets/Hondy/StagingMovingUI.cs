@@ -1,28 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using AkiVACO;
-///
-/// <summary>   演出UI(試用).  </summary>
-///
-/// <remarks>   Hondy, 2016/10/11.  </remarks>
-///
-/// <seealso cref="T:UnityEngine.MonoBehaviour"/>
-///
+using System.Collections;
 
-
-public class TestStagingUI : MonoBehaviour
-{
+public class StagingMovingUI : IStagingUI {
 
 
     ///
     /// <summary>   スクロールするかのフラグ. </summary>
     ///
 
-    [SerializeField,Header("スクロールするかのフラグ")]
-    bool m_isScroll;
+    [SerializeField, Header("スクロール,移動するかのフラグ")]
+    bool m_isMove;
 
-    
+
 
 
 
@@ -30,28 +20,28 @@ public class TestStagingUI : MonoBehaviour
     /// <summary>   スクロール速度(秒速).   </summary>
     ///
 
-    [SerializeField, Header("スクロール速度(秒速)")]
+    [SerializeField, Header("スクロール,移動速度(秒速)")]
     float m_scrollSpeed;
 
     ///
     /// <summary>   スクロールに開始位置を使用するかのフラグ.  </summary>
     ///
 
-    [SerializeField, Header("スクロール開始位置を使用するかのフラグ(falseの場合インスペクタで設定した位置からスクロール)")]
+    [SerializeField, Header("スクロール,移動開始位置を使用するかのフラグ(falseの場合インスペクタで設定した位置からスクロール)")]
     bool m_isUseStartPosition;
 
     ///
     /// <summary>   スクロール開始位置.  </summary>
     ///
 
-    [SerializeField, Header("スクロール開始位置")]
+    [SerializeField, Header("移動開始位置")]
     Vector3 m_scrollStartPosition;
 
     ///
     /// <summary>   スクロール開始位置.  </summary>
     ///
 
-    [SerializeField, Header("スクロール停止位置")]
+    [SerializeField, Header("移動停止位置")]
     Vector3 m_scrollStopPosition;
 
 
@@ -59,7 +49,7 @@ public class TestStagingUI : MonoBehaviour
     /// <summary>   スクロール方向.   </summary>
     ///
 
-    [SerializeField, Header("スクロール方向")]
+    [SerializeField, Header("移動方向")]
     Vector3 m_scrollDirection;
 
 
@@ -117,119 +107,6 @@ public class TestStagingUI : MonoBehaviour
 
 
     ///
-    /// <summary>   回転するかのフラグ. </summary>
-    ///
-
-    [SerializeField, Header("回転するかのフラグ")]
-    bool m_isRotation;
-
-    ///
-    /// <summary>   The rotation speed. </summary>
-    ///
-
-    [SerializeField]
-    float m_rotationSpeed;
-
-    ///
-    /// <summary>   The start angle.    </summary>
-    ///
-
-    [SerializeField]
-    float m_startAngle;
-
-    ///
-    /// <summary>   The end angle.  </summary>
-    ///
-
-    [SerializeField]
-    float m_endAngle;
-
-
-
-    ///
-    /// <summary>   拡縮するかのフラグ. </summary>
-    ///
-
-    [SerializeField]
-    bool m_isScaling;
-
-    ///
-    /// <summary>   The scaling speed.  </summary>
-    ///
-
-    [SerializeField]
-    Vector3 m_scalingSpeed;
-
-    ///
-    /// <summary>   初期拡縮率.    </summary>
-    ///
-
-    [SerializeField]
-    Vector3 m_startScale;
-
-    ///
-    /// <summary>   最終拡縮率.  </summary>
-    ///
-
-    [SerializeField]
-    Vector3 m_endScale;
-
-    ///
-    /// <summary>   透過するかのフラグ. </summary>
-    ///
-
-    [SerializeField]
-    bool m_isTransmission;
-
-    ///
-    /// <summary>   透過速度(秒速). </summary>
-    ///
-
-    [SerializeField]
-    float m_transmisssionSpeedPerSecond;
-
-    ///
-    /// <summary>   初期透過率.    </summary>
-    ///
-
-    [SerializeField]
-    float m_startTransmittance;
-
-    ///
-    /// <summary>   最終透過率.  </summary>
-    ///
-
-    [SerializeField]
-    float m_endTransmittance;
-
-    ///
-    /// <summary>   透過するかのフラグ. </summary>
-    ///
-
-    [SerializeField]
-    bool m_isColoring;
-
-    ///
-    /// <summary>   透過速度(秒速). </summary>
-    ///
-    [SerializeField]
-    Color m_changeColoringSpeedPerSecond;
-
-    ///
-    /// <summary>   初期透過率.    </summary>
-    ///
-
-    [SerializeField]
-    float m_startColor;
-
-    ///
-    /// <summary>   最終透過率.  </summary>
-    ///
-
-    float m_endColor;
-
-    
-    ///
     /// <summary>   UI画像.  </summary>
     ///
 
@@ -237,29 +114,17 @@ public class TestStagingUI : MonoBehaviour
     Image m_controlUIImage;
 
     RectTransform m_UICanvas;
-    
-    ///
-    /// <summary>   初期化.    </summary>
-    ///
-    /// <remarks>   Hondy, 2016/10/11.  </remarks>
-    ///
 
+
+    // Use this for initialization
     void Start ()
     {
-//         Vector3 p, s, e;
-//         p = new Vector3(0.5f, 1.5f, 0);
-//         s = new Vector3(0, 2, 0);
-//         e = new Vector3(1.0f, 2, 0);
-//         CheckIfExistPointToRightOfVector(p, s, e
-        if (m_controlUIImage == null)
-        {
-            m_controlUIImage = this.gameObject.GetComponent<Image>();
-        }
-
         if (m_UICanvas == null)
         {
             m_UICanvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
         }
+
+
 
         if (m_controlUIImage)
         {
@@ -277,42 +142,27 @@ public class TestStagingUI : MonoBehaviour
 
     }
 
-    ///
-    /// <summary>   フレームごとの更新処理.    </summary>
-    ///
-    /// <remarks>   Hondy, 2016/10/11.  </remarks>
-    ///
-
-    void Update ()
+    // Update is called once per frame
+    void Update()
     {
+
         Scroll();
-        Scaling();
-        Rotation();
-        Transmission();
-    }
-
-
-    void Reset()
-    {
-
     }
 
     void Scroll()
     {
         /// フラグが立ってたらスクロール処理
-        if (m_isScroll)
+        if (m_isMove)
         {
             if (CheckDoScroollFlag())
             {
                 m_scrollDeltaTime += AkiVACO.XTime.deltaTime;
-                
+
                 m_controlUIImage.rectTransform.position = m_scrollStartPosition + m_scrollDirection * m_scrollSpeed * m_scrollDeltaTime;
-                 
+
             }
         }
     }
-
-
     bool CheckDoScroollFlag()
     {
         bool result = false;
@@ -322,7 +172,7 @@ public class TestStagingUI : MonoBehaviour
                 result = true;
                 break;
             case SCROLL_STOP_FLAG_ENUM.DISTANCE_STOP:
-                if (Vector3.Distance(m_scrollDeltaPosition,m_scrollStartPosition) < m_scrollStopDistance)
+                if (Vector3.Distance(m_scrollDeltaPosition, m_scrollStartPosition) < m_scrollStopDistance)
                 {
                     result = true;
                 }
@@ -368,8 +218,8 @@ public class TestStagingUI : MonoBehaviour
             case SCROLL_STOP_FLAG_ENUM.SCREEEN_OUT_STOP:
                 // 回転した矩形同士で衝突判定
                 if (CheckCollision2DOfRectangles(m_controlUIImage.rectTransform.anchoredPosition, m_controlUIImage.rectTransform.sizeDelta.x, m_controlUIImage.rectTransform.sizeDelta.y,
-                    new Vector3(0, 0, 0), m_UICanvas.rect.width , m_UICanvas.rect.height))
-                { 
+                    new Vector3(0, 0, 0), m_UICanvas.rect.width, m_UICanvas.rect.height))
+                {
                     result = true;
                 }
                 break;
@@ -378,7 +228,7 @@ public class TestStagingUI : MonoBehaviour
                 break;
 
         }
-        
+
         return result;
     }
 
@@ -397,7 +247,7 @@ public class TestStagingUI : MonoBehaviour
     /// <returns>   true if it succeeds, false if it fails. </returns>
     ///
 
-    bool CheckCollision2DOfRectangles(Vector3 centerA,float widthA, float heightA, Vector3 centerB, float widthB, float heightB)
+    bool CheckCollision2DOfRectangles(Vector3 centerA, float widthA, float heightA, Vector3 centerB, float widthB, float heightB)
     {
         // 点と矩形の衝突と線分同士の衝突の複合で判定. 
 
@@ -417,7 +267,7 @@ public class TestStagingUI : MonoBehaviour
 
         pointsA[3].x = centerA.x - widthA * 0.5f;
         pointsA[3].y = centerA.y + heightA * 0.5f;
-        
+
         // pointsB
         pointsB[0].x = centerB.x - widthB * 0.5f;
         pointsB[0].y = centerB.y - heightB * 0.5f;
@@ -430,7 +280,7 @@ public class TestStagingUI : MonoBehaviour
 
         pointsB[3].x = centerB.x - widthB * 0.5f;
         pointsB[3].y = centerB.y + heightB * 0.5f;
-        
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -453,7 +303,7 @@ public class TestStagingUI : MonoBehaviour
                 if (i < 3)
                 {
                     _as = pointsA[i];
-                    _ae = pointsA[i+1];
+                    _ae = pointsA[i + 1];
 
                     _bs = pointsB[i];
                     _be = pointsB[i + 1];
@@ -492,7 +342,7 @@ public class TestStagingUI : MonoBehaviour
     /// <returns>   true if it succeeds, false if it fails. </returns>
     ///
 
-    bool CheckCollision2DOfLines(Vector3 _lineAStart, Vector3 _lineAEnd, Vector3 _lineBStart,Vector3 _lineBEnd)
+    bool CheckCollision2DOfLines(Vector3 _lineAStart, Vector3 _lineAEnd, Vector3 _lineBStart, Vector3 _lineBEnd)
     {
 
         /** @brief	seg1のベクトル量を求める. */
@@ -510,7 +360,7 @@ public class TestStagingUI : MonoBehaviour
         Vector3 _vectorAStartToBStart;
         _vectorAStartToBStart = _lineBStart - _lineAStart;
         Vector3 vecCross;
-        vecCross =  Vector3.Cross( _vectorA, _vectorB);
+        vecCross = Vector3.Cross(_vectorA, _vectorB);
         if (vecCross.z == 0.0f)
         {
             // 平行状態
@@ -524,7 +374,7 @@ public class TestStagingUI : MonoBehaviour
 
         float t1 = _crossB.z / vecCross.z;
         float t2 = _crossA.z / vecCross.z;
-        
+
 
         const float _eps = 0.00001f;
         if (t1 + _eps < 0 || t1 - _eps > 1 || t2 + _eps < 0 || t2 - _eps > 1)
@@ -558,7 +408,7 @@ public class TestStagingUI : MonoBehaviour
                 if (i < _rectanglePoints.Length - 1)
                 {
                     _startPoint = _rectanglePoints[i];
-                    _endPoint = _rectanglePoints[i+1];
+                    _endPoint = _rectanglePoints[i + 1];
                 }
 
                 // 最後の点のときは0番目の点を終点として使う
@@ -624,7 +474,7 @@ public class TestStagingUI : MonoBehaviour
         Vector2 _e;
         _e.x = _rectangleEndPoint.x;
         _e.y = _rectangleEndPoint.y;
-        Vector2 _se,_sp;
+        Vector2 _se, _sp;
         _se = _e - _s;
         _sp = _p - _s;
         // 0未満なら右側
@@ -641,36 +491,5 @@ public class TestStagingUI : MonoBehaviour
 
     }
 
-    void Rotation()
-    {
 
-        if (m_isRotation)
-        {
-            m_controlUIImage.rectTransform.eulerAngles += new Vector3(0, 0, m_rotationSpeed * XTime.deltaTime);
-        }
-    }
-
-    void Scaling()
-    {
-        if (m_isScaling)
-        {
-            m_controlUIImage.rectTransform.localScale += m_scalingSpeed * XTime.deltaTime;
-        }
-    }
-
-    void Transmission()
-    {
-        if (m_isTransmission)
-        {
-            m_controlUIImage.color += new Color(m_controlUIImage.color.r, m_controlUIImage.color.g, m_controlUIImage.color.b, m_transmisssionSpeedPerSecond * XTime.deltaTime);
-        }
-    }
-    void Coloring()
-    {
-        if (m_isColoring)
-        {
-
-            m_controlUIImage.color += (m_changeColoringSpeedPerSecond * XTime.deltaTime);
-        }
-    }
 }
