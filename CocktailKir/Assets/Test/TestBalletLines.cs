@@ -29,13 +29,12 @@ public class TestBalletLines
             float y = halfGravity * Mathf.Pow(t, 2);
             Vector3 vec = vecPower + Vector3.up * y;
             Vector3 nextPos = start + vec;
-            lineRender.Invoke(idx++, nextPos);
 
             Vector3 offset = nextPos - prev;
             RaycastHit[] hitInfo = Physics.RaycastAll(prev, offset, offset.magnitude);
             foreach (RaycastHit hit in hitInfo)
             {
-                if ((hit.collider.tag != "Ballet") && (hit.collider.tag != "FieldWall"))
+                if ((hit.collider.tag != "Ballet") && (hit.collider.tag != "BalletTrigger") && (hit.collider.tag != "FieldWall"))
                 {
                     if (hit.distance < minDistance)
                     {
@@ -46,8 +45,10 @@ public class TestBalletLines
             }
             if (minDistance != float.MaxValue)
             {
+                lineRender.Invoke(idx++, vecNearPos);
                 break;
             }
+            lineRender.Invoke(idx++, nextPos);
             
             prev = nextPos;
         }
