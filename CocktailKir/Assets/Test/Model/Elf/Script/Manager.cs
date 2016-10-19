@@ -27,11 +27,11 @@ public class Manager : MonoBehaviour {
 		}
 		if(left == true)
 		{
-			CameraObj.transform.RotateAround(Vector3.down, Time.deltaTime * 5);
+			CameraObj.transform.Rotate(Vector3.down, Time.deltaTime * 5);
 		}
 		if(right == true)
 		{
-			CameraObj.transform.RotateAround(Vector3.up, Time.deltaTime * 5);	
+			CameraObj.transform.Rotate(Vector3.up, Time.deltaTime * 5);	
 		}
 		if(cameraIn == true)
 		{
