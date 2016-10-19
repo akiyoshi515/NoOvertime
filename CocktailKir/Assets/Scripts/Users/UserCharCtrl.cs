@@ -6,7 +6,7 @@ using UnityEngine;
 public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 {
     private CharAnimateCtrl m_charCtrl = null;
-    private IXVInput m_input = null;
+    private UserData m_userdata = null;
     private Transform m_camera = null;
     private bool m_isJump = false;
     private bool m_isWalk = false;
@@ -15,16 +15,16 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     {
         m_camera = Camera.main.transform;
         m_charCtrl = this.GetComponent<CharAnimateCtrl>();
-        m_input = this.GetComponent<UserData>().input;
+        m_userdata = this.GetComponent<UserData>();
     }
 
     void Update()
     {
         if (!m_isJump)
         {
-            m_isJump = m_input.IsJump();
+            m_isJump = m_userdata.input.IsJump();
         }
-        m_isWalk = m_input.IsWalk();
+        m_isWalk = m_userdata.input.IsWalk();
     }
 
     void FixedUpdate()
@@ -33,7 +33,7 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         Vector3 camForward = Vector3.zero;
 
         // Input
-        Vector2 vec = m_input.Move();
+        Vector2 vec = m_userdata.input.Move();
         
         // MoveCamera
         camForward = Vector3.Scale(m_camera.forward, new Vector3(1, 0, 1)).normalized;
@@ -49,10 +49,22 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         m_isJump = false;
     }
 
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.tag == "Ballet")
+        {
+            TestBalletCtrl ctrl = col.gameObject.GetComponent<TestBalletCtrl>();
+            if (ctrl.userID != m_userdata.userID)
+            {
+                ctrl.SendHit();
+            }
+        }
+    }
+
     public string GetLabelString()
     {
         return "Sts " + (
-            m_input.IsLauncherStance() ? 
+            m_userdata.input.IsLauncherStance() ? 
             ":Ready" : (m_isWalk ? ":Walking" : "None"));
     }
 }
