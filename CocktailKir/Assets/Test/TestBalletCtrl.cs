@@ -16,11 +16,19 @@ public class TestBalletCtrl : MonoBehaviour
     }
 
     [SerializeField]
+    private int m_charm = 1;
+    public int charm
+    {
+        get { return m_charm; }
+    }
+
+    [SerializeField]
     private GameObject m_hitTrigger = null;
 
     [SerializeField]
     private GameObject[] m_onDestroyedObject = null;
 
+    private UserID m_userID = UserID.User1;
     private bool m_isDead = false;
 
     void Start()
@@ -40,6 +48,11 @@ public class TestBalletCtrl : MonoBehaviour
         }
     }
 
+    public void SetUserID(UserID id)
+    {
+        m_userID = id;
+    }
+
     public void SendHit()
     {
         if (m_isDead)
@@ -49,7 +62,8 @@ public class TestBalletCtrl : MonoBehaviour
 
         if (m_hitTrigger != null)
         {
-            GameObject.Instantiate(m_hitTrigger, this.transform.position, Quaternion.identity);
+            GameObject obj = GameObject.Instantiate(m_hitTrigger, this.transform.position, Quaternion.identity) as GameObject;
+            obj.GetComponent<BalletTrigger>().SetParam(m_userID, m_charm);
         }
 
         if (m_onDestroyedObject != null)
