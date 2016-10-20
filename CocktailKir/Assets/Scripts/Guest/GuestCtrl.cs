@@ -11,15 +11,10 @@ public class GuestCtrl : MonoBehaviour
         get { return m_unit; }
     }
 
-    void Awake()
-    {
-        m_unit.Reset();
-    }
-
     // Use this for initialization
     void Start()
     {
- 
+        m_unit.Initialize();
     }
 
     // Update is called once per frame

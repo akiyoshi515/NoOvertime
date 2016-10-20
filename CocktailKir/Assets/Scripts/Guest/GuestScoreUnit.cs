@@ -15,7 +15,7 @@ public class GuestScoreUnit
         get { return m_topUserId; }
     }
 
-    public GuestScoreUnit()
+    public void Initialize()
     {
         Reset();
         GuestScores.AddMax();
