@@ -1,19 +1,24 @@
 ﻿using System;
 using UnityEngine;
 
+using AkiVACO;
+
 [RequireComponent(typeof(UserData))]
 [RequireComponent(typeof(CharAnimateCtrl))]
 public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 {
+    [SerializeField]
+    private Camera m_camera = null;
+
     private CharAnimateCtrl m_charCtrl = null;
     private UserData m_userdata = null;
-    private Transform m_camera = null;
     private bool m_isJump = false;
     private bool m_isWalk = false;
 
     void Start()
     {
-        m_camera = Camera.main.transform;
+        XLogger.LogValidObject(m_camera == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Camera"), gameObject);
+
         m_charCtrl = this.GetComponent<CharAnimateCtrl>();
         m_userdata = this.GetComponent<UserData>();
     }
@@ -36,8 +41,8 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         Vector2 vec = m_userdata.input.Move();
         
         // MoveCamera
-        camForward = Vector3.Scale(m_camera.forward, new Vector3(1, 0, 1)).normalized;
-        move = vec.y * camForward + vec.x * m_camera.right;
+        camForward = Vector3.Scale(m_camera.transform.forward, new Vector3(1, 0, 1)).normalized;
+        move = vec.y * camForward + vec.x * m_camera.transform.right;
         
         // Walk
         if (m_isWalk) 
