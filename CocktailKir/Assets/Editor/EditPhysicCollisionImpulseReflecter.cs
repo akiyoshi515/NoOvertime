@@ -30,7 +30,6 @@ public class EditPhysicCollisionImpulseReflecter : Editor
             if (gen.m_targetTag.Length != size)
             {
                 string[] tags = new string[size];
-                Color[] meshColor = new Color[size];
 
                 int index = Mathf.Min(gen.m_targetTag.Length, size);
                 int idx;
