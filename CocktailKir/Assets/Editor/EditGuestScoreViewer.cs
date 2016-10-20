@@ -12,8 +12,6 @@ public class EditGuestScoreViewer : Editor
 {
     public override void OnInspectorGUI()
     {
-        GuestScoreViewer viewer = target as GuestScoreViewer;
-
         EditorGUILayout.IntField("最大人数", GuestScores.maxScore);
 
         EditorGUILayout.LabelField("魅了パラメータ");
