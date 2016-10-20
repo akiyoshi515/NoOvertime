@@ -22,6 +22,7 @@ public class XCollisionViewer : MonoBehaviour
 {
     public GameObject m_viewUnitSphere = null;
     public GameObject m_viewUnitBox = null;
+    public GameObject m_viewUnitCapsule = null;
 
     public float m_meshAlpha = 0.50f;
 
@@ -81,6 +82,13 @@ public class XCollisionViewer : MonoBehaviour
                         {
                             GameObject unit = XFunctions.InstanceChild(m_viewUnitBox, Vector3.zero, Quaternion.identity, obj);
                             unit.GetComponent<XCollisionViewUnitBox>().Initialize(this, m_meshColor[i]);
+                        });
+
+                    TouchView<CapsuleCollider>(obj,
+                        (sc) =>
+                        {
+                            GameObject unit = XFunctions.InstanceChild(m_viewUnitCapsule, Vector3.zero, Quaternion.identity, obj);
+                            unit.GetComponent<XCollisionViewUnitCapsule>().Initialize(this, m_meshColor[i]);
                         });
 
                     obj.AddComponent<XCollisionViewFlagment>();
