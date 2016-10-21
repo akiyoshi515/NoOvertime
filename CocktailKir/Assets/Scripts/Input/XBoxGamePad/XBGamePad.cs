@@ -94,12 +94,16 @@ namespace XBoxInput
             switch (axis)
             {
                 case XBKeyCode.Trigger.LeftTrigger:
-                    return GetTriggerInternal(
+                    float fl = GetTriggerInternal(
                         XVInputConstants.LTrigger + val);
+                    fl = (fl > 0.0f ? fl : 0.0f);
+                    return fl;
 
                 case XBKeyCode.Trigger.RightTrigger:
-                    return GetTriggerInternal(
+                    float fr = GetTriggerInternal(
                         XVInputConstants.RTrigger + val);
+                    fr = (fr < 0.0f ? -fr : 0.0f);
+                    return fr;
             }
 
             return 0.0f;
@@ -114,12 +118,16 @@ namespace XBoxInput
             switch (axis)
             {
                 case XBKeyCode.Trigger.LeftTrigger:
-                    return GetTriggerRawInternal(
+                    float fl = GetTriggerRawInternal(
                         XVInputConstants.LTrigger + val);
+                    fl = (fl > 0.0f ? fl : 0.0f);
+                    return fl;
 
                 case XBKeyCode.Trigger.RightTrigger:
-                    return GetTriggerRawInternal(
+                    float fr = GetTriggerRawInternal(
                         XVInputConstants.RTrigger + val);
+                    fr = (fr < 0.0f ? -fr : 0.0f);
+                    return fr;
             }
 
             return 0.0f;

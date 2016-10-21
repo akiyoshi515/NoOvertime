@@ -102,9 +102,9 @@ namespace NotargsInputManagerUtil
             // トリガー
             {
                 inputManagerGenerator.AddAxis(
-                    InputAxis.CreatePadAxis(XVInputConstants.LTrigger + strIndex, joystickNum, 9));
+                    InputAxis.CreatePadAxis(XVInputConstants.LTrigger + strIndex, joystickNum, 3));
                 inputManagerGenerator.AddAxis(
-                    InputAxis.CreatePadAxis(XVInputConstants.RTrigger + strIndex, joystickNum, 10));
+                    InputAxis.CreatePadAxis(XVInputConstants.RTrigger + strIndex, joystickNum, 3));
             }
 
         }
