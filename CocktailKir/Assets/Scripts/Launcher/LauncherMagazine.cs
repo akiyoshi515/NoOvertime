@@ -2,6 +2,7 @@
 using System.Collections;
 
 using AkiVACO;
+using UnityEngine.Events;
 
 public class LauncherMagazine : MonoBehaviour
 {
@@ -36,12 +37,10 @@ public class LauncherMagazine : MonoBehaviour
     /// <summary>
     /// リロード中か？
     /// </summary>
-    [SerializeField]
-    private bool m_isReloading = false;
     public bool isReloading
     {
-        get { return m_isReloading; }
-        protected set { m_isReloading = value; }
+        get;
+        protected set;
     }
 
     /// <summary>
@@ -69,6 +68,7 @@ public class LauncherMagazine : MonoBehaviour
         protected set;
     }
 
+    private XUnityEvent m_callbackReloaded = new XUnityEvent();
     private float m_reloadRemainTime = 0.0f;
     private float m_unlimitedBalletRemainTime = 0.0f;
 
@@ -98,9 +98,11 @@ public class LauncherMagazine : MonoBehaviour
         m_reloadRemainTime -= Time.deltaTime;
         if (m_reloadRemainTime <= 0.0f)
         {
+            XLogger.Log("Magazine Finish Reload");
             m_reloadRemainTime = 0.0f;
             m_balletNum = m_capacity;
-            m_isReloading = false;
+            isReloading = false;
+            m_callbackReloaded.Invoke();
         }
     }
 
@@ -117,6 +119,7 @@ public class LauncherMagazine : MonoBehaviour
         m_unlimitedBalletRemainTime -= Time.deltaTime;
         if (m_unlimitedBalletRemainTime <= 0.0f)
         {
+            XLogger.Log("Magazine Finish UnlimitedBallet");
             m_unlimitedBalletRemainTime = 0.0f;
             isUnlimitedBallet = false;
         }
@@ -134,7 +137,6 @@ public class LauncherMagazine : MonoBehaviour
         {
             balletNum = capacity;
         }
-        XLogger.Log("Magazine AddBallet: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
     }
 
     /// <summary>
@@ -168,28 +170,35 @@ public class LauncherMagazine : MonoBehaviour
         XLogger.Log("Magazine AddCapacity: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
     }
 
-    public void StartReload()
+    public void StartReload(UnityAction callback)
     {
+        m_callbackReloaded.RemoveAllListeners();
         isReloading = true;
         m_reloadRemainTime = m_reloadTime;
+        m_callbackReloaded.AddListener(callback);
+        XLogger.Log("Magazine Reload");
     }
 
     public void ForceStopReload()
     {
         isReloading = false;
         m_reloadRemainTime = 0.0f;
+        m_callbackReloaded.Invoke();
+        XLogger.Log("Magazine ForceStop Reload");
     }
 
     public void StartUnlimitedBallet(float time)
     {
         m_unlimitedBalletRemainTime = time;
         isUnlimitedBallet = true;
+        XLogger.Log("Magazine Start UnlimitedBallet");
     }
 
     public void StopUnlimitedBallet()
     {
         m_unlimitedBalletRemainTime = 0.0f;
         isUnlimitedBallet = false;
+        XLogger.Log("Magazine Stop UnlimitedBallet");
     }
 
 }

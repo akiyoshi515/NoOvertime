@@ -7,6 +7,7 @@
 #endif
 
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 using AkiVACO;
@@ -39,14 +40,12 @@ public class UserEntrySceneCtrl : MonoBehaviour
     private State m_sts = State.StartWait;
     private float m_time = 0.0f;
     private int m_nextUserId = 0;
-    private bool m_isSubmitedUser1 = false;
-    private bool m_isSubmitedUser2 = false;
-    private bool m_isSubmitedUser3 = false;
-    private bool m_isSubmitedUser4 = false;
+    private bool[] m_isSubmitedUser = new bool[4] { false, false, false, false };
 
     // Use this for initialization
     void Start()
     {
+        XVInput.ClearInterface();
         m_nextUserId = 0;
         m_time = m_startWaitTime;
         EnableMeshAnimation(0, false);
@@ -83,9 +82,11 @@ public class UserEntrySceneCtrl : MonoBehaviour
                 if (m_time <= 0.0f)
                 {
                     m_time = 0.0f;
-                    if (XBGamePad.IsTriggered(XBKeyCode.Button.Start, XBKeyCode.UserCode.Any))
+                    if (XBGamePad.IsTriggered(XBKeyCode.Button.Start, XBKeyCode.UserCode.Any)
+                        || Input.GetKeyDown(KeyCode.Return))
                     {
                         XLogger.Log("GoTo NextScene");
+                        UnityEngine.SceneManagement.SceneManager.LoadScene("TestGameMain"); // HACK
                     }
                 }
                 break;
@@ -94,62 +95,51 @@ public class UserEntrySceneCtrl : MonoBehaviour
 
     private void InitializeAssignController()
     {
-        m_isSubmitedUser1 = false;
-        m_isSubmitedUser2 = false;
-        m_isSubmitedUser3 = false;
-        m_isSubmitedUser4 = false;
+        m_isSubmitedUser[0] = false;
+        m_isSubmitedUser[1] = false;
+        m_isSubmitedUser[2] = false;
+        m_isSubmitedUser[3] = false;
         m_nextUserId = 0;
     }
 
+    /// <summary>
+    /// コントローラのAssign
+    /// </summary>
     private void AssignController()
     {
-        if (IsInputEvent(XBKeyCode.UserCode.User1))
+        UnityAction<XBKeyCode.UserCode, UserID> act = (code, id) =>
         {
-            if (!m_isSubmitedUser1)
+            if (IsInputEvent(code))
             {
-                m_isSubmitedUser1 = true;
-                XVInput.CreateXBoxInterface((UserID)m_nextUserId, XBKeyCode.UserCode.User1);
-                EnableUser(m_nextUserId);
-                ++m_nextUserId;
+                int idx = (int)id;
+                if (!(m_isSubmitedUser[idx]))
+                {
+                    m_isSubmitedUser[idx] = true;
+                    XVInput.CreateXBoxInterface((UserID)m_nextUserId, code);
+                    EnableUser(m_nextUserId);
+                    ++m_nextUserId;
+                }
             }
-        }
-        if (IsInputEvent(XBKeyCode.UserCode.User2))
-        {
-            if (!m_isSubmitedUser2)
-            {
-                m_isSubmitedUser2 = true;
-                XVInput.CreateXBoxInterface((UserID)m_nextUserId, XBKeyCode.UserCode.User2);
-                EnableUser(m_nextUserId);
-                ++m_nextUserId;
-            }
-        }
-        if (IsInputEvent(XBKeyCode.UserCode.User3))
-        {
-            if (!m_isSubmitedUser3)
-            {
-                m_isSubmitedUser3 = true;
-                XVInput.CreateXBoxInterface((UserID)m_nextUserId, XBKeyCode.UserCode.User3);
-                EnableUser(m_nextUserId);
-                ++m_nextUserId;
-            }
-        }
-        if (IsInputEvent(XBKeyCode.UserCode.User4))
-        {
-            if (!m_isSubmitedUser4)
-            {
-                m_isSubmitedUser4 = true;
-                XVInput.CreateXBoxInterface((UserID)m_nextUserId, XBKeyCode.UserCode.User4);
-                EnableUser(m_nextUserId);
-                ++m_nextUserId;
-            }
-        }
+        };
+
+        act.Invoke(XBKeyCode.UserCode.User1, UserID.User1);
+        act.Invoke(XBKeyCode.UserCode.User2, UserID.User2);
+        act.Invoke(XBKeyCode.UserCode.User3, UserID.User3);
+        act.Invoke(XBKeyCode.UserCode.User4, UserID.User4);
     }
 
+    /// <summary>
+    /// 全てのコントローラがassignされたか？
+    /// </summary>
     private bool IsAllAssignController()
     {
         return (m_nextUserId > 3);
     }
 
+    /// <summary>
+    /// ユーザーの表示
+    /// </summary>
+    /// <param name="userId">ユーザーID</param>
     private void EnableUser(int userId)
     {
         m_bkScreenCtrl[userId].Open();
@@ -168,6 +158,9 @@ public class UserEntrySceneCtrl : MonoBehaviour
         m_mesh[userId].transform.parent.GetComponent<UserCharMenuCtrl>().enabled = bl;
     }
 
+    /// <summary>
+    /// Inputのラッパー
+    /// </summary>
     private bool IsInputEvent(XBKeyCode.UserCode code)
     {
 #if ENABLE_DEBUG_INPUT
