@@ -27,7 +27,7 @@ public class GuestCtrl : MonoBehaviour
     {
         if (col.tag == "Ballet")
         {
-            TestBalletCtrl ctrl = col.gameObject.GetComponent<TestBalletCtrl>();
+            BalletCtrl ctrl = col.gameObject.GetComponent<BalletCtrl>();
             ctrl.SendHit();
         }
         else if (col.tag == "BalletTrigger")

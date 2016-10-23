@@ -220,7 +220,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         GameObject obj = XFunctions.Instance(m_ballet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-        obj.GetComponent<TestBalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        obj.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
 
         m_magazine.SubBallet(m_costBallet);
 
@@ -235,7 +235,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         GameObject obj = XFunctions.Instance(m_balletBouquet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-        obj.GetComponent<TestBalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        obj.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
 
         m_magazine.SubBallet(m_costChargeBallet);
 
