@@ -7,7 +7,7 @@ public class UserNameUI : MonoBehaviour {
     /// <summary>   Userの名前.   </summary>
     ///
 
-    [SerializeField]
+    [SerializeField, Header("Userの名前")]
     string m_name;
     public string Name
     {
@@ -25,7 +25,7 @@ public class UserNameUI : MonoBehaviour {
     ///
     /// <summary>   ユーザーごとの色.   </summary>
     ///
-    [SerializeField]
+    [SerializeField, Header("表示色")]
     Color m_userColor;
     public UnityEngine.Color UserColor
     {
@@ -44,17 +44,17 @@ public class UserNameUI : MonoBehaviour {
     /// <summary>   回転の指標にするカメラ.  </summary>
     ///
 
-    [SerializeField]
-    Camera targetCamera;
+    [SerializeField, Header("回転の指標にするカメラ")]
+    Camera m_targetCamera;
     public UnityEngine.Camera TargetCamera
     {
         get
         {
-            return targetCamera;
+            return m_targetCamera;
         }
         set
         {
-            targetCamera = value;
+            m_targetCamera = value;
         }
     }
 
@@ -76,7 +76,7 @@ public class UserNameUI : MonoBehaviour {
     void Update()
     {
         // カメラに合わせて回転
-        transform.LookAt(transform.position - targetCamera.transform.rotation * Vector3.back, targetCamera.transform.rotation * Vector3.up);
+        transform.LookAt(transform.position - m_targetCamera.transform.rotation * Vector3.back, m_targetCamera.transform.rotation * Vector3.up);
 
     }
 

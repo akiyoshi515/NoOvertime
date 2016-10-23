@@ -7,7 +7,7 @@ public class MgazineUI : MonoBehaviour {
     ///
     /// <summary>   残り弾数.   </summary>
     ///
-    [SerializeField]
+    [SerializeField,Header("残り弾数")]
     uint m_numberOfBullet;
 
     ///
@@ -33,7 +33,7 @@ public class MgazineUI : MonoBehaviour {
     /// <summary>   最大弾数.   </summary>
     ///
 
-    [SerializeField]
+    [SerializeField,Header("最大弾数")]
     uint m_maximumNumberOfBullet = 6;
 
     ///
@@ -56,25 +56,44 @@ public class MgazineUI : MonoBehaviour {
     }
 
     ///
-    /// <summary>   ゲージとして使う画像.  </summary>
+    /// <summary>   ゲージとして使うメッシュレンダラー.  </summary>
     ///
-
-    [SerializeField]
-    Image m_uiImage;
+    
+    MeshRenderer m_meshRenderer;
 
     ///
     /// <summary>   シェーダー入ってるマテリアル. </summary>
     ///
 
-    Material m_imageMaterial;
+    Material m_material;
+
+
+    ///
+    /// <summary>   回転の指標にするカメラ.  </summary>
+    ///
+
+    [SerializeField, Header("回転指標にするカメラ")]
+    Camera m_targetCamera;
+    public UnityEngine.Camera TargetCamera
+    {
+        get
+        {
+            return m_targetCamera;
+        }
+        set
+        {
+            m_targetCamera = value;
+        }
+    }
+
     // Use this for initialization
     void Start ()
     {
-        if (m_uiImage == null)
+        if (m_meshRenderer == null)
         {
-            m_uiImage = gameObject.GetComponent<Image>();
+            m_meshRenderer = gameObject.GetComponent<MeshRenderer>();
         }
-        m_imageMaterial = m_uiImage.material;
+        m_material = m_meshRenderer.material;
         float maskvaule = (float)((float)NumberOfBullet / (float)m_maximumNumberOfBullet);
         // maskのテクスチャミスってると若干残る場合があるからマイナスにする
         if (maskvaule <= 0)
@@ -82,18 +101,16 @@ public class MgazineUI : MonoBehaviour {
             maskvaule = -0.01f;
         }
 #if DEBUG
-        if (m_imageMaterial.shader.name == "Custom/GaugeSpriteShader")
+        if (m_material.shader.name == "Custom/GaugeSpriteShader")
 #endif
         {
             AkiVACO.XLogger.LogWarning("shader間違ってるよ");
-            m_imageMaterial.SetFloat("_Mask", maskvaule);
+            m_material.SetFloat("_Mask", maskvaule);
         }
-
-
     }
-	
-	// Update is called once per frame
-	void Update ()
+    
+    // Update is called once per frame
+    void Update ()
     {
         float maskvaule = (float)((float)NumberOfBullet / (float)m_maximumNumberOfBullet);
         // maskのテクスチャミスってると若干残る場合があるからマイナスにする
@@ -101,7 +118,8 @@ public class MgazineUI : MonoBehaviour {
         {
             maskvaule = -0.01f;
         }
-        m_imageMaterial.SetFloat("_Mask", maskvaule);
+        m_material.SetFloat("_Mask", maskvaule);
+        transform.LookAt(transform.position - m_targetCamera.transform.rotation * Vector3.back, m_targetCamera.transform.rotation * Vector3.up);
     }
 
 
