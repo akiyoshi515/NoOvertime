@@ -36,8 +36,9 @@ public class TestBalletCtrl : MonoBehaviour
 
     private bool m_isDead = false;
 
-    void Start()
+    void Awake()
     {
+        XLogger.LogError("Illegal Awake! TestCS", gameObject);
     }
 
     void OnCollisionEnter(Collision col)
