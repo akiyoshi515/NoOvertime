@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AkiVACO;
+using AkiVACO.XValue;
 
 [RequireComponent(typeof(LineRenderer))]
 public class TestLauncherCtrl : MonoBehaviour {
@@ -15,7 +16,13 @@ public class TestLauncherCtrl : MonoBehaviour {
 
     [SerializeField]
     private float m_pitchSpeed = 30.0f;
-    
+
+    [SerializeField]
+    private float m_minPitchAngle = 0.0f;
+
+    [SerializeField]
+    private float m_maxPitchAngle = 60.0f;
+
     [SerializeField]
     private float m_yawSpeed = 30.0f;
 
@@ -63,6 +70,7 @@ public class TestLauncherCtrl : MonoBehaviour {
     private IEffect m_csEfMaxCharge = null;
     private IEffect m_csEfReload = null;
 
+    private float m_pitchAngle = 0.0f;
     private float m_knockback = 0.0f;
     private float m_chargeTime = 0.0f;
 
@@ -98,6 +106,9 @@ public class TestLauncherCtrl : MonoBehaviour {
         m_costBallet = this.m_ballet.GetComponent<TestBalletCtrl>().cost;
         m_costChargeBallet = this.m_balletBouquet.GetComponent<TestBalletCtrl>().cost;
 
+        m_pitchAngle = m_minPitchAngle;
+        this.transform.Rotate(Vector3.right, m_pitchAngle, Space.Self);
+
         m_input = m_parent.GetComponent<UserData>().input;
     }
 	
@@ -126,8 +137,9 @@ public class TestLauncherCtrl : MonoBehaviour {
         UpdateShotBallet(m_input.IsShot());
 
         Vector2 vec = m_input.RotateLauncher();
+        m_pitchAngle = (m_pitchAngle - vec.y * m_pitchSpeed * Time.deltaTime).MaxLimited(m_maxPitchAngle).MinLimited(m_minPitchAngle);
+        this.transform.localRotation = Quaternion.AngleAxis(-m_pitchAngle, Vector3.right);
 
-        this.transform.Rotate(Vector3.right, -vec.y * m_pitchSpeed * Time.deltaTime, Space.Self);
         m_parent.Rotate(Vector3.up, vec.x * m_yawSpeed * Time.deltaTime, Space.World);
     }
 
