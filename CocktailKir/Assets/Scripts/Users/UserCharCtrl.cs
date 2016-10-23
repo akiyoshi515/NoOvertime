@@ -58,7 +58,7 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     {
         if (col.tag == "Ballet")
         {
-            TestBalletCtrl ctrl = col.gameObject.GetComponent<TestBalletCtrl>();
+            BalletCtrl ctrl = col.gameObject.GetComponent<BalletCtrl>();
             if (ctrl.userID != m_userdata.userID)
             {
                 ctrl.SendHit();
