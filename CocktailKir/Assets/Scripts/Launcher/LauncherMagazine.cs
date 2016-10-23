@@ -57,33 +57,68 @@ public class LauncherMagazine : MonoBehaviour
     /// </summary>
     public bool isEnabledShot
     {
-        get { return (balletNum > 0) && (!isReloading); }
+        get { return ((balletNum > 0) && (!isReloading)) || (isUnlimitedBallet); }
     }
 
-    private float m_time = 0.0f;
+    /// <summary>
+    /// 弾数無制限か？
+    /// </summary>
+    public bool isUnlimitedBallet
+    {
+        get;
+        protected set;
+    }
+
+    private float m_reloadRemainTime = 0.0f;
+    private float m_unlimitedBalletRemainTime = 0.0f;
 
     void Start()
     {
         m_balletNum = m_capacity;
-        m_time = 0.0f;
+        m_reloadRemainTime = 0.0f;
+        m_unlimitedBalletRemainTime = 0.0f;
+    }
+
+    void Update()
+    {
+        UpdateReload();
+        UpdateUnlimitedBallet();
     }
 
     /// <summary>
     /// リロード（更新関数）
     /// </summary>
-    void Update()
+    private void UpdateReload()
     {
         if (!isReloading)
         {
             return;
         }
 
-        m_time -= Time.deltaTime;
-        if (m_time <= 0.0f)
+        m_reloadRemainTime -= Time.deltaTime;
+        if (m_reloadRemainTime <= 0.0f)
         {
-            m_time = 0.0f;
+            m_reloadRemainTime = 0.0f;
             m_balletNum = m_capacity;
             m_isReloading = false;
+        }
+    }
+
+    /// <summary>
+    /// 弾数無制限（更新関数）
+    /// </summary>
+    private void UpdateUnlimitedBallet()
+    {
+        if (!isUnlimitedBallet)
+        {
+            return;
+        }
+
+        m_unlimitedBalletRemainTime -= Time.deltaTime;
+        if (m_unlimitedBalletRemainTime <= 0.0f)
+        {
+            m_unlimitedBalletRemainTime = 0.0f;
+            isUnlimitedBallet = false;
         }
     }
 
@@ -109,7 +144,11 @@ public class LauncherMagazine : MonoBehaviour
     public void SubBallet(int val)
     {
         XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit SubBallet: " + val.ToString());
-        balletNum -= val;
+        if (!isUnlimitedBallet)
+        {
+            balletNum -= val;
+        }
+
         if (balletNum < 0)
         {
             balletNum = 0;
@@ -132,13 +171,25 @@ public class LauncherMagazine : MonoBehaviour
     public void StartReload()
     {
         isReloading = true;
-        m_time = m_reloadTime;
+        m_reloadRemainTime = m_reloadTime;
     }
 
     public void ForceStopReload()
     {
         isReloading = false;
-        m_time = 0.0f;
+        m_reloadRemainTime = 0.0f;
+    }
+
+    public void StartUnlimitedBallet(float time)
+    {
+        m_unlimitedBalletRemainTime = time;
+        isUnlimitedBallet = true;
+    }
+
+    public void StopUnlimitedBallet()
+    {
+        m_unlimitedBalletRemainTime = 0.0f;
+        isUnlimitedBallet = false;
     }
 
 }

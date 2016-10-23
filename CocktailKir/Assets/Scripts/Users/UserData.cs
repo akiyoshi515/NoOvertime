@@ -1,5 +1,5 @@
 ﻿
-//#define ENABLE_DEBUG_INPUTCTRL
+#define ENABLE_DEBUG_INPUTCTRL
 
 #if DEBUG
 #else
@@ -37,9 +37,12 @@ public class UserData : MonoBehaviour
     void Awake()
     {
 #if ENABLE_DEBUG_INPUTCTRL
-        if (!(XVInput.CreateInterface(userID, inputType)))
+        if (XVInput.GetInterface(m_userID) == null)
         {
-            XLogger.LogError("Create XVInputInterface " + userID.ToString() + " : " + inputType.ToString());
+            if (!(XVInput.CreateInterface(userID, inputType)))
+            {
+                XLogger.LogError("Debug Create XVInputInterface " + userID.ToString() + " : " + inputType.ToString());
+            }
         }
 #endif
     }

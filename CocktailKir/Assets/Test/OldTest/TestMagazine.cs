@@ -5,6 +5,9 @@ using AkiVACO;
 
 public class TestMagazine : MonoBehaviour
 {
+    /// <summary>
+    /// リロード時間
+    /// </summary>
     [SerializeField]
     private float m_reloadTime = 1.0f;
 
