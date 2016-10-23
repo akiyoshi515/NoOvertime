@@ -36,15 +36,6 @@ public class BalletCtrl : MonoBehaviour
 
     private bool m_isDead = false;
 
-    void Start()
-    {
-        if (m_hitTrigger != null)
-        {
-            SphereCollider col = m_hitTrigger.GetComponent<SphereCollider>();
-            col.radius = m_hitRadius;
-        }
-    }
-
     void OnCollisionEnter(Collision col)
     {
         if (col.collider.tag != "Ballet")
@@ -68,7 +59,7 @@ public class BalletCtrl : MonoBehaviour
         if (m_hitTrigger != null)
         {
             GameObject obj = GameObject.Instantiate(m_hitTrigger, this.transform.position, Quaternion.identity) as GameObject;
-            obj.GetComponent<BalletTrigger>().SetParam(userID, m_charm);
+            obj.GetComponent<BalletTrigger>().SetParam(userID, m_charm, m_hitRadius);
         }
 
         if (m_onDestroyedObject != null)

@@ -62,6 +62,11 @@ public class TestMagazine : MonoBehaviour
 
     private float m_time = 0.0f;
 
+    void Awake()
+    {
+        XLogger.LogError("Illegal Awake! TestCS", gameObject);
+    }
+
     void Start()
     {
         m_balletNum = m_capacity;

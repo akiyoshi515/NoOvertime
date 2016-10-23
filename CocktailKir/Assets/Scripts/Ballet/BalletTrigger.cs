@@ -27,9 +27,12 @@ public class BalletTrigger : MonoBehaviour
         m_flag = true;
     }
 
-    public void SetParam(UserID id, int charm)
+    public void SetParam(UserID id, int charm, float hitRadius)
     {
         m_userID = id;
         m_charm = charm;
+
+        SphereCollider col = this.GetComponent<SphereCollider>();
+        col.radius = hitRadius;
     }
 }
