@@ -5,12 +5,11 @@ using AkiVACO;
 
 public class UserCameraAutoCtrl : MonoBehaviour
 {
-
     [SerializeField]
     private Transform m_pivot = null;
 
     [SerializeField]
-    private Transform m_target = null;
+    private Transform m_targetUser = null;
 
     [SerializeField]
     private float m_rotateSpeed = 10.0f;
@@ -18,23 +17,46 @@ public class UserCameraAutoCtrl : MonoBehaviour
     [SerializeField]
     private float m_pivotLerpTime = 0.50f;
 
+    private IXVInput m_input = null;
+    private bool m_prevLauncherStance = false;
+
     void Awake()
     {
         XLogger.LogValidObject(m_pivot == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Pivot"), gameObject);
-        XLogger.LogValidObject(m_target == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Target"), gameObject);
-
+        XLogger.LogValidObject(m_targetUser == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Target"), gameObject);
     }
 
     void Start()
     {
         UserCameraPivotSetupper setupper = m_pivot.GetComponent<UserCameraPivotSetupper>();
         setupper.SetLerpTime(m_pivotLerpTime);
+
+        m_input = m_targetUser.GetComponent<UserData>().input;
+    }
+
+    void Update()
+    {
+        bool bl = m_input.IsLauncherStance();
+        if (m_prevLauncherStance ^ bl)
+        {
+            if (bl)
+            {
+                // Start
+                m_pivot.GetComponent<UserCameraPivotSetupper>().SetShotPivot();
+            }
+            else
+            {
+                // Stop
+                m_pivot.GetComponent<UserCameraPivotSetupper>().SetStdPivot();
+            }
+            m_prevLauncherStance = bl;
+        }
     }
 
     void LateUpdate()
     {
-        m_pivot.rotation = Quaternion.Slerp(m_pivot.rotation, m_target.rotation, m_rotateSpeed * Time.deltaTime);
-        m_pivot.position = m_target.position;
+        m_pivot.rotation = Quaternion.Slerp(m_pivot.rotation, m_targetUser.rotation, m_rotateSpeed * Time.deltaTime);
+        m_pivot.position = m_targetUser.position;
     }
 
 }

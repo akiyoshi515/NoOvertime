@@ -442,10 +442,10 @@ public class XLogger{
     {
     }
 
-    private static void PushDump(object tag, object msg)
+    public static void PushDump(object tag, object msg)
     {}
 
-    private static void PushDump(object tag, object msg, UnityEngine.Object obj)
+    public static void PushDump(object tag, object msg, UnityEngine.Object obj)
     {}
 }
 

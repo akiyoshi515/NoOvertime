@@ -45,6 +45,22 @@ public static class XVInput
         return true;
     }
 
+    /// <summary>
+    /// XBoxInputのインターフェースを作成
+    /// </summary>
+    /// <param name="id">ユーザーID</param>
+    /// <param name="type">XBoxInputのUserID</param>
+    /// <returns>作成成功か？</returns>
+    public static bool CreateXBoxInterface(UserID id, XBoxInput.XBKeyCode.UserCode user)
+    {
+        int i = (int)id;
+
+        XLogger.Log("Create interface= XVInputController: id= " + i.ToString());
+        m_input[i] = new XVInputController(user);
+
+        return true;
+    }
+
     public static string[] GetConnectedNames()
     {
         return Input.GetJoystickNames();

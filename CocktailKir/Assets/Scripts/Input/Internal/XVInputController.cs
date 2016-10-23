@@ -33,6 +33,11 @@ namespace XVInputInternal
             }
         }
 
+        public XVInputController(XBKeyCode.UserCode id)
+        {
+            m_userCode = id;
+        }
+
         public XVInputController()
         {
             AkiVACO.XLogger.LogWarning("Create XBox Controller: UserCode = Any");
@@ -89,7 +94,7 @@ namespace XVInputInternal
 
         public bool IsWalk()
         {
-            return (XBGamePad.GetTriggerRaw(XBKeyCode.Trigger.LeftTrigger, m_userCode) > 0.0f);
+            return XBGamePad.IsPressed(XBKeyCode.Button.LeftShoulder, m_userCode);
         }
 
         public bool IsLauncherStance()

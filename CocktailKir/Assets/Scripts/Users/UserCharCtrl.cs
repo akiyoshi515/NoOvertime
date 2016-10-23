@@ -1,27 +1,35 @@
 ﻿using System;
 using UnityEngine;
 
+using AkiVACO;
+
+[RequireComponent(typeof(UserData))]
 [RequireComponent(typeof(CharAnimateCtrl))]
 public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 {
+    [SerializeField]
+    private Camera m_camera = null;
+
     private CharAnimateCtrl m_charCtrl = null;
-    private Transform m_camera = null;
+    private UserData m_userdata = null;
     private bool m_isJump = false;
     private bool m_isWalk = false;
 
     void Start()
     {
-        m_camera = Camera.main.transform;
+        XLogger.LogValidObject(m_camera == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Camera"), gameObject);
+
         m_charCtrl = this.GetComponent<CharAnimateCtrl>();
+        m_userdata = this.GetComponent<UserData>();
     }
 
     void Update()
     {
         if (!m_isJump)
         {
-            m_isJump = XVInput.GetInterface(UserID.User1).IsJump();
+            m_isJump = m_userdata.input.IsJump();
         }
-        m_isWalk = XVInput.GetInterface(UserID.User1).IsWalk();
+        m_isWalk = m_userdata.input.IsWalk();
     }
 
     void FixedUpdate()
@@ -30,11 +38,11 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         Vector3 camForward = Vector3.zero;
 
         // Input
-        Vector2 vec = XVInput.GetInterface(UserID.User1).Move();
+        Vector2 vec = m_userdata.input.Move();
         
         // MoveCamera
-        camForward = Vector3.Scale(m_camera.forward, new Vector3(1, 0, 1)).normalized;
-        move = vec.y * camForward + vec.x * m_camera.right;
+        camForward = Vector3.Scale(m_camera.transform.forward, new Vector3(1, 0, 1)).normalized;
+        move = vec.y * camForward + vec.x * m_camera.transform.right;
         
         // Walk
         if (m_isWalk) 
@@ -46,10 +54,22 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         m_isJump = false;
     }
 
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.tag == "Ballet")
+        {
+            TestBalletCtrl ctrl = col.gameObject.GetComponent<TestBalletCtrl>();
+            if (ctrl.userID != m_userdata.userID)
+            {
+                ctrl.SendHit();
+            }
+        }
+    }
+
     public string GetLabelString()
     {
         return "Sts " + (
-            XVInput.GetInterface(UserID.User1).IsLauncherStance() ? 
+            m_userdata.input.IsLauncherStance() ? 
             ":Ready" : (m_isWalk ? ":Walking" : "None"));
     }
 }

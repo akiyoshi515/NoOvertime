@@ -18,7 +18,6 @@ public class UserCameraPivotSetupper : MonoBehaviour
     private float m_lerpRate = 1.0f;
     private float m_time = 0.0f;
     private float m_rate = 0.0f;    // 1.0f or -1.0f or 0.0f
-    private bool m_prevLauncherStance = false;
 
     void Start()
     {
@@ -26,26 +25,6 @@ public class UserCameraPivotSetupper : MonoBehaviour
         m_camera.localPosition = m_stdPivot.position;
         m_camera.localRotation = m_stdPivot.rotation;
         m_rate = 0.0f;
-    }
-
-    void Update()
-    {
-        IXVInput input = XVInput.GetInterface(UserID.User1);
-        bool bl = input.IsLauncherStance();
-        if (m_prevLauncherStance ^ bl)
-        {
-            if (bl)
-            {
-                // Start
-                m_rate = 1.0f;
-            }
-            else
-            {
-                // Stop
-                m_rate = -1.0f;
-            }
-            m_prevLauncherStance = bl;
-        }
     }
 
     void LateUpdate()

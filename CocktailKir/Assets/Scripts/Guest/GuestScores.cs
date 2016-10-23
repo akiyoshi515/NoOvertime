@@ -5,6 +5,11 @@ using System.Collections.Generic;
 public class GuestScores 
 {
     private static int[] m_scoreTable = new int[4]{0, 0, 0, 0};
+    public static int[] scoreTable
+    {
+        get { return m_scoreTable; }
+    }
+
     private static int m_maxScore = 0;
     public static int maxScore
     {

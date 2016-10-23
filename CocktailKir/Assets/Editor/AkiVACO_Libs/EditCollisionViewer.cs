@@ -1,6 +1,8 @@
 ﻿
 // Author     : Atuki Yoshinaga
 
+//#define ENABLE_EDIT_COLLISION_MESH
+
 using UnityEngine;
 using System.Collections;
 
@@ -22,6 +24,11 @@ public class EditCollisionViewer : Editor
     {
         XCollisionViewer gen = target as XCollisionViewer;
 
+#if ENABLE_EDIT_COLLISION_MESH
+        gen.m_viewUnitSphere = EditorGUILayout.ObjectField("MeshSphere", gen.m_viewUnitSphere, typeof(GameObject)) as GameObject;
+        gen.m_viewUnitBox = EditorGUILayout.ObjectField("MeshBox", gen.m_viewUnitBox, typeof(GameObject)) as GameObject;
+        gen.m_viewUnitCapsule = EditorGUILayout.ObjectField("MeshCapsule", gen.m_viewUnitCapsule, typeof(GameObject)) as GameObject;
+#endif
         gen.m_keyCode = (KeyCode)(EditorGUILayout.EnumPopup("KeyCode", gen.m_keyCode));
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel("アルファ値");

@@ -4,14 +4,18 @@ using System.Collections;
 public class GuestScoreUnit
 {
     private int[] m_charmTable = new int[4];
-    private int m_topUserId = -1;   // -1 = None
+    public int[] charmTable
+    {
+        get { return m_charmTable; }
+    }
 
+    private int m_topUserId = -1;   // -1 = None
     public int topUserId
     {
         get { return m_topUserId; }
     }
 
-    public GuestScoreUnit()
+    public void Initialize()
     {
         Reset();
         GuestScores.AddMax();

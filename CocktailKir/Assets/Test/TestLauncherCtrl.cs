@@ -55,6 +55,8 @@ public class TestLauncherCtrl : MonoBehaviour {
     [SerializeField]
     private GameObject m_efReload = null;
 
+    private IXVInput m_input = null;
+
     private TestMagazine m_magazine = null;
 
     private LineRenderer m_lineRenderer = null;
@@ -95,14 +97,14 @@ public class TestLauncherCtrl : MonoBehaviour {
 
         m_costBallet = this.m_ballet.GetComponent<TestBalletCtrl>().cost;
         m_costChargeBallet = this.m_balletBouquet.GetComponent<TestBalletCtrl>().cost;
+
+        m_input = m_parent.GetComponent<UserData>().input;
     }
 	
 	// Update is called once per frame
     void Update()
     {
-        IXVInput input = XVInput.GetInterface(UserID.User1);
-
-        if (input.IsReload())
+        if (m_input.IsReload())
         {
             if (m_magazine.isMax)
             {
@@ -121,9 +123,9 @@ public class TestLauncherCtrl : MonoBehaviour {
             m_magazine.StopReload();
         }
 
-        UpdateShotBallet(input.IsShot());
+        UpdateShotBallet(m_input.IsShot());
 
-        Vector2 vec = input.RotateLauncher();
+        Vector2 vec = m_input.RotateLauncher();
 
         this.transform.Rotate(Vector3.right, -vec.y * m_pitchSpeed * Time.deltaTime, Space.Self);
         m_parent.Rotate(Vector3.up, vec.x * m_yawSpeed * Time.deltaTime, Space.World);
@@ -204,6 +206,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         GameObject obj = XFunctions.Instance(m_ballet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
+        obj.GetComponent<TestBalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
 
         m_magazine.SubBallet(m_costBallet);
 
@@ -230,6 +233,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         GameObject obj = XFunctions.Instance(m_balletBouquet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
+        obj.GetComponent<TestBalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
 
         m_magazine.SubBallet(m_costChargeBallet);
 

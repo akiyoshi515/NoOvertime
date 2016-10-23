@@ -24,6 +24,8 @@ public class EditNavLines : Editor
     {
         NavLines gen = target as NavLines;
 
+        serializedObject.Update();
+
         EditorGUILayout.HelpBox("y = 合計の距離", MessageType.Info);
 
         bool bn = EditorGUILayout.Toggle("自動更新：" + (m_exec ? "実行中" : "停止中"), m_exec);
@@ -40,8 +42,11 @@ public class EditNavLines : Editor
             }
         }
 
-        gen.m_resolution = EditorGUILayout.IntSlider("分割数", gen.m_resolution, 1, 16);
-        gen.m_lineViewHeight = EditorGUILayout.FloatField("線を表示する高さ", gen.m_lineViewHeight);
+        SerializedProperty resolution =  serializedObject.FindProperty("m_resolution");
+        SerializedProperty lineViewHeight = serializedObject.FindProperty("m_lineViewHeight");
+
+        resolution.intValue = EditorGUILayout.IntSlider("分割数", resolution.intValue, 1, 16);
+        lineViewHeight.floatValue = EditorGUILayout.FloatField("線を表示する高さ", lineViewHeight.floatValue);
 
         m_collapsed = EditorGUILayout.Foldout(m_collapsed, "NavPointer情報");
 
@@ -49,13 +54,15 @@ public class EditNavLines : Editor
         {
             EditorGUILayout.BeginVertical();
             int idx = 0;
-            foreach (Vector3 vec in gen.m_table)
+            foreach (Vector3 vec in gen.table)
             {
                 EditorGUILayout.Vector3Field(idx.ToString(), vec);
                 ++idx;
             }
             EditorGUILayout.EndVertical();
         }
+
+        serializedObject.ApplyModifiedProperties();
     }
 
     void CalcNavLines()
@@ -66,18 +73,37 @@ public class EditNavLines : Editor
         }
 
         NavLines gen = target as NavLines;
+        serializedObject.Update();
 
-        int resolution = gen.m_resolution;
+        int resolution = gen.resolution;
         float resolutionRate = 1.0f / resolution;
 
         if (gen.GetPointerCount() >= 4)
         {
             Queue<Vector3> que = new Queue<Vector3>();
 
+            SerializedProperty loopPoint = serializedObject.FindProperty("m_loopPoint");
+
             int idx = 0;
-            Vector3 v0 = gen.transform.GetChild(idx++).transform.position;
-            Vector3 v1 = gen.transform.GetChild(idx++).transform.position;
-            Vector3 v2 = gen.transform.GetChild(idx++).transform.position;
+            loopPoint.intValue = -1;
+            System.Func<Vector3> funcNameless = () => 
+            {
+                Transform transBasis = gen.transform.GetChild(idx);
+                NavLinePointer pointer = transBasis.GetComponent<NavLinePointer>();
+                if (pointer != null)
+                {
+                    if (pointer.isLoop)
+                    {
+                        loopPoint.intValue = idx;
+                    }
+                }
+                ++idx;
+                return transBasis.transform.position;
+            };
+
+            Vector3 v0 = funcNameless.Invoke();
+            Vector3 v1 = funcNameless.Invoke();
+            Vector3 v2 = funcNameless.Invoke();
             Vector3 v = Vector3.zero;
 
             System.Action<float> nameless = (s) =>
@@ -93,7 +119,7 @@ public class EditNavLines : Editor
                 vec.x = ((f0 * v0.x) + (f1 * v1.x) + (f2 * v2.x) + (f3 * v.x)) * 0.50f;
                 vec.z = ((f0 * v0.z) + (f1 * v1.z) + (f2 * v2.z) + (f3 * v.z)) * 0.50f;
 
-                vec.y = gen.m_lineViewHeight;
+                vec.y = gen.lineViewHeight;
 
                 que.Enqueue(vec);
             };
@@ -113,14 +139,32 @@ public class EditNavLines : Editor
 
             for (; idx < gen.transform.childCount; )
             {
-                v = gen.transform.GetChild(idx++).transform.position;
+                Transform trans = gen.transform.GetChild(idx);
+                NavLinePointer cs = trans.GetComponent<NavLinePointer>();
+                if (cs != null)
+                {
+                    if (cs.isLoop)
+                    {
+                        loopPoint.intValue = idx;
+                    }
+                }
+                ++idx;
+                v = trans.transform.position;
                 namelessCardinal.Invoke();
             }
 
+            serializedObject.ApplyModifiedProperties();
+
+            if (gen.isLoop)
+            {
+                // TODO
+                v = gen.transform.GetChild(gen.loopPoint).transform.position;
+                namelessCardinal.Invoke();
+            }
             namelessCardinal.Invoke();
             nameless.Invoke(0.0f);
 
-            gen.m_table = new Vector3[que.Count];
+            gen.table = new Vector3[que.Count];
             LineRenderer render = gen.transform.GetChild(0).GetComponent<LineRenderer>();
             render.SetVertexCount(que.Count);
 
@@ -135,7 +179,7 @@ public class EditNavLines : Editor
                 prev = vec;
 
                 render.SetPosition(n, vec);
-                gen.m_table[n] = commit;
+                gen.table[n] = commit;
                 ++n;
             }
 
