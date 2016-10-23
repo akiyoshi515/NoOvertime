@@ -45,9 +45,6 @@ public class TestLauncherCtrl : MonoBehaviour {
     private float m_lineWidth = 0.250f;
 
     [SerializeField]
-    private GameObject m_balletEmpty = null;
-
-    [SerializeField]
     private GameObject m_ballet = null;
 
     [SerializeField]
@@ -80,7 +77,6 @@ public class TestLauncherCtrl : MonoBehaviour {
     void Awake()
     {
         XLogger.LogValidObject(m_parent == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Parent"), gameObject);
-        XLogger.LogValidObject(m_balletEmpty == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteEmpty"), gameObject);
         XLogger.LogValidObject(m_ballet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Ballte"), gameObject);
         XLogger.LogValidObject(m_balletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteBouquet"), gameObject);
         XLogger.LogValidObject(m_hitPoint == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("HitPoint"), gameObject);
@@ -116,7 +112,7 @@ public class TestLauncherCtrl : MonoBehaviour {
     void Update()
     {
         UpdateReloadBallet();
-        UpdateShotBallet(m_input.IsShot());
+        UpdateShotBallet();
 
         Vector2 vec = m_input.RotateLauncher();
         m_pitchAngle = (m_pitchAngle + vec.y * m_pitchSpeed * Time.deltaTime).MaxLimited(m_maxPitchAngle).MinLimited(m_minPitchAngle);
@@ -150,18 +146,17 @@ public class TestLauncherCtrl : MonoBehaviour {
         }
         else
         {
-            if (m_input.IsReload())
+            if (!m_magazine.isMax)
             {
-                if (!m_magazine.isMax)
+                if ((m_input.IsLauncherStance()) && (m_input.IsReload()))
                 {
-                    m_csEfReload.WakeupEffect();
-                    m_magazine.StartReload(() => { m_csEfReload.SleepEffect(); });
+                    StartReload();
                 }
             }
         }
     }
 
-    void UpdateShotBallet(bool isShot)
+    void UpdateShotBallet()
     {
         if (m_knockback > 0.0f)
         {
@@ -174,7 +169,7 @@ public class TestLauncherCtrl : MonoBehaviour {
             return;
         }
 
-        if (isShot)
+        if (m_input.IsShot())
         {
             m_chargeTime += Time.deltaTime;
         }
@@ -194,7 +189,7 @@ public class TestLauncherCtrl : MonoBehaviour {
                     }
                     else
                     {
-                        LaunchEmptyBallet();
+                        StartReload();
                     }
                 }
                 m_chargeTime = 0.0f;
@@ -211,7 +206,13 @@ public class TestLauncherCtrl : MonoBehaviour {
         }
     }
 
-    void LaunchBallet()
+    private void StartReload()
+    {
+        m_csEfReload.WakeupEffect();
+        m_magazine.StartReload(() => { m_csEfReload.SleepEffect(); });
+    }
+
+    private void LaunchBallet()
     {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
@@ -226,19 +227,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         m_knockback += m_knockbackTime;
     }
 
-    void LaunchEmptyBallet()
-    {
-        Quaternion rot = this.gameObject.transform.rotation;
-        Vector3 pos = this.transform.position + (rot * m_launchPoint);
-
-        XFunctions.Instance(m_balletEmpty, pos, rot);
-//        Rigidbody rb = obj.GetComponent<Rigidbody>();
-//        rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-
-        m_knockback += m_knockbackTime;
-    }
-
-    void LaunchBouquet()
+    private void LaunchBouquet()
     {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
