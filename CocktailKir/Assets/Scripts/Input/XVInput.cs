@@ -61,6 +61,17 @@ public static class XVInput
         return true;
     }
 
+    /// <summary>
+    /// Inputのインターフェースを削除
+    /// </summary>
+    public static void ClearInterface()
+    {
+        m_input[0] = null;
+        m_input[1] = null;
+        m_input[2] = null;
+        m_input[3] = null;
+    }
+
     public static string[] GetConnectedNames()
     {
         return Input.GetJoystickNames();

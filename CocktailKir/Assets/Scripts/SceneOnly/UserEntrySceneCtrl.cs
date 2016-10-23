@@ -47,6 +47,7 @@ public class UserEntrySceneCtrl : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        XVInput.ClearInterface();
         m_nextUserId = 0;
         m_time = m_startWaitTime;
         EnableMeshAnimation(0, false);
@@ -83,9 +84,11 @@ public class UserEntrySceneCtrl : MonoBehaviour
                 if (m_time <= 0.0f)
                 {
                     m_time = 0.0f;
-                    if (XBGamePad.IsTriggered(XBKeyCode.Button.Start, XBKeyCode.UserCode.Any))
+                    if (XBGamePad.IsTriggered(XBKeyCode.Button.Start, XBKeyCode.UserCode.Any)
+                        || Input.GetKeyDown(KeyCode.Return))
                     {
                         XLogger.Log("GoTo NextScene");
+                        UnityEngine.SceneManagement.SceneManager.LoadScene("TestGameMain");
                     }
                 }
                 break;
