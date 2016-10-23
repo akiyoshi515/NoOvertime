@@ -55,12 +55,25 @@ public class MgazineUI : MonoBehaviour {
         }
     }
 
+    ///
+    /// <summary>   ゲージとして使う画像.  </summary>
+    ///
+
+    [SerializeField]
     Image m_uiImage;
+
+    ///
+    /// <summary>   シェーダー入ってるマテリアル. </summary>
+    ///
+
     Material m_imageMaterial;
     // Use this for initialization
     void Start ()
     {
-        m_uiImage = gameObject.GetComponent<Image>();
+        if (m_uiImage == null)
+        {
+            m_uiImage = gameObject.GetComponent<Image>();
+        }
         m_imageMaterial = m_uiImage.material;
         float maskvaule = (float)((float)NumberOfBullet / (float)m_maximumNumberOfBullet);
         // maskのテクスチャミスってると若干残る場合があるからマイナスにする
@@ -68,9 +81,16 @@ public class MgazineUI : MonoBehaviour {
         {
             maskvaule = -0.01f;
         }
+#if DEBUG
+        if (m_imageMaterial.shader.name == "Custom/GaugeSpriteShader")
+#endif
+        {
+            AkiVACO.XLogger.LogWarning("shader間違ってるよ");
             m_imageMaterial.SetFloat("_Mask", maskvaule);
-        
-	}
+        }
+
+
+    }
 	
 	// Update is called once per frame
 	void Update ()

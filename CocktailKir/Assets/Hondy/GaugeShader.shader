@@ -4,7 +4,7 @@ Shader "Custom/GaugeSpriteShader"
 	Properties
 	{
 		_MainTex("Main", 2D) = "white" {}
-		 _MaskTex("Mask", 2D) = "white" {}
+		_MaskTex("Mask", 2D) = "white" {}
 		_Color("Tint", Color) = (1,1,1,1)
 		_Mask("MaskVaule", Float) = 0
 	}
@@ -68,21 +68,11 @@ Shader "Custom/GaugeSpriteShader"
 	sampler2D _MainTex;
 	sampler2D _MaskTex;
 
-	fixed4 SampleSpriteTexture(float2 uv)
-	{
-		fixed4 color = tex2D(_MainTex, uv);
-
-#if ETC1_EXTERNAL_ALPHA
-		// get the color from an external texture (usecase: Alpha support for ETC1 on android)
-	
-#endif //ETC1_EXTERNAL_ALPHA
-
-		return color;
-	}
 
 	fixed4 frag(v2f IN) : SV_Target
 	{
-		fixed4 c = SampleSpriteTexture(IN.texcoord);	
+		fixed4 c = tex2D(_MainTex, IN.texcoord);
+	// マスクの閾値で表示するか判断
 		c *= step(tex2D(_MaskTex, IN.texcoord).a,_Mask);
 		return c;
 	}
