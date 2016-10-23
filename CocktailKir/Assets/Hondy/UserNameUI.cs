@@ -18,6 +18,7 @@ public class UserNameUI : MonoBehaviour {
         set
         {
             m_name = value;
+            m_textMesh.text = m_name;
         }
     }
 
@@ -43,7 +44,8 @@ public class UserNameUI : MonoBehaviour {
     /// <summary>   回転の指標にするカメラ.  </summary>
     ///
 
-    private Camera targetCamera;
+    [SerializeField]
+    Camera targetCamera;
     public UnityEngine.Camera TargetCamera
     {
         get
@@ -66,6 +68,7 @@ public class UserNameUI : MonoBehaviour {
     {
         m_textMesh = gameObject.GetComponent<TextMesh>();
         m_textMesh.color = m_userColor;
+        m_textMesh.text = m_name;
     }
 
 
@@ -73,7 +76,7 @@ public class UserNameUI : MonoBehaviour {
     void Update()
     {
         // カメラに合わせて回転
-        transform.LookAt(transform.position - TargetCamera.transform.rotation * Vector3.back, TargetCamera.transform.rotation * Vector3.up);
+        transform.LookAt(transform.position - targetCamera.transform.rotation * Vector3.back, targetCamera.transform.rotation * Vector3.up);
 
     }
 
