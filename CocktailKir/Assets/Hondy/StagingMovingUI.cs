@@ -1,30 +1,39 @@
-﻿using UnityEngine;
+﻿/// 
+// file:	Assets\Hondy\StagingMovingUI.cs
+//
+// summary:	Implements the staging moving user interface class
+/// 
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+///
+/// <summary>   A staging moving user interface.    </summary>
+///
+/// <remarks>   Hondy, 2016/10/19.  </remarks>
+///
+/// <seealso cref="T:IStagingUI"/>
+///
+
 public class StagingMovingUI : IStagingUI {
 
-
     ///
-    /// <summary>   スクロールするかのフラグ. </summary>
+    /// <summary>   スクロールするかのフラグ.   </summary>
     ///
 
     [SerializeField, Header("スクロール,移動するかのフラグ")]
     bool m_isMove;
 
-
-
-
-
     ///
-    /// <summary>   スクロール速度(秒速).   </summary>
+    /// <summary>   スクロール速度(秒速).    </summary>
     ///
 
     [SerializeField, Header("スクロール,移動速度(秒速)")]
     float m_scrollSpeed;
 
     ///
-    /// <summary>   スクロールに開始位置を使用するかのフラグ.  </summary>
+    /// <summary>   スクロールに開始位置を使用するかのフラグ.   </summary>
     ///
 
     [SerializeField, Header("スクロール,移動開始位置を使用するかのフラグ(falseの場合インスペクタで設定した位置からスクロール)")]
@@ -44,22 +53,20 @@ public class StagingMovingUI : IStagingUI {
     [SerializeField, Header("移動停止位置")]
     Vector3 m_scrollStopPosition;
 
-
     ///
-    /// <summary>   スクロール方向.   </summary>
+    /// <summary>   スクロール方向.    </summary>
     ///
 
     [SerializeField, Header("移動方向")]
     Vector3 m_scrollDirection;
 
-
     ///
-    /// <summary>   スクロールのフラグ管理.    </summary>
+    /// <summary>   移動停止のフラグ設定.    </summary>
     ///
     /// <remarks>   Hondy, 2016/10/12.  </remarks>
     ///
 
-    public enum SCROLL_STOP_FLAG_ENUM
+    public enum MOVE_STOP_SETTING_ENUM
     {
         /// <summary>   スクロールストップしない.  </summary>
         NOT_STOP,
@@ -78,8 +85,9 @@ public class StagingMovingUI : IStagingUI {
     ///
     /// <summary>   The scroll stop flag.   </summary>
     ///
+
     [SerializeField]
-    SCROLL_STOP_FLAG_ENUM m_scrollStopFlag;
+    MOVE_STOP_SETTING_ENUM m_scrollStopSetting;
 
     ///
     /// <summary>   The scroll stop distance.   </summary>
@@ -91,32 +99,39 @@ public class StagingMovingUI : IStagingUI {
     /// <summary>   The scroll delta position.  </summary>
     ///
 
-    Vector3 m_scrollDeltaPosition;
+    Vector3 m_deltaPosition;
 
     ///
     /// <summary>   The scroll stop time.   </summary>
     ///
 
-    float m_scrollStopTime;
+    float m_MovingStopTime;
 
     ///
     /// <summary>   The scroll delta time.  </summary>
     ///
 
-    float m_scrollDeltaTime;
-
+    float m_deltaTime;
 
     ///
-    /// <summary>   UI画像.  </summary>
+    /// <summary>   UI画像.   </summary>
     ///
 
     [SerializeField]
     Image m_controlUIImage;
 
+    ///
+    /// <summary>   The canvas. </summary>
+    ///
+
     RectTransform m_UICanvas;
 
+    ///
+    /// <summary>   Use this for initialization.    </summary>
+    ///
+    /// <remarks>   Hondy, 2016/10/19.  </remarks>
+    ///
 
-    // Use this for initialization
     void Start ()
     {
         if (m_UICanvas == null)
@@ -124,6 +139,10 @@ public class StagingMovingUI : IStagingUI {
             m_UICanvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
         }
 
+        if (m_controlUIImage == null)
+        {
+            m_controlUIImage = this.gameObject.GetComponent<Image>();
+        }
 
 
         if (m_controlUIImage)
@@ -142,48 +161,68 @@ public class StagingMovingUI : IStagingUI {
 
     }
 
-    // Update is called once per frame
+    ///
+    /// <summary>   Update is called once per frame.    </summary>
+    ///
+    /// <remarks>   Hondy, 2016/10/19.  </remarks>
+    ///
+
     void Update()
     {
 
         Scroll();
     }
 
+    ///
+    /// <summary>   Scrolls this object.    </summary>
+    ///
+    /// <remarks>   Hondy, 2016/10/19.  </remarks>
+    ///
+
     void Scroll()
     {
         /// フラグが立ってたらスクロール処理
         if (m_isMove)
         {
-            if (CheckDoScroollFlag())
+            if (CheckDoScrooll())
             {
-                m_scrollDeltaTime += AkiVACO.XTime.deltaTime;
+                m_deltaTime += AkiVACO.XTime.deltaTime;
 
-                m_controlUIImage.rectTransform.position = m_scrollStartPosition + m_scrollDirection * m_scrollSpeed * m_scrollDeltaTime;
+                m_controlUIImage.rectTransform.position = m_scrollStartPosition + m_scrollDirection * m_scrollSpeed * m_deltaTime;
 
             }
         }
     }
-    bool CheckDoScroollFlag()
+
+    ///
+    /// <summary>   移動するフラグが立っているかチェック. </summary>
+    ///
+    /// <remarks>   Hondy, 2016/10/19.  </remarks>
+    ///
+    /// <returns>   true if it succeeds, false if it fails. </returns>
+    ///
+
+    bool CheckDoScrooll()
     {
         bool result = false;
-        switch (m_scrollStopFlag)
+        switch (m_scrollStopSetting)
         {
-            case SCROLL_STOP_FLAG_ENUM.NOT_STOP:
+            case MOVE_STOP_SETTING_ENUM.NOT_STOP:
                 result = true;
                 break;
-            case SCROLL_STOP_FLAG_ENUM.DISTANCE_STOP:
-                if (Vector3.Distance(m_scrollDeltaPosition, m_scrollStartPosition) < m_scrollStopDistance)
+            case MOVE_STOP_SETTING_ENUM.DISTANCE_STOP:
+                if (Vector3.Distance(m_deltaPosition, m_scrollStartPosition) < m_scrollStopDistance)
                 {
                     result = true;
                 }
                 break;
-            case SCROLL_STOP_FLAG_ENUM.TIME_STOP:
-                if (m_scrollDeltaTime < m_scrollStopTime)
+            case MOVE_STOP_SETTING_ENUM.TIME_STOP:
+                if (m_deltaTime < m_MovingStopTime)
                 {
                     result = true;
                 }
                 break;
-            case SCROLL_STOP_FLAG_ENUM.HEIGHT_CENTER_STOP:
+            case MOVE_STOP_SETTING_ENUM.HEIGHT_CENTER_STOP:
                 if (m_scrollDirection.y <= 0)
                 {
                     if (m_controlUIImage.rectTransform.position.y > Screen.height * 0.5f)
@@ -199,7 +238,7 @@ public class StagingMovingUI : IStagingUI {
                     }
                 }
                 break;
-            case SCROLL_STOP_FLAG_ENUM.WIDTH_CENTER_STOP:
+            case MOVE_STOP_SETTING_ENUM.WIDTH_CENTER_STOP:
                 if (m_scrollDirection.x <= 0)
                 {
                     if (m_controlUIImage.rectTransform.position.x > Screen.width * 0.5f)
@@ -215,7 +254,7 @@ public class StagingMovingUI : IStagingUI {
                     }
                 }
                 break;
-            case SCROLL_STOP_FLAG_ENUM.SCREEEN_OUT_STOP:
+            case MOVE_STOP_SETTING_ENUM.SCREEEN_OUT_STOP:
                 // 回転した矩形同士で衝突判定
                 if (CheckCollision2DOfRectangles(m_controlUIImage.rectTransform.anchoredPosition, m_controlUIImage.rectTransform.sizeDelta.x, m_controlUIImage.rectTransform.sizeDelta.y,
                     new Vector3(0, 0, 0), m_UICanvas.rect.width, m_UICanvas.rect.height))
@@ -334,10 +373,10 @@ public class StagingMovingUI : IStagingUI {
     ///
     /// <remarks>   Hondy, 2016/10/15.  </remarks>
     ///
-    /// <param name="lineAStart">   The line a. </param>
-    /// <param name="lineAEnd">     The line b. </param>
-    /// <param name="lineBStart">   The line b start.   </param>
-    /// <param name="lineBEnd">     The line b end. </param>
+    /// <param name="_lineAStart">  The line a. </param>
+    /// <param name="_lineAEnd">    The line b. </param>
+    /// <param name="_lineBStart">  The line b start.   </param>
+    /// <param name="_lineBEnd">    The line b end. </param>
     ///
     /// <returns>   true if it succeeds, false if it fails. </returns>
     ///
@@ -391,8 +430,8 @@ public class StagingMovingUI : IStagingUI {
     ///
     /// <remarks>   Hondy, 2016/10/15.  </remarks>
     ///
-    /// <param name="point">            The point.  </param>
-    /// <param name="rectangleVector">  The rectangle.  </param>
+    /// <param name="_point">           The point.  </param>
+    /// <param name="_rectanglePoints"> The rectangle.  </param>
     ///
     /// <returns>   true if it succeeds, false if it fails. </returns>
     ///
@@ -436,8 +475,8 @@ public class StagingMovingUI : IStagingUI {
     ///
     /// <remarks>   Hondy, 2016/10/15.  </remarks>
     ///
-    /// <param name="lhs">  The left hand side. </param>
-    /// <param name="rhs">  The right hand side.    </param>
+    /// <param name="_vecA">    The left hand side. </param>
+    /// <param name="_vecB">    The right hand side.    </param>
     ///
     /// <returns>   A float.    </returns>
     ///

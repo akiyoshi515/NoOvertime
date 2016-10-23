@@ -9,9 +9,6 @@ public class IEventAction {
     /// <remarks>   Hondy, 2016/10/18.  </remarks>
     ///
 
-    public virtual void Action()
-    {
+    public virtual void Action() { }
 
-    }
-    
 }

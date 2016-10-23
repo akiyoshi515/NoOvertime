@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class MoveVirtualCameraOfSprite : IEventAction {
+public class MoveVirtualCameraOfSprite : IEventAction
+{
 
     ///
     /// <summary>   EventManagerが管理しているGameObject.    </summary>

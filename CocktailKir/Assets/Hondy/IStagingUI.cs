@@ -16,14 +16,32 @@ public class IStagingUI : MonoBehaviour
     
     
     ///
-    /// <summary>   UI画像.  </summary>
+    /// <summary>   UI画像(nullの場合start時にコンポーネントを探索).  </summary>
     ///
 
     [SerializeField]
     public Image m_controlUIImage;
 
     RectTransform m_UICanvas;
-    
+
+    ///
+    /// <summary>   反復して演出するか.  </summary>
+    ///
+
+    bool m_isRepeat;
+
+    ///
+    /// <summary>   反復するときに移動方向などを反復させるか. </summary>
+    ///
+
+    bool m_isReverseWhenRepeat;
+
+    ///
+    /// <summary>   反復するときに位置などをリセットするか.   </summary>
+    ///
+
+    bool m_isResetWhenRepeat;
+
     ///
     /// <summary>   初期化.    </summary>
     ///
@@ -32,6 +50,10 @@ public class IStagingUI : MonoBehaviour
 
     void Start ()
     {
+        if (m_controlUIImage == null)
+        {
+            m_controlUIImage = this.gameObject.GetComponent<Image>();   
+        }
     }
 
     ///
@@ -45,7 +67,7 @@ public class IStagingUI : MonoBehaviour
     }
 
 
-    void Reset()
+    public virtual void Reset()
     {
 
     }
