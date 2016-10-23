@@ -99,8 +99,8 @@ public class TestLauncherCtrl : MonoBehaviour {
     {
         m_lineRenderer.SetWidth(m_lineWidth, m_lineWidth);
 
-        m_costBallet = this.m_ballet.GetComponent<TestBalletCtrl>().cost;
-        m_costChargeBallet = this.m_balletBouquet.GetComponent<TestBalletCtrl>().cost;
+        m_costBallet = this.m_ballet.GetComponent<BalletCtrl>().cost;
+        m_costChargeBallet = this.m_balletBouquet.GetComponent<BalletCtrl>().cost;
 
         m_pitchAngle = m_minPitchAngle;
         this.transform.Rotate(Vector3.right, m_pitchAngle, Space.Self);
