@@ -72,6 +72,8 @@ public class LauncherMagazine : MonoBehaviour
     private float m_reloadRemainTime = 0.0f;
     private float m_unlimitedBalletRemainTime = 0.0f;
 
+    private int m_bonusCharmBallet = 0;
+
     void Start()
     {
         m_balletNum = m_capacity;
@@ -168,6 +170,37 @@ public class LauncherMagazine : MonoBehaviour
         XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit AddCapacity: " + val.ToString());
         capacity += val;
         XLogger.Log("Magazine AddCapacity: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
+    }
+
+    /// <summary>
+    /// チャーム増加弾のリロード
+    /// </summary>
+    /// <returns>チャーム増加値</returns>
+    public int GetBonusCharmBallet()
+    {
+        if (m_bonusCharmBallet > 0)
+        {
+            --m_bonusCharmBallet;
+            if (m_bonusCharmBallet <= 0)
+            {
+                XLogger.Log("Magazine CharmBallet empty");
+            }
+            return 1;   // TODO
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// チャーム増加弾のリロード
+    /// </summary>
+    /// <param name="val">追加量：(value > 0)</param>
+    public void ReloadBonusCharmBallet(int val)
+    {
+        m_bonusCharmBallet = val;
+        XLogger.Log("Magazine Reload CharmBallet: " + val.ToString());
     }
 
     public void StartReload(UnityAction callback)

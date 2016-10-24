@@ -128,6 +128,11 @@ public class TestLauncherCtrl : MonoBehaviour {
         {
             m_magazine.StartUnlimitedBallet(10.0f); // TODO
         }
+
+        if (m_input.Dbg_IsReloadBonusCharm())
+        {
+            m_magazine.ReloadBonusCharmBallet(6); // TODO
+        }
 #endif
 
     }
@@ -247,7 +252,9 @@ public class TestLauncherCtrl : MonoBehaviour {
         GameObject obj = XFunctions.Instance(m_ballet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-        obj.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
+        ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+        ctrl.AddBonusCharm(m_magazine.GetBonusCharmBallet());
 
         m_magazine.SubBallet(m_costBallet);
 
@@ -262,7 +269,9 @@ public class TestLauncherCtrl : MonoBehaviour {
         GameObject obj = XFunctions.Instance(m_balletBouquet, pos, rot);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-        obj.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
+        ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+        ctrl.AddBonusCharm(m_magazine.GetBonusCharmBallet());
 
         m_magazine.SubBallet(m_costChargeBallet);
 
@@ -274,23 +283,31 @@ public class TestLauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
+        int bonusCharm = m_magazine.GetBonusCharmBallet();
+
         {
             GameObject objC = XFunctions.Instance(m_ballet, pos, rot);
             Rigidbody rbC = objC.GetComponent<Rigidbody>();
             rbC.AddForce(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            objC.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+            BalletCtrl ctrl = objC.GetComponent<BalletCtrl>();
+            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+            ctrl.AddBonusCharm(bonusCharm);
         }
         {
             GameObject objL = XFunctions.Instance(m_ballet, pos, rot);
             Rigidbody rbL = objL.GetComponent<Rigidbody>();
             rbL.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-            objL.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+            BalletCtrl ctrl = objL.GetComponent<BalletCtrl>();
+            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+            ctrl.AddBonusCharm(bonusCharm);
         }
         {
             GameObject objR = XFunctions.Instance(m_ballet, pos, rot);
             Rigidbody rbR = objR.GetComponent<Rigidbody>();
             rbR.AddForce(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            objR.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+            BalletCtrl ctrl = objR.GetComponent<BalletCtrl>();
+            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+            ctrl.AddBonusCharm(bonusCharm);
         }
 
         // TODO
@@ -304,23 +321,31 @@ public class TestLauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
+        int bonusCharm = m_magazine.GetBonusCharmBallet();
+
         {
             GameObject objC = XFunctions.Instance(m_balletBouquet, pos, rot);
             Rigidbody rbC = objC.GetComponent<Rigidbody>();
             rbC.AddForce(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            objC.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+            BalletCtrl ctrl = objC.GetComponent<BalletCtrl>();
+            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+            ctrl.AddBonusCharm(bonusCharm);
         }
         {
             GameObject objL = XFunctions.Instance(m_balletBouquet, pos, rot);
             Rigidbody rbL = objL.GetComponent<Rigidbody>();
             rbL.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-            objL.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+            BalletCtrl ctrl = objL.GetComponent<BalletCtrl>();
+            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+            ctrl.AddBonusCharm(bonusCharm);
         }
         {
             GameObject objR = XFunctions.Instance(m_balletBouquet, pos, rot);
             Rigidbody rbR = objR.GetComponent<Rigidbody>();
             rbR.AddForce(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            objR.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+            BalletCtrl ctrl = objR.GetComponent<BalletCtrl>();
+            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
+            ctrl.AddBonusCharm(bonusCharm);
         }
 
         // TODO

@@ -53,4 +53,9 @@ public interface IXVInput
     /// </summary>
     bool Dbg_IsShot3Way();
 
+    /// <summary>
+    /// Debug BonusCharm射撃
+    /// </summary>
+    bool Dbg_IsReloadBonusCharm();
+
 }

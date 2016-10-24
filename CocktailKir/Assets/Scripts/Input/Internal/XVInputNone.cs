@@ -54,6 +54,12 @@ namespace XVInputInternal
         {
             return false;
         }
+
+        public bool Dbg_IsReloadBonusCharm()
+        {
+            return false;
+        }
+
     }
 
 }   // End of namespace XVInputInternal

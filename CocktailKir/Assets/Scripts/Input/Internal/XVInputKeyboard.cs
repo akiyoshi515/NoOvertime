@@ -88,7 +88,16 @@ namespace XVInputInternal
         public bool Dbg_IsShot3Way()
         {
 #if DEBUG
-            return Input.GetKeyDown(KeyCode.Q);
+            return Input.GetKey(KeyCode.Q);
+#else
+            return false;
+#endif
+        }
+
+        public bool Dbg_IsReloadBonusCharm()
+        {
+#if DEBUG
+            return Input.GetKeyDown(KeyCode.E);
 #else
             return false;
 #endif

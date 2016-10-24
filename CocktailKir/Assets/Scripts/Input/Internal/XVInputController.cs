@@ -127,6 +127,16 @@ namespace XVInputInternal
             return false;
 #endif
         }
+
+        public bool Dbg_IsReloadBonusCharm()
+        {
+#if DEBUG
+            return (XBGamePad.IsPressed(XBKeyCode.Button.RightShoulder, m_userCode))
+                && (XBGamePad.IsTriggered(XBKeyCode.Button.B, m_userCode));
+#else
+            return false;
+#endif
+        }
     }
 
 }   // End of namespace XVInputInternal
