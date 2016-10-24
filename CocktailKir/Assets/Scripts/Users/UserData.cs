@@ -11,7 +11,11 @@ public class UserData : MonoBehaviour
     public UserID userID
     {
         get { return m_userID; }
+#if UNITY_EDITOR
+        set { m_userID = value; }
+#else
         protected set { m_userID = value; }
+#endif
     }
 
     [SerializeField]

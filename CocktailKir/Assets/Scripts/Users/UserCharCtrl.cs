@@ -66,6 +66,13 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         }
     }
 
+    public void Edit_SetCamera(Camera camera)
+    {
+#if UNITY_EDITOR
+        m_camera = camera;
+#endif
+    }
+
     public string GetLabelString()
     {
         return "Sts " + (
