@@ -19,6 +19,8 @@ public class EditUserLegionSetupper : Editor
     {
         UserLegionSetupper gen = target as UserLegionSetupper;
 
+        UpdateEditorObjectField("セットアップターゲット", ref gen.m_targetLegion, true);
+
         bool isExecInstance = GUILayout.Button("セットアップ");
 
         m_collapsed = EditorGUILayout.Foldout(m_collapsed, "Setup情報");
@@ -32,8 +34,6 @@ public class EditUserLegionSetupper : Editor
 
         if (m_collapsedBasis)
         {
-            UpdateEditorObjectField("TargetLegion", ref gen.m_targetLegion, true);
-
             UpdateEditorObjectField("UserCtrl", ref gen.m_baseUserCtrl);
             UpdateEditorObjectField("UserMeshP1", ref gen.m_baseUserMesh[0]);
             UpdateEditorObjectField("UserMeshP2", ref gen.m_baseUserMesh[1]);

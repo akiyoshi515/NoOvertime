@@ -3,10 +3,12 @@ using System.Collections;
 
 public class GameSceneCtrl : MonoBehaviour
 {
+    [SerializeField]
+    private int m_firstHitCharmBonus = 3;
 
     void Awake()
     {
-        GuestScores.Reset();
+        GuestScores.Reset(m_firstHitCharmBonus);
     }
 
     // Use this for initialization

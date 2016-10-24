@@ -47,12 +47,20 @@ public class GuestScoreUnit
         {
             GuestScores.Add(id);
             m_topUserId = idx;
+
+            // +Bonus
+            m_charmTable[idx] += GuestScores.firstHitCharmBonus;
             return true;
         }
         else
         {
-            // HACK 後から来たUserと一位タイの場合は前のUserが優先
-            if (m_charmTable[idx] > m_charmTable[m_topUserId])
+            // 上書きしたユーザーが元々一位なら何もしない
+            // 後から来たUserと一位タイの場合は後のUserが優先
+            if (m_topUserId == idx)
+            {
+                return true;
+            }
+            else if (m_charmTable[idx] >= m_charmTable[m_topUserId])
             {
                 GuestScores.Add(id, (UserID)m_topUserId);
                 m_topUserId = idx;
