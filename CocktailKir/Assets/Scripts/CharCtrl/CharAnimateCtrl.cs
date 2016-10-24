@@ -5,7 +5,7 @@
 public class CharAnimateCtrl : MonoBehaviour
 {
     [SerializeField]
-    private float m_moveSpeed = 5.0f;
+    private float m_moveSpeed = 360.0f;
 
     [SerializeField]
     private float m_turnSpeedMoving = 360.0f;

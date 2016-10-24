@@ -15,6 +15,8 @@ public class EditUserLegionSetupper : Editor
     private static bool m_collapsed = true;
     private static bool m_collapsedBasis = true;
 
+    private static bool m_collapsedUserChar = true;
+
     public override void OnInspectorGUI()
     {
         UserLegionSetupper gen = target as UserLegionSetupper;
@@ -27,6 +29,13 @@ public class EditUserLegionSetupper : Editor
 
         if (m_collapsed) 
         {
+            m_collapsedUserChar = EditorGUILayout.Foldout(m_collapsedUserChar, "UserChar情報");
+            if (m_collapsedUserChar)
+            {
+                gen.m_moveSpeed = EditorGUILayout.FloatField("移動速度", gen.m_moveSpeed);
+                gen.m_jumpPower = EditorGUILayout.FloatField("ジャンプ力", gen.m_jumpPower);
+            }
+
         }
 
 
@@ -45,6 +54,7 @@ public class EditUserLegionSetupper : Editor
 
         if (isExecInstance)
         {
+            UpdateUserPrefab(gen);
             CleanupUsers(gen.m_targetLegion);
             InstantiateUsers(gen);
         }
@@ -53,6 +63,37 @@ public class EditUserLegionSetupper : Editor
     private void UpdateEditorObjectField(string msg, ref GameObject obj, bool allowSceneObjects = false)
     {
         obj = EditorGUILayout.ObjectField(msg, obj, typeof(GameObject), allowSceneObjects) as GameObject;
+    }
+
+    private void UnilUpdatePrefab<T>(GameObject baseprefab, UnityAction<SerializedObject> callback)
+    {
+        GameObject prefab = PrefabUtility.InstantiatePrefab(baseprefab) as GameObject;
+        {
+            T[] table = prefab.GetComponentsInChildren<T>();
+            foreach (T cs in table)
+            {
+                SerializedObject ser = new SerializedObject(cs as UnityEngine.Object);
+                ser.Update();
+                callback.Invoke(ser);
+                ser.ApplyModifiedProperties();
+            }
+        }
+        PrefabUtility.ReplacePrefab(prefab, baseprefab);
+        GameObject.DestroyImmediate(prefab);
+    }
+
+    private void UpdateUserPrefab(UserLegionSetupper setupper)
+    {
+        UnilUpdatePrefab<CharAnimateCtrl>(
+            setupper.m_baseUserCtrl, 
+            (ser) => 
+            {
+                SerializedProperty moveSpeed = ser.FindProperty("m_moveSpeed");
+                moveSpeed.floatValue = setupper.m_moveSpeed;
+                SerializedProperty jumpPower = ser.FindProperty("m_jumpPower");
+                jumpPower.floatValue = setupper.m_jumpPower;
+            });
+
     }
 
     private void CleanupUsers(GameObject targetLegion)
