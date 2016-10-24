@@ -37,6 +37,17 @@ public static class XVInput
                 m_input[i] = new XVInputKeyboard();
                 break;
             case XVInputType.Controller:
+#if DEBUG
+                if (XVInput.GetConnectedNum() == 0)
+                {
+                    if (id == UserID.User1)
+                    {
+                        m_input[i] = new XVInputKeyboard();
+                        XLogger.LogWarning("Debug Create interface= XVInputKeyboard: id= " + i.ToString());
+                        return true;
+                    }
+                }
+#endif
                 XLogger.Log("Create interface= XVInputController: id= " + i.ToString());
                 m_input[i] = new XVInputController(id);
                 break;
