@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TestBalletLines
+public class ParabolaLines
 {
     public static void Draw(
         Transform trans, float power, float mass, float timeSlice, float hitPointY,

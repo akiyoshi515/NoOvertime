@@ -128,7 +128,7 @@ public class TestLauncherCtrl : MonoBehaviour {
     {
         Queue<Vector3> que = new Queue<Vector3>();
 
-        TestBalletLines.Draw(
+        ParabolaLines.Draw(
             this.transform, m_shotPower, m_ballet.GetComponent<Rigidbody>().mass,
             m_lineRenderTimeSlice, m_hitPointOffset,
             m_hitPoint.transform,

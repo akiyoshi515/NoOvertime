@@ -59,4 +59,10 @@ public class UserCameraAutoCtrl : MonoBehaviour
         m_pivot.position = m_targetUser.position;
     }
 
+    public void Edit_SetTargetUser(Transform user)
+    {
+#if UNITY_EDITOR
+        m_targetUser = user;
+#endif
+    }
 }

@@ -16,13 +16,21 @@ public class GuestScores
         get { return m_maxScore; }
     }
 
-    public static void Reset()
+    public static int firstHitCharmBonus
+    {
+        get;
+        protected set;
+    }
+
+    public static void Reset(int firstCharmBonus)
     {
         m_scoreTable[0] = 0;
         m_scoreTable[1] = 0;
         m_scoreTable[2] = 0;
         m_scoreTable[3] = 0;
         m_maxScore = 0;
+
+        firstHitCharmBonus = firstCharmBonus;
     }
 
     public static void Add(UserID id)
