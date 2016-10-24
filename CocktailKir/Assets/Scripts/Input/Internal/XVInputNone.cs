@@ -45,6 +45,11 @@ namespace XVInputInternal
             return false;
         }
 
+        public bool Dbg_IsUnlimitedBallet()
+        {
+            return false;
+        }
+
         public bool Dbg_IsShot3Way()
         {
             return false;

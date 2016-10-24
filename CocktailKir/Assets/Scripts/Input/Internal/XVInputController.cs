@@ -109,6 +109,16 @@ namespace XVInputInternal
             return XBGamePad.IsPressed(XBKeyCode.Button.B, m_userCode);
         }
 
+        public bool Dbg_IsUnlimitedBallet()
+        {
+#if DEBUG
+            return (XBGamePad.IsPressed(XBKeyCode.Button.RightShoulder, m_userCode)) 
+                && (XBGamePad.IsTriggered(XBKeyCode.Button.Y, m_userCode));
+#else
+            return false;
+#endif
+        }
+
         public bool Dbg_IsShot3Way()
         {
 #if DEBUG

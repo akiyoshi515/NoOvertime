@@ -122,6 +122,14 @@ public class TestLauncherCtrl : MonoBehaviour {
         this.transform.localRotation = Quaternion.AngleAxis(-m_pitchAngle, Vector3.right);
 
         m_parent.Rotate(Vector3.up, vec.x * m_yawSpeed * Time.deltaTime, Space.World);
+
+#if DEBUG
+        if (m_input.Dbg_IsUnlimitedBallet())
+        {
+            m_magazine.StartUnlimitedBallet(10.0f); // TODO
+        }
+#endif
+
     }
 
     void LateUpdate()
