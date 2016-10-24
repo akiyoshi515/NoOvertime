@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -285,30 +286,19 @@ public class TestLauncherCtrl : MonoBehaviour {
 
         int bonusCharm = m_magazine.GetBonusCharmBallet();
 
+        UnityAction<Vector3> act = (vec) =>
         {
-            GameObject objC = XFunctions.Instance(m_ballet, pos, rot);
-            Rigidbody rbC = objC.GetComponent<Rigidbody>();
-            rbC.AddForce(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = objC.GetComponent<BalletCtrl>();
+            GameObject obj = XFunctions.Instance(m_ballet, pos, rot);
+            Rigidbody rb = obj.GetComponent<Rigidbody>();
+            rb.AddForce(vec * m_shotPower, ForceMode.Impulse);
+            BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
             ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
             ctrl.AddBonusCharm(bonusCharm);
-        }
-        {
-            GameObject objL = XFunctions.Instance(m_ballet, pos, rot);
-            Rigidbody rbL = objL.GetComponent<Rigidbody>();
-            rbL.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = objL.GetComponent<BalletCtrl>();
-            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-            ctrl.AddBonusCharm(bonusCharm);
-        }
-        {
-            GameObject objR = XFunctions.Instance(m_ballet, pos, rot);
-            Rigidbody rbR = objR.GetComponent<Rigidbody>();
-            rbR.AddForce(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = objR.GetComponent<BalletCtrl>();
-            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-            ctrl.AddBonusCharm(bonusCharm);
-        }
+        };
+
+        act.Invoke(this.transform.forward);
+        act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
+        act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
 
         // TODO
         m_magazine.SubBallet(m_costBallet);
@@ -323,30 +313,19 @@ public class TestLauncherCtrl : MonoBehaviour {
 
         int bonusCharm = m_magazine.GetBonusCharmBallet();
 
+        UnityAction<Vector3> act = (vec) => 
         {
-            GameObject objC = XFunctions.Instance(m_balletBouquet, pos, rot);
-            Rigidbody rbC = objC.GetComponent<Rigidbody>();
-            rbC.AddForce(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = objC.GetComponent<BalletCtrl>();
+            GameObject obj = XFunctions.Instance(m_balletBouquet, pos, rot);
+            Rigidbody rb = obj.GetComponent<Rigidbody>();
+            rb.AddForce(vec * m_shotPower, ForceMode.Impulse);
+            BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
             ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
             ctrl.AddBonusCharm(bonusCharm);
-        }
-        {
-            GameObject objL = XFunctions.Instance(m_balletBouquet, pos, rot);
-            Rigidbody rbL = objL.GetComponent<Rigidbody>();
-            rbL.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = objL.GetComponent<BalletCtrl>();
-            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-            ctrl.AddBonusCharm(bonusCharm);
-        }
-        {
-            GameObject objR = XFunctions.Instance(m_balletBouquet, pos, rot);
-            Rigidbody rbR = objR.GetComponent<Rigidbody>();
-            rbR.AddForce(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = objR.GetComponent<BalletCtrl>();
-            ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-            ctrl.AddBonusCharm(bonusCharm);
-        }
+        };
+
+        act.Invoke(this.transform.forward);
+        act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
+        act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
 
         // TODO
         m_magazine.SubBallet(m_costChargeBallet);
