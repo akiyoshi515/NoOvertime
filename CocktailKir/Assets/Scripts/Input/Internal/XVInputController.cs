@@ -109,6 +109,14 @@ namespace XVInputInternal
             return XBGamePad.IsPressed(XBKeyCode.Button.B, m_userCode);
         }
 
+        public bool Dbg_IsShot3Way()
+        {
+#if DEBUG
+            return (XBGamePad.IsPressed(XBKeyCode.Button.RightShoulder, m_userCode));
+#else
+            return false;
+#endif
+        }
     }
 
 }   // End of namespace XVInputInternal

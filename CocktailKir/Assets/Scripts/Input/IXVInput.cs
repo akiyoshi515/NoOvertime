@@ -43,4 +43,9 @@ public interface IXVInput
     /// </summary>
     bool IsReload();
 
+    /// <summary>
+    /// Debug 3Way射撃
+    /// </summary>
+    bool Dbg_IsShot3Way();
+
 }

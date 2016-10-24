@@ -1,11 +1,4 @@
 ﻿
-#define ENABLE_DEBUG_INPUTCTRL
-
-#if DEBUG
-#else
-#undef ENABLE_DEBUG_INPUTCTRL
-#endif
-
 using UnityEngine;
 using System.Collections;
 
@@ -36,15 +29,14 @@ public class UserData : MonoBehaviour
 
     void Awake()
     {
-#if ENABLE_DEBUG_INPUTCTRL
         if (XVInput.GetInterface(m_userID) == null)
         {
+            XLogger.LogWarning("Debug Create XVInputInterface " + userID.ToString() + " : " + inputType.ToString());
             if (!(XVInput.CreateInterface(userID, inputType)))
             {
-                XLogger.LogError("Debug Create XVInputInterface " + userID.ToString() + " : " + inputType.ToString());
+                XLogger.LogError("Error Create XVInputInterface " + userID.ToString() + " : " + inputType.ToString());
             }
         }
-#endif
     }
 
 }

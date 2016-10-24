@@ -30,6 +30,9 @@ public class TestLauncherCtrl : MonoBehaviour {
     private float m_shotPower = 10.0f;
 
     [SerializeField]
+    private float m_shot3WayAngle = 8.0f;
+
+    [SerializeField]
     private float m_knockbackTime = 0.250f;
 
     [SerializeField]
@@ -181,11 +184,27 @@ public class TestLauncherCtrl : MonoBehaviour {
                 {
                     if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.balletNum >= m_costChargeBallet))
                     {
-                        LaunchBouquet();
+                        bool isShot3WayBallet = m_input.Dbg_IsShot3Way();
+                        if (isShot3WayBallet)
+                        {
+                            Launch3WayBouquet();
+                        }
+                        else
+                        {
+                            LaunchBouquet();
+                        }
                     }
                     else if (m_magazine.balletNum >= m_costBallet)
                     {
-                        LaunchBallet();
+                        bool isShot3WayBallet = m_input.Dbg_IsShot3Way();
+                        if (isShot3WayBallet)
+                        {
+                            Launch3WayBallet();
+                        }
+                        else
+                        {
+                            LaunchBallet();
+                        }
                     }
                     else
                     {
@@ -242,4 +261,63 @@ public class TestLauncherCtrl : MonoBehaviour {
         m_knockback += m_knockbackTime;
     }
 
+    private void Launch3WayBallet()
+    {
+        Quaternion rot = this.gameObject.transform.rotation;
+        Vector3 pos = this.transform.position + (rot * m_launchPoint);
+
+        {
+            GameObject objC = XFunctions.Instance(m_ballet, pos, rot);
+            Rigidbody rbC = objC.GetComponent<Rigidbody>();
+            rbC.AddForce(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
+            objC.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        }
+        {
+            GameObject objL = XFunctions.Instance(m_ballet, pos, rot);
+            Rigidbody rbL = objL.GetComponent<Rigidbody>();
+            rbL.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
+            objL.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        }
+        {
+            GameObject objR = XFunctions.Instance(m_ballet, pos, rot);
+            Rigidbody rbR = objR.GetComponent<Rigidbody>();
+            rbR.AddForce(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
+            objR.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        }
+
+        // TODO
+        m_magazine.SubBallet(m_costBallet);
+
+        m_knockback += m_knockbackTime;
+    }
+
+    private void Launch3WayBouquet()
+    {
+        Quaternion rot = this.gameObject.transform.rotation;
+        Vector3 pos = this.transform.position + (rot * m_launchPoint);
+
+        {
+            GameObject objC = XFunctions.Instance(m_balletBouquet, pos, rot);
+            Rigidbody rbC = objC.GetComponent<Rigidbody>();
+            rbC.AddForce(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
+            objC.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        }
+        {
+            GameObject objL = XFunctions.Instance(m_balletBouquet, pos, rot);
+            Rigidbody rbL = objL.GetComponent<Rigidbody>();
+            rbL.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
+            objL.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        }
+        {
+            GameObject objR = XFunctions.Instance(m_balletBouquet, pos, rot);
+            Rigidbody rbR = objR.GetComponent<Rigidbody>();
+            rbR.AddForce(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward * m_shotPower, ForceMode.Impulse);
+            objR.GetComponent<BalletCtrl>().SetUserID(m_parent.GetComponent<UserData>().userID);
+        }
+
+        // TODO
+        m_magazine.SubBallet(m_costChargeBallet);
+
+        m_knockback += m_knockbackTime;
+    }
 }

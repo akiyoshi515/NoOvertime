@@ -44,6 +44,11 @@ namespace XVInputInternal
         {
             return false;
         }
+
+        public bool Dbg_IsShot3Way()
+        {
+            return false;
+        }
     }
 
 }   // End of namespace XVInputInternal
