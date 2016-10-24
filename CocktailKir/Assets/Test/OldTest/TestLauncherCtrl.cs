@@ -80,6 +80,8 @@ public class TestLauncherCtrl : MonoBehaviour {
 
     void Awake()
     {
+        XLogger.LogError("Illegal Awake! TestCS", gameObject);
+
         XLogger.LogValidObject(m_parent == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Parent"), gameObject);
         XLogger.LogValidObject(m_ballet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Ballte"), gameObject);
         XLogger.LogValidObject(m_balletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteBouquet"), gameObject);
