@@ -13,9 +13,10 @@ using AkiVACO.XUnityGameObject;
 public class EditUserLegionSetupper : Editor
 {
     private static bool m_collapsed = true;
-    private static bool m_collapsedBasis = true;
+    private static bool m_collapsedBasis = false;
 
     private static bool m_collapsedUserChar = true;
+    private static bool m_collapsedUserLauncher = true;
     private static bool m_collapsedUserCamera = true;
 
     public override void OnInspectorGUI()
@@ -35,6 +36,12 @@ public class EditUserLegionSetupper : Editor
             {
                 gen.m_moveSpeed = EditorGUILayout.FloatField("移動速度", gen.m_moveSpeed);
                 gen.m_jumpPower = EditorGUILayout.FloatField("ジャンプ力", gen.m_jumpPower);
+            }
+
+            m_collapsedUserLauncher = EditorGUILayout.Foldout(m_collapsedUserLauncher, "ランチャー情報");
+            if (m_collapsedUserLauncher)
+            {
+                gen.m_reloadTime = EditorGUILayout.FloatField("リロード時間", gen.m_reloadTime);
             }
 
             m_collapsedUserCamera = EditorGUILayout.Foldout(m_collapsedUserCamera, "カメラ情報");
@@ -101,6 +108,14 @@ public class EditUserLegionSetupper : Editor
                 moveSpeed.floatValue = setupper.m_moveSpeed;
                 SerializedProperty jumpPower = ser.FindProperty("m_jumpPower");
                 jumpPower.floatValue = setupper.m_jumpPower;
+            });
+
+        UnilUpdatePrefab<LauncherMagazine>(
+            setupper.m_baseUserCtrl,
+            (ser) =>
+            {
+                SerializedProperty reloadTime = ser.FindProperty("m_reloadTime");
+                reloadTime.floatValue = setupper.m_reloadTime;
             });
 
         UnilUpdatePrefab<UserCameraAutoCtrl>(
