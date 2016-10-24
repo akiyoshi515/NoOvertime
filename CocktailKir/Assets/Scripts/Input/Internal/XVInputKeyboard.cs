@@ -76,6 +76,14 @@ namespace XVInputInternal
             return false;
         }
 
+        public bool Dbg_IsShot3Way()
+        {
+#if DEBUG
+            return Input.GetKey(KeyCode.Q);
+#else
+            return false;
+#endif
+        }
     }
 
 }   // End of namespace XVInputInternal
