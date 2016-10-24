@@ -16,6 +16,7 @@ public class EditUserLegionSetupper : Editor
     private static bool m_collapsedBasis = true;
 
     private static bool m_collapsedUserChar = true;
+    private static bool m_collapsedUserCamera = true;
 
     public override void OnInspectorGUI()
     {
@@ -36,8 +37,14 @@ public class EditUserLegionSetupper : Editor
                 gen.m_jumpPower = EditorGUILayout.FloatField("ジャンプ力", gen.m_jumpPower);
             }
 
-        }
+            m_collapsedUserCamera = EditorGUILayout.Foldout(m_collapsedUserCamera, "カメラ情報");
+            if (m_collapsedUserCamera)
+            {
+                gen.m_cameraRotateSpeed = EditorGUILayout.FloatField("自動回転速度", gen.m_cameraRotateSpeed);
+                gen.m_cameraPivotLerpTime = EditorGUILayout.FloatField("カメラ切りかえの時間", gen.m_cameraPivotLerpTime);
+            }
 
+        }
 
         m_collapsedBasis = EditorGUILayout.Foldout(m_collapsedBasis, "BaseObjects");
 
@@ -54,6 +61,8 @@ public class EditUserLegionSetupper : Editor
 
         if (isExecInstance)
         {
+            PrefabUtility.ReplacePrefab(gen.gameObject, PrefabUtility.GetPrefabParent(gen.gameObject));
+
             UpdateUserPrefab(gen);
             CleanupUsers(gen.m_targetLegion);
             InstantiateUsers(gen);
@@ -92,6 +101,16 @@ public class EditUserLegionSetupper : Editor
                 moveSpeed.floatValue = setupper.m_moveSpeed;
                 SerializedProperty jumpPower = ser.FindProperty("m_jumpPower");
                 jumpPower.floatValue = setupper.m_jumpPower;
+            });
+
+        UnilUpdatePrefab<UserCameraAutoCtrl>(
+            setupper.m_baseUserCamera,
+            (ser) =>
+            {
+                SerializedProperty rotateSpeed = ser.FindProperty("m_rotateSpeed");
+                rotateSpeed.floatValue = setupper.m_cameraRotateSpeed;
+                SerializedProperty pivotLerpTime = ser.FindProperty("m_pivotLerpTime");
+                pivotLerpTime.floatValue = setupper.m_cameraPivotLerpTime;
             });
 
     }

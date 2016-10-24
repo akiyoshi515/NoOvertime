@@ -20,5 +20,9 @@ public class UserLegionSetupper : MonoBehaviour
 
     // Launcher Param
 
+    // UserCamera Param
+    public float m_cameraRotateSpeed = 3.0f;
+    public float m_cameraPivotLerpTime = 0.50f;
+
 }
 
