@@ -29,11 +29,6 @@ public interface IXVInput
     bool IsShot();
 
     /// <summary>
-    /// 歩きキーを押しているか？
-    /// </summary>
-    bool IsWalk();
-
-    /// <summary>
     /// 構えキーを押しているか？
     /// </summary>
     bool IsLauncherStance();

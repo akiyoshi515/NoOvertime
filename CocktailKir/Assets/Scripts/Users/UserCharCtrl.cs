@@ -13,7 +13,17 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     private CharAnimateCtrl m_charCtrl = null;
     private UserData m_userdata = null;
     private bool m_isJump = false;
-    private bool m_isWalk = false;
+    private bool m_isLauncherStance = false;
+
+    public bool isLauncherStance 
+    {
+        get { return m_isLauncherStance; }
+    }
+
+    public bool isJumping
+    {
+        get { return m_charCtrl.isJumping; }
+    }
 
     void Start()
     {
@@ -27,9 +37,23 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     {
         if (!m_isJump)
         {
-            m_isJump = m_userdata.input.IsJump();
+            if (!m_charCtrl.isJumping)
+            {
+                if (m_userdata.input.IsLauncherStance())
+                {
+                    m_isLauncherStance = true;
+                }
+                else
+                {
+                    m_isLauncherStance = false;
+                    m_isJump = m_userdata.input.IsJump();
+                }
+            }
+            else
+            {
+                m_isLauncherStance = false;
+            }
         }
-        m_isWalk = m_userdata.input.IsWalk();
     }
 
     void FixedUpdate()
@@ -38,19 +62,17 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         Vector3 camForward = Vector3.zero;
 
         // Input
-        Vector2 vec = m_userdata.input.Move();
-        
+        Vector2 vec = Vector2.zero;
+        if (!isLauncherStance)
+        {
+            vec = m_userdata.input.Move();
+        }
+
         // MoveCamera
         camForward = Vector3.Scale(m_camera.transform.forward, new Vector3(1, 0, 1)).normalized;
         move = vec.y * camForward + vec.x * m_camera.transform.right;
         
-        // Walk
-        if (m_isWalk) 
-        {
-            move *= 0.5f; 
-        }
-
-        m_charCtrl.Move(move, m_isJump, m_isWalk);
+        m_charCtrl.Move(move, m_isJump);
         m_isJump = false;
     }
 
@@ -77,7 +99,7 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     {
         return "Sts " + (
             m_userdata.input.IsLauncherStance() ? 
-            ":Ready" : (m_isWalk ? ":Walking" : "None"));
+            ":Ready" : "None");
     }
 }
 

@@ -30,11 +30,6 @@ namespace XVInputInternal
             return false;
         }
 
-        public bool IsWalk()
-        {
-            return false;
-        }
-
         public bool IsLauncherStance()
         {
             return false;
