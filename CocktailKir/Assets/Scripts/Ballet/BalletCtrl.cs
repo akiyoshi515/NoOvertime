@@ -49,6 +49,11 @@ public class BalletCtrl : MonoBehaviour
         userID = id;
     }
 
+    public void AddBonusCharm(int val)
+    {
+        m_charm += val;
+    }
+
     public void SendHit()
     {
         if (m_isDead)

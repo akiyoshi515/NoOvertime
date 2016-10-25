@@ -44,8 +44,18 @@ public interface IXVInput
     bool IsReload();
 
     /// <summary>
+    /// Debug 弾数無制限
+    /// </summary>
+    bool Dbg_IsUnlimitedBallet();
+
+    /// <summary>
     /// Debug 3Way射撃
     /// </summary>
     bool Dbg_IsShot3Way();
+
+    /// <summary>
+    /// Debug BonusCharm射撃
+    /// </summary>
+    bool Dbg_IsReloadBonusCharm();
 
 }

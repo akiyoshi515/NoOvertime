@@ -45,10 +45,21 @@ namespace XVInputInternal
             return false;
         }
 
+        public bool Dbg_IsUnlimitedBallet()
+        {
+            return false;
+        }
+
         public bool Dbg_IsShot3Way()
         {
             return false;
         }
+
+        public bool Dbg_IsReloadBonusCharm()
+        {
+            return false;
+        }
+
     }
 
 }   // End of namespace XVInputInternal

@@ -76,14 +76,33 @@ namespace XVInputInternal
             return false;
         }
 
-        public bool Dbg_IsShot3Way()
+        public bool Dbg_IsUnlimitedBallet()
         {
 #if DEBUG
-            return Input.GetKey(KeyCode.Q);
+            return Input.GetKeyDown(KeyCode.W);
 #else
             return false;
 #endif
         }
+
+        public bool Dbg_IsShot3Way()
+        {
+#if DEBUG
+            return Input.GetKeyDown(KeyCode.Q);
+#else
+            return false;
+#endif
+        }
+
+        public bool Dbg_IsReloadBonusCharm()
+        {
+#if DEBUG
+            return Input.GetKeyDown(KeyCode.E);
+#else
+            return false;
+#endif
+        }
+
     }
 
 }   // End of namespace XVInputInternal
