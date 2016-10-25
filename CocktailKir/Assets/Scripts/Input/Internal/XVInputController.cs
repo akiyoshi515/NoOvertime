@@ -112,8 +112,8 @@ namespace XVInputInternal
         public bool Dbg_IsUnlimitedBallet()
         {
 #if DEBUG
-            return (XBGamePad.IsPressed(XBKeyCode.Button.RightShoulder, m_userCode)) 
-                && (XBGamePad.IsTriggered(XBKeyCode.Button.Y, m_userCode));
+            return (XBGamePad.IsTriggered(XBKeyCode.Button.RightShoulder, m_userCode)) 
+                && (XBGamePad.GetAxisRaw(XBKeyCode.Axis.Dpad, m_userCode).x >= 1.0f);
 #else
             return false;
 #endif
@@ -122,7 +122,8 @@ namespace XVInputInternal
         public bool Dbg_IsShot3Way()
         {
 #if DEBUG
-            return (XBGamePad.IsPressed(XBKeyCode.Button.RightShoulder, m_userCode));
+            return (XBGamePad.IsTriggered(XBKeyCode.Button.RightShoulder, m_userCode))
+                && (XBGamePad.IsPressed(XBKeyCode.Button.Y, m_userCode));
 #else
             return false;
 #endif
@@ -131,8 +132,8 @@ namespace XVInputInternal
         public bool Dbg_IsReloadBonusCharm()
         {
 #if DEBUG
-            return (XBGamePad.IsPressed(XBKeyCode.Button.RightShoulder, m_userCode))
-                && (XBGamePad.IsTriggered(XBKeyCode.Button.B, m_userCode));
+            return (XBGamePad.IsTriggered(XBKeyCode.Button.RightShoulder, m_userCode))
+                && (XBGamePad.GetAxisRaw(XBKeyCode.Axis.Dpad, m_userCode).x <= -1.0f);
 #else
             return false;
 #endif

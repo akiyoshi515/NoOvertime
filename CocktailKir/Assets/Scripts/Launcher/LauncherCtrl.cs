@@ -130,6 +130,11 @@ public class LauncherCtrl : MonoBehaviour {
             m_magazine.StartUnlimitedBallet(10.0f); // TODO
         }
 
+        if (m_input.Dbg_IsShot3Way())
+        {
+            m_magazine.ReloadBonus3WayBallet(3); // TODO
+        }
+
         if (m_input.Dbg_IsReloadBonusCharm())
         {
             m_magazine.ReloadBonusCharmBallet(6); // TODO
@@ -198,27 +203,11 @@ public class LauncherCtrl : MonoBehaviour {
                 {
                     if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.balletNum >= m_costChargeBallet))
                     {
-                        bool isShot3WayBallet = m_input.Dbg_IsShot3Way();
-                        if (isShot3WayBallet)
-                        {
-                            Launch3WayBouquet();
-                        }
-                        else
-                        {
-                            LaunchBouquet();
-                        }
+                        LaunchBouquet();
                     }
                     else if (m_magazine.balletNum >= m_costBallet)
                     {
-                        bool isShot3WayBallet = m_input.Dbg_IsShot3Way();
-                        if (isShot3WayBallet)
-                        {
-                            Launch3WayBallet();
-                        }
-                        else
-                        {
-                            LaunchBallet();
-                        }
+                        LaunchBallet();
                     }
                     else
                     {
@@ -250,40 +239,6 @@ public class LauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
-        GameObject obj = XFunctions.Instance(m_ballet, pos, rot);
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-        BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
-        ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-        ctrl.AddBonusCharm(m_magazine.GetBonusCharmBallet());
-
-        m_magazine.SubBallet(m_costBallet);
-
-        m_knockback += m_knockbackTime;
-    }
-
-    private void LaunchBouquet()
-    {
-        Quaternion rot = this.gameObject.transform.rotation;
-        Vector3 pos = this.transform.position + (rot * m_launchPoint);
-
-        GameObject obj = XFunctions.Instance(m_balletBouquet, pos, rot);
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
-        BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
-        ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-        ctrl.AddBonusCharm(m_magazine.GetBonusCharmBallet());
-
-        m_magazine.SubBallet(m_costChargeBallet);
-
-        m_knockback += m_knockbackTime;
-    }
-
-    private void Launch3WayBallet()
-    {
-        Quaternion rot = this.gameObject.transform.rotation;
-        Vector3 pos = this.transform.position + (rot * m_launchPoint);
-
         int bonusCharm = m_magazine.GetBonusCharmBallet();
 
         UnityAction<Vector3> act = (vec) =>
@@ -297,8 +252,11 @@ public class LauncherCtrl : MonoBehaviour {
         };
 
         act.Invoke(this.transform.forward);
-        act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
-        act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
+        if (m_magazine.GetBonus3WayBallet())
+        {
+            act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
+            act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
+        }
 
         // TODO
         m_magazine.SubBallet(m_costBallet);
@@ -306,7 +264,7 @@ public class LauncherCtrl : MonoBehaviour {
         m_knockback += m_knockbackTime;
     }
 
-    private void Launch3WayBouquet()
+    private void LaunchBouquet()
     {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
@@ -324,8 +282,11 @@ public class LauncherCtrl : MonoBehaviour {
         };
 
         act.Invoke(this.transform.forward);
-        act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
-        act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
+        if (m_magazine.GetBonus3WayBallet())
+        {
+            act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
+            act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
+        }
 
         // TODO
         m_magazine.SubBallet(m_costChargeBallet);

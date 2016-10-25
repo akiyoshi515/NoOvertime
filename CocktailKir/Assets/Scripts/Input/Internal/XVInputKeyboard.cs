@@ -88,7 +88,7 @@ namespace XVInputInternal
         public bool Dbg_IsShot3Way()
         {
 #if DEBUG
-            return Input.GetKey(KeyCode.Q);
+            return Input.GetKeyDown(KeyCode.Q);
 #else
             return false;
 #endif

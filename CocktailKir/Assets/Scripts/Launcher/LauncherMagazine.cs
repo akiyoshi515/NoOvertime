@@ -72,6 +72,7 @@ public class LauncherMagazine : MonoBehaviour
     private float m_reloadRemainTime = 0.0f;
     private float m_unlimitedBalletRemainTime = 0.0f;
 
+    private int m_bonus3WayBallet = 0;
     private int m_bonusCharmBallet = 0;
 
     void Start()
@@ -173,7 +174,7 @@ public class LauncherMagazine : MonoBehaviour
     }
 
     /// <summary>
-    /// チャーム増加弾のリロード
+    /// チャーム増加弾の使用
     /// </summary>
     /// <returns>チャーム増加値</returns>
     public int GetBonusCharmBallet()
@@ -184,6 +185,10 @@ public class LauncherMagazine : MonoBehaviour
             if (m_bonusCharmBallet <= 0)
             {
                 XLogger.Log("Magazine CharmBallet empty");
+            }
+            else
+            {
+                XLogger.Log("Magazine CharmBallet: " + m_bonusCharmBallet.ToString() + "/6");
             }
             return 1;   // TODO
         }
@@ -201,6 +206,41 @@ public class LauncherMagazine : MonoBehaviour
     {
         m_bonusCharmBallet = val;
         XLogger.Log("Magazine Reload CharmBallet: " + val.ToString());
+    }
+
+    /// <summary>
+    /// 3Way弾の使用
+    /// </summary>
+    /// <returns>使用したか？</returns>
+    public bool GetBonus3WayBallet()
+    {
+        if (m_bonus3WayBallet > 0)
+        {
+            --m_bonus3WayBallet;
+            if (m_bonus3WayBallet <= 0)
+            {
+                XLogger.Log("Magazine 3WayBallet empty");
+            }
+            else
+            {
+                XLogger.Log("Magazine 3WayBallet: " + m_bonus3WayBallet.ToString() + "/3");
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 3WAY弾のリロード
+    /// </summary>
+    /// <param name="val">追加量：(value > 0)</param>
+    public void ReloadBonus3WayBallet(int val)
+    {
+        m_bonus3WayBallet = val;
+        XLogger.Log("Magazine Reload 3WayBallet: " + val.ToString());
     }
 
     public void StartReload(UnityAction callback)
