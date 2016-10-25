@@ -35,7 +35,7 @@ public class CharAnimateMenuCtrl : MonoBehaviour
         m_oriGroundCheckDistance = m_groundCheckDistance;
     }
 
-    public void Move(Vector3 move, bool jump, bool isWalk)
+    public void Move(Vector3 move, bool jump)
     {
         if (move.magnitude > 1.0f)
         {
@@ -50,23 +50,8 @@ public class CharAnimateMenuCtrl : MonoBehaviour
 
         UpdateExTurnRotation();
 
-        if (move != Vector3.zero)
-        {
-            m_animator.SetBool("Moving", true);
-            if (isWalk)
-            {
-                m_animator.SetBool("Walking", true);
-            }
-            else
-            {
-                m_animator.SetBool("Walking", false);
-            }
-        }
-        else
-        {
-            m_animator.SetBool("Moving", false);
-        }
-
+        m_animator.SetFloat("MoveSpeed", move.magnitude);
+        
         if (m_isGrounded)
         {
             UpdateGroundedMovement(vecMove, jump);

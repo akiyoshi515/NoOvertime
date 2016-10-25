@@ -64,6 +64,7 @@ public class LauncherCtrl : MonoBehaviour {
     private GameObject m_efReload = null;
 
     private IXVInput m_input = null;
+    private UserCharCtrl m_charCtrl = null;
 
     private LauncherMagazine m_magazine = null;
 
@@ -110,6 +111,7 @@ public class LauncherCtrl : MonoBehaviour {
         this.transform.Rotate(Vector3.right, m_pitchAngle, Space.Self);
 
         m_input = m_parent.GetComponent<UserData>().input;
+        m_charCtrl = m_parent.GetComponent<UserCharCtrl>();
     }
 	
 	// Update is called once per frame
@@ -118,7 +120,11 @@ public class LauncherCtrl : MonoBehaviour {
         UpdateReloadBallet();
         UpdateShotBallet();
 
-        Vector2 vec = m_input.RotateLauncher();
+        Vector2 vec = Vector2.zero;
+        if (m_charCtrl.isLauncherStance)
+        {
+            vec = m_input.RotateLauncher();
+        }
         m_pitchAngle = (m_pitchAngle + vec.y * m_pitchSpeed * Time.deltaTime).MaxLimited(m_maxPitchAngle).MinLimited(m_minPitchAngle);
         this.transform.localRotation = Quaternion.AngleAxis(-m_pitchAngle, Vector3.right);
 
@@ -168,6 +174,11 @@ public class LauncherCtrl : MonoBehaviour {
         }
         else
         {
+            if (m_charCtrl.isJumping)
+            {
+                return;
+            }
+
             if (!m_magazine.isMax)
             {
                 if (m_input.IsReload())
@@ -191,7 +202,7 @@ public class LauncherCtrl : MonoBehaviour {
             return;
         }
 
-        if (m_input.IsShot())
+        if (m_input.IsShot() && m_charCtrl.isLauncherStance)
         {
             m_chargeTime += Time.deltaTime;
         }

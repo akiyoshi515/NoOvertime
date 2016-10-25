@@ -46,14 +46,7 @@ namespace XVInputInternal
 
         public Vector2 Move()
         {
-            if (IsLauncherStance())
-            {
-                return Vector2.zero;
-            }
-            else
-            {
-                return XBGamePad.GetAxis(XBKeyCode.Axis.LeftStick, m_userCode);
-            }
+            return XBGamePad.GetAxis(XBKeyCode.Axis.LeftStick, m_userCode);
         }
 
         public float RotateCameraH()
@@ -67,15 +60,7 @@ namespace XVInputInternal
 
         public Vector2 RotateLauncher()
         {
-
-            if (IsLauncherStance())
-            {
-                return XBGamePad.GetAxis(XBKeyCode.Axis.LeftStick, m_userCode);
-            }
-            else
-            {
-                return Vector2.zero;
-            }
+            return XBGamePad.GetAxis(XBKeyCode.Axis.LeftStick, m_userCode);
         }
 
         public bool IsJump()
@@ -90,11 +75,6 @@ namespace XVInputInternal
                 return XBGamePad.IsPressed(XBKeyCode.Button.X, m_userCode);
             }
             return false;
-        }
-
-        public bool IsWalk()
-        {
-            return XBGamePad.IsPressed(XBKeyCode.Button.LeftShoulder, m_userCode);
         }
 
         public bool IsLauncherStance()

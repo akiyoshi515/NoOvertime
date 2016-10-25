@@ -18,6 +18,7 @@ public class UserCameraAutoCtrl : MonoBehaviour
     private float m_pivotLerpTime = 0.50f;
 
     private IXVInput m_input = null;
+    private UserCharCtrl m_charCtrl = null;
     private bool m_prevLauncherStance = false;
 
     void Awake()
@@ -32,11 +33,13 @@ public class UserCameraAutoCtrl : MonoBehaviour
         setupper.SetLerpTime(m_pivotLerpTime);
 
         m_input = m_targetUser.GetComponent<UserData>().input;
+        m_charCtrl = m_targetUser.GetComponent<UserCharCtrl>();
     }
 
     void Update()
     {
-        bool bl = m_input.IsLauncherStance();
+        bool bl = m_charCtrl.isLauncherStance;
+
         if (m_prevLauncherStance ^ bl)
         {
             if (bl)

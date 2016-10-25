@@ -16,7 +16,6 @@ public class UserCharMenuCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     private CharAnimateMenuCtrl m_charCtrl = null;
     private UserData m_userdata = null;
     private bool m_isJump = false;
-    private bool m_isWalk = false;
 
     void Start()
     {
@@ -42,7 +41,6 @@ public class UserCharMenuCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         {
 //            m_isJump = m_userdata.input.IsJump();
         }
-        m_isWalk = m_userdata.input.IsWalk();
     }
 
     void FixedUpdate()
@@ -62,13 +60,7 @@ public class UserCharMenuCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         camForward = Vector3.Scale(m_camera.transform.forward, new Vector3(1, 0, 1)).normalized;
         move = vec.y * camForward + vec.x * m_camera.transform.right;
         
-        // Walk
-        if (m_isWalk) 
-        {
-            move *= 0.5f; 
-        }
-
-        m_charCtrl.Move(move, m_isJump, m_isWalk);
+        m_charCtrl.Move(move, m_isJump);
         m_isJump = false;
     }
 
@@ -76,7 +68,7 @@ public class UserCharMenuCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
     {
         return "Sts " + (
             m_userdata.input.IsLauncherStance() ? 
-            ":Ready" : (m_isWalk ? ":Walking" : "None"));
+            ":Ready" : "None");
     }
 }
 

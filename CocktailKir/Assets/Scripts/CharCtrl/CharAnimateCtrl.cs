@@ -28,6 +28,14 @@ public class CharAnimateCtrl : MonoBehaviour
     private float m_forwardAmount;
     private bool m_isGrounded;
 
+    /// <summary>
+    /// ジャンプ中か？
+    /// </summary>
+    public bool isJumping
+    {
+        get { return !m_isGrounded; }
+    }
+
     void Start()
     {
         m_rigidbody = this.GetComponent<Rigidbody>();   
@@ -38,7 +46,7 @@ public class CharAnimateCtrl : MonoBehaviour
         m_oriGroundCheckDistance = m_groundCheckDistance;
     }
 
-    public void Move(Vector3 move, bool jump, bool isWalk)
+    public void Move(Vector3 move, bool jump)
     {
         if (move.magnitude > 1.0f)
         {
@@ -57,8 +65,8 @@ public class CharAnimateCtrl : MonoBehaviour
         v.y = m_rigidbody.velocity.y;
         m_rigidbody.velocity = v;
 
-        m_animator.SetFloat("MoveSpeed", v.magnitude);
-        
+        m_animator.SetFloat("MoveSpeed", move.magnitude);
+
         if (m_isGrounded)
         {
             UpdateGroundedMovement(vecMove, jump);
