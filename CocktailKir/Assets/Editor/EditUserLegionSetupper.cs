@@ -41,6 +41,15 @@ public class EditUserLegionSetupper : Editor
             m_collapsedUserLauncher = EditorGUILayout.Foldout(m_collapsedUserLauncher, "ランチャー情報");
             if (m_collapsedUserLauncher)
             {
+                gen.m_pitchSpeed = EditorGUILayout.FloatField("射撃角制御速度", gen.m_pitchSpeed);
+                gen.m_minPitchAngle = EditorGUILayout.FloatField("最小射撃角度", gen.m_minPitchAngle);
+                gen.m_maxPitchAngle = EditorGUILayout.FloatField("最大射撃角度", gen.m_maxPitchAngle);
+                gen.m_yawSpeed = EditorGUILayout.FloatField("旋回速度", gen.m_yawSpeed);
+                gen.m_shotPower = EditorGUILayout.FloatField("射撃力", gen.m_shotPower);
+                gen.m_shot3WayAngle = EditorGUILayout.FloatField("3Wayの角度差", gen.m_shot3WayAngle);
+                gen.m_knockbackTime = EditorGUILayout.FloatField("ノックバック時間", gen.m_knockbackTime);
+                gen.m_chargeShotTime = EditorGUILayout.FloatField("チャージショット時間", gen.m_chargeShotTime);
+
                 gen.m_reloadTime = EditorGUILayout.FloatField("リロード時間", gen.m_reloadTime);
             }
 
@@ -108,6 +117,28 @@ public class EditUserLegionSetupper : Editor
                 moveSpeed.floatValue = setupper.m_moveSpeed;
                 SerializedProperty jumpPower = ser.FindProperty("m_jumpPower");
                 jumpPower.floatValue = setupper.m_jumpPower;
+            });
+
+        UnilUpdatePrefab<LauncherCtrl>(
+            setupper.m_baseUserCtrl,
+            (ser) =>
+            {
+                SerializedProperty pitchSpeed = ser.FindProperty("m_pitchSpeed");
+                pitchSpeed.floatValue = setupper.m_pitchSpeed;
+                SerializedProperty minPitchAngle = ser.FindProperty("m_minPitchAngle");
+                minPitchAngle.floatValue = setupper.m_minPitchAngle;
+                SerializedProperty maxPitchAngle = ser.FindProperty("m_maxPitchAngle");
+                maxPitchAngle.floatValue = setupper.m_maxPitchAngle;
+                SerializedProperty yawSpeed = ser.FindProperty("m_yawSpeed");
+                yawSpeed.floatValue = setupper.m_yawSpeed;
+                SerializedProperty shotPower = ser.FindProperty("m_shotPower");
+                shotPower.floatValue = setupper.m_shotPower;
+                SerializedProperty shot3WayAngle = ser.FindProperty("m_shot3WayAngle");
+                shot3WayAngle.floatValue = setupper.m_shot3WayAngle;
+                SerializedProperty knockbackTime = ser.FindProperty("m_knockbackTime");
+                knockbackTime.floatValue = setupper.m_knockbackTime;
+                SerializedProperty chargeShotTime = ser.FindProperty("m_chargeShotTime");
+                chargeShotTime.floatValue = setupper.m_chargeShotTime;
             });
 
         UnilUpdatePrefab<LauncherMagazine>(

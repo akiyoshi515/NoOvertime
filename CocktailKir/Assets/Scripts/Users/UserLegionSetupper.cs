@@ -17,8 +17,15 @@ public class UserLegionSetupper : MonoBehaviour
     public float m_moveSpeed = 360.0f;
     public float m_jumpPower = 12.0f;
 
-
     // Launcher Param
+    public float m_pitchSpeed = 30.0f;
+    public float m_minPitchAngle = 0.0f;
+    public float m_maxPitchAngle = 60.0f;
+    public float m_yawSpeed = 30.0f;
+    public float m_shotPower = 15.0f;
+    public float m_shot3WayAngle = 8.0f;
+    public float m_knockbackTime = 0.250f;
+    public float m_chargeShotTime = 1.0f;
 
     // LauncherMagazine Param
     public float m_reloadTime = 2.0f;
