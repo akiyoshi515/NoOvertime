@@ -177,7 +177,7 @@ public class LauncherMagazine : MonoBehaviour
     /// チャーム増加弾の使用
     /// </summary>
     /// <returns>チャーム増加値</returns>
-    public int GetBonusCharmBallet()
+    public int UseBonusCharmBallet()
     {
         if (m_bonusCharmBallet > 0)
         {
@@ -212,7 +212,7 @@ public class LauncherMagazine : MonoBehaviour
     /// 3Way弾の使用
     /// </summary>
     /// <returns>使用したか？</returns>
-    public bool GetBonus3WayBallet()
+    public bool UseBonus3WayBallet()
     {
         if (m_bonus3WayBallet > 0)
         {

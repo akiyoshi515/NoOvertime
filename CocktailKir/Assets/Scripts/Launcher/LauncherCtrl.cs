@@ -239,7 +239,7 @@ public class LauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
-        int bonusCharm = m_magazine.GetBonusCharmBallet();
+        int bonusCharm = m_magazine.UseBonusCharmBallet();
 
         UnityAction<Vector3> act = (vec) =>
         {
@@ -252,7 +252,7 @@ public class LauncherCtrl : MonoBehaviour {
         };
 
         act.Invoke(this.transform.forward);
-        if (m_magazine.GetBonus3WayBallet())
+        if (m_magazine.UseBonus3WayBallet())
         {
             act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
             act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
@@ -269,7 +269,7 @@ public class LauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
-        int bonusCharm = m_magazine.GetBonusCharmBallet();
+        int bonusCharm = m_magazine.UseBonusCharmBallet();
 
         UnityAction<Vector3> act = (vec) => 
         {
@@ -282,7 +282,7 @@ public class LauncherCtrl : MonoBehaviour {
         };
 
         act.Invoke(this.transform.forward);
-        if (m_magazine.GetBonus3WayBallet())
+        if (m_magazine.UseBonus3WayBallet())
         {
             act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
             act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);

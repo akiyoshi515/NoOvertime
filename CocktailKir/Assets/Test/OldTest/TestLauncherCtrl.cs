@@ -257,7 +257,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
         BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
         ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-        ctrl.AddBonusCharm(m_magazine.GetBonusCharmBallet());
+        ctrl.AddBonusCharm(m_magazine.UseBonusCharmBallet());
 
         m_magazine.SubBallet(m_costBallet);
 
@@ -274,7 +274,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         rb.AddForce(this.transform.forward * m_shotPower, ForceMode.Impulse);
         BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
         ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
-        ctrl.AddBonusCharm(m_magazine.GetBonusCharmBallet());
+        ctrl.AddBonusCharm(m_magazine.UseBonusCharmBallet());
 
         m_magazine.SubBallet(m_costChargeBallet);
 
@@ -286,7 +286,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
-        int bonusCharm = m_magazine.GetBonusCharmBallet();
+        int bonusCharm = m_magazine.UseBonusCharmBallet();
 
         UnityAction<Vector3> act = (vec) =>
         {
@@ -313,7 +313,7 @@ public class TestLauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
-        int bonusCharm = m_magazine.GetBonusCharmBallet();
+        int bonusCharm = m_magazine.UseBonusCharmBallet();
 
         UnityAction<Vector3> act = (vec) => 
         {
