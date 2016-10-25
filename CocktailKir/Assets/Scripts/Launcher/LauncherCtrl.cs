@@ -170,7 +170,7 @@ public class LauncherCtrl : MonoBehaviour {
         {
             if (!m_magazine.isMax)
             {
-                if ((m_input.IsLauncherStance()) && (m_input.IsReload()))
+                if (m_input.IsReload())
                 {
                     StartReload();
                 }

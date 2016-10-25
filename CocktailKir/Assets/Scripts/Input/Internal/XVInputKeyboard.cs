@@ -69,11 +69,7 @@ namespace XVInputInternal
 
         public bool IsReload()
         {
-            if (IsLauncherStance())
-            {
-                return Input.GetKey(KeyCode.X);
-            }
-            return false;
+            return Input.GetKeyDown(KeyCode.X);
         }
 
         public bool Dbg_IsUnlimitedBallet()

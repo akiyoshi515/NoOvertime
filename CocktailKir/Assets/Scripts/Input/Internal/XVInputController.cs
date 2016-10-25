@@ -106,7 +106,7 @@ namespace XVInputInternal
 
         public bool IsReload()
         {
-            return XBGamePad.IsPressed(XBKeyCode.Button.B, m_userCode);
+            return XBGamePad.IsTriggered(XBKeyCode.Button.B, m_userCode);
         }
 
         public bool Dbg_IsUnlimitedBallet()
