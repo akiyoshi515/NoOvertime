@@ -57,23 +57,8 @@ public class CharAnimateCtrl : MonoBehaviour
         v.y = m_rigidbody.velocity.y;
         m_rigidbody.velocity = v;
 
-        if (move != Vector3.zero)
-        {
-            m_animator.SetBool("Moving", true);
-            if (isWalk)
-            {
-                m_animator.SetBool("Walking", true);
-            }
-            else
-            {
-                m_animator.SetBool("Walking", false);
-            }
-        }
-        else
-        {
-            m_animator.SetBool("Moving", false);
-        }
-
+        m_animator.SetFloat("MoveSpeed", v.magnitude);
+        
         if (m_isGrounded)
         {
             UpdateGroundedMovement(vecMove, jump);
