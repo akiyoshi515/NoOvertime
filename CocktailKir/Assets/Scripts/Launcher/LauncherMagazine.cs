@@ -13,7 +13,7 @@ public class LauncherMagazine : MonoBehaviour
     private float m_reloadTime = 1.0f;
 
     /// <summary>
-    /// 弾数
+    /// 残弾数
     /// </summary>
     [SerializeField]
     private int m_balletNum = 0;
@@ -71,9 +71,59 @@ public class LauncherMagazine : MonoBehaviour
     private XUnityEvent m_callbackReloaded = new XUnityEvent();
     private float m_reloadRemainTime = 0.0f;
     private float m_unlimitedBalletRemainTime = 0.0f;
+    private float m_unlimitedBalletStartTime = 1.0f;
+
+    /// <summary>
+    /// リロードの残り時間
+    /// </summary>
+    public float reloadRemainTime
+    {
+        get { return m_reloadRemainTime; }
+    }
+
+    /// <summary>
+    /// リロードの進捗率（0.0 -> 1.0）
+    /// </summary>
+    public float reloadTimeRate
+    {
+        get { return (m_reloadTime - m_reloadRemainTime) * (1.0f / m_reloadTime); }
+    }
+
+    /// <summary>
+    /// 弾数無制限の残り時間
+    /// </summary>
+    public float unlimitedBalletRemainTime
+    {
+        get { return m_unlimitedBalletRemainTime; }
+    }
+
+    /// <summary>
+    /// 弾数無制限の残り時間（割合）（1.0 -> 0.0）
+    /// </summary>
+    public float unlimitedBalletTimeRate
+    {
+        get { return m_unlimitedBalletRemainTime * (1.0f / m_unlimitedBalletStartTime); }
+    }
 
     private int m_bonus3WayBallet = 0;
+
+    /// <summary>
+    /// 3Wayの残り弾数
+    /// </summary>
+    public int bonus3WayBallet
+    {
+        get { return m_bonus3WayBallet; }
+    }
+
     private int m_bonusCharmBallet = 0;
+
+    /// <summary>
+    /// チャームアップの残り弾数
+    /// </summary>
+    public int bonusCharmBallet
+    {
+        get { return m_bonusCharmBallet; }
+    }
 
     void Start()
     {
@@ -263,6 +313,7 @@ public class LauncherMagazine : MonoBehaviour
     public void StartUnlimitedBallet(float time)
     {
         m_unlimitedBalletRemainTime = time;
+        m_unlimitedBalletStartTime = time;
         isUnlimitedBallet = true;
         XLogger.Log("Magazine Start UnlimitedBallet");
     }
