@@ -9,6 +9,8 @@ public class UserLegionSetupper : MonoBehaviour
     // Basis Object
     public GameObject m_baseUserCtrl = null;
     public GameObject[] m_baseUserMesh = new GameObject[4];
+    public GameObject[] m_baseUserUIUserNo = new GameObject[4];
+    public GameObject[] m_baseUserUIMagazine = new GameObject[4];
 
     public GameObject m_baseUserCamera = null;
 

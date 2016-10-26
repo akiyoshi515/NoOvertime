@@ -72,10 +72,32 @@ public class EditUserLegionSetupper : Editor
             () =>
             {
                 UpdateEditorObjectField("UserCtrl", ref gen.m_baseUserCtrl);
+
+                EditorGUILayout.LabelField("UserMesh");
+                EditorGUI.indentLevel++;
                 UpdateEditorObjectField("UserMeshP1", ref gen.m_baseUserMesh[0]);
                 UpdateEditorObjectField("UserMeshP2", ref gen.m_baseUserMesh[1]);
                 UpdateEditorObjectField("UserMeshP3", ref gen.m_baseUserMesh[2]);
                 UpdateEditorObjectField("UserMeshP4", ref gen.m_baseUserMesh[3]);
+                EditorGUI.indentLevel--;
+
+                EditorGUILayout.LabelField("UI UserNo");
+                EditorGUI.indentLevel++;
+                UpdateEditorObjectField("UserNoP1", ref gen.m_baseUserUIUserNo[0]);
+                UpdateEditorObjectField("UserNoP2", ref gen.m_baseUserUIUserNo[1]);
+                UpdateEditorObjectField("UserNoP3", ref gen.m_baseUserUIUserNo[2]);
+                UpdateEditorObjectField("UserNoP4", ref gen.m_baseUserUIUserNo[3]);
+                EditorGUI.indentLevel--;
+
+                EditorGUILayout.LabelField("UI Magazine");
+                EditorGUI.indentLevel++;
+                UpdateEditorObjectField("MagazineP1", ref gen.m_baseUserUIMagazine[0]);
+                UpdateEditorObjectField("MagazineP2", ref gen.m_baseUserUIMagazine[1]);
+                UpdateEditorObjectField("MagazineP3", ref gen.m_baseUserUIMagazine[2]);
+                UpdateEditorObjectField("MagazineP4", ref gen.m_baseUserUIMagazine[3]);
+                EditorGUI.indentLevel--;
+
+                EditorGUILayout.Space();
                 UpdateEditorObjectField("UserCamera", ref gen.m_baseUserCamera);
             });
 
@@ -183,23 +205,45 @@ public class EditUserLegionSetupper : Editor
 
         UnityAction<int> act = (idx) => 
         {
+            // Target Unit
             GameObject unit = targetLegion.GetChild(idx);
-            GameObject basemesh = setupper.m_baseUserMesh[idx];
+
+            // Ctrl
             GameObject ctrl = GameObject.Instantiate(setupper.m_baseUserCtrl);
             ctrl.name = setupper.m_baseUserCtrl.name;
-            GameObject mesh = GameObject.Instantiate(basemesh);
+
+            // Mesh
+            GameObject mesh = GameObject.Instantiate(setupper.m_baseUserMesh[idx]);
             mesh.name = "Mesh";
+
+            // UI UserNo
+            GameObject uiUserNo = GameObject.Instantiate(setupper.m_baseUserUIUserNo[idx]);
+            uiUserNo.name = "UIUserNo";
+            uiUserNo.SetParent(ctrl, false);
+
+            // UI Magazine
+            GameObject uiMagazine = GameObject.Instantiate(setupper.m_baseUserUIMagazine[idx]);
+            uiMagazine.name = "UIMagazine";
+            uiMagazine.SetParent(ctrl, false);
+
+            // Switch Mesh
             GameObject defmesh = ctrl.FindChild("DefMesh");
             int meshindex = defmesh.transform.GetSiblingIndex();
             GameObject.DestroyImmediate(defmesh);
             mesh.SetParent(ctrl, false);
-            ctrl.SetParent(unit, false);
             mesh.transform.SetSiblingIndex(meshindex);  // DefMeshと同じヒエラルキー順位にソート
 
+            // Set Ctrl for TargerUnit
+            ctrl.SetParent(unit, false);
+
+            // Camera
             GameObject camera = GameObject.Instantiate(setupper.m_baseUserCamera);
             camera.name = setupper.m_baseUserCamera.name;
+
+            // Set Camera for TargerUnit
             camera.SetParent(unit, false);
 
+            // Setup Parameter
             SetupUnit(ctrl, camera, idx);
         };
 
