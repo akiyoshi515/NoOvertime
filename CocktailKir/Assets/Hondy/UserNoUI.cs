@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UserNameUI : MonoBehaviour {
+public class UserNoUI : MonoBehaviour {
 
     ///
     /// <summary>   Userの名前.   </summary>
