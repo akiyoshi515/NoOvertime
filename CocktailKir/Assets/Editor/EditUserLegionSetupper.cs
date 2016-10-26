@@ -9,15 +9,17 @@ using System.Collections;
 
 using AkiVACO.XUnityGameObject;
 
+using AkiVACO.EditorUtil;
+
 [CustomEditor(typeof(UserLegionSetupper))]
 public class EditUserLegionSetupper : Editor
 {
-    private static bool m_collapsed = true;
-    private static bool m_collapsedBasis = false;
+    private static EditorUtilFoldout m_collapsed = new EditorUtilFoldout(true);
+    private static EditorUtilFoldout m_collapsedBasis = new EditorUtilFoldout();
 
-    private static bool m_collapsedUserChar = true;
-    private static bool m_collapsedUserLauncher = true;
-    private static bool m_collapsedUserCamera = true;
+    private static EditorUtilFoldout m_collapsedUserChar = new EditorUtilFoldout(true);
+    private static EditorUtilFoldout m_collapsedUserLauncher = new EditorUtilFoldout(true);
+    private static EditorUtilFoldout m_collapsedUserCamera = new EditorUtilFoldout(true);
 
     public override void OnInspectorGUI()
     {
@@ -27,53 +29,55 @@ public class EditUserLegionSetupper : Editor
 
         bool isExecInstance = GUILayout.Button("セットアップ");
 
-        m_collapsed = EditorGUILayout.Foldout(m_collapsed, "Setup情報");
-
-        if (m_collapsed) 
-        {
-            m_collapsedUserChar = EditorGUILayout.Foldout(m_collapsedUserChar, "UserChar情報");
-            if (m_collapsedUserChar)
+        m_collapsed.Invoke(
+            "Setup情報",
+            () =>
             {
-                gen.m_moveSpeed = EditorGUILayout.FloatField("移動速度", gen.m_moveSpeed);
-                gen.m_jumpPower = EditorGUILayout.FloatField("ジャンプ力", gen.m_jumpPower);
-            }
+                m_collapsedUserChar.Invoke(
+                    "UserChar情報",
+                    () =>
+                    {
+                        gen.m_moveSpeed = EditorGUILayout.FloatField("移動速度", gen.m_moveSpeed);
+                        gen.m_jumpPower = EditorGUILayout.FloatField("ジャンプ力", gen.m_jumpPower);
+                    });
 
-            m_collapsedUserLauncher = EditorGUILayout.Foldout(m_collapsedUserLauncher, "ランチャー情報");
-            if (m_collapsedUserLauncher)
+                m_collapsedUserLauncher.Invoke(
+                    "ランチャー情報",
+                    () =>
+                    {
+                        gen.m_pitchSpeed = EditorGUILayout.FloatField("射撃角制御速度", gen.m_pitchSpeed);
+                        gen.m_minPitchAngle = EditorGUILayout.FloatField("最小射撃角度", gen.m_minPitchAngle);
+                        gen.m_maxPitchAngle = EditorGUILayout.FloatField("最大射撃角度", gen.m_maxPitchAngle);
+                        gen.m_yawSpeed = EditorGUILayout.FloatField("旋回速度", gen.m_yawSpeed);
+                        gen.m_shotPower = EditorGUILayout.FloatField("射撃力", gen.m_shotPower);
+                        gen.m_shot3WayAngle = EditorGUILayout.FloatField("3Wayの角度差", gen.m_shot3WayAngle);
+                        gen.m_knockbackTime = EditorGUILayout.FloatField("ノックバック時間", gen.m_knockbackTime);
+                        gen.m_chargeShotTime = EditorGUILayout.FloatField("チャージショット時間", gen.m_chargeShotTime);
+
+                        gen.m_reloadTime = EditorGUILayout.FloatField("リロード時間", gen.m_reloadTime);
+                    });
+
+                m_collapsedUserCamera.Invoke(
+                    "カメラ情報",
+                    () =>
+                    {
+                        gen.m_cameraRotateSpeed = EditorGUILayout.FloatField("自動回転速度", gen.m_cameraRotateSpeed);
+                        gen.m_cameraPivotLerpTime = EditorGUILayout.FloatField("カメラ切りかえの時間", gen.m_cameraPivotLerpTime);
+                    });
+
+            });
+
+        m_collapsedBasis.Invoke(
+            "BaseObjects",
+            () =>
             {
-                gen.m_pitchSpeed = EditorGUILayout.FloatField("射撃角制御速度", gen.m_pitchSpeed);
-                gen.m_minPitchAngle = EditorGUILayout.FloatField("最小射撃角度", gen.m_minPitchAngle);
-                gen.m_maxPitchAngle = EditorGUILayout.FloatField("最大射撃角度", gen.m_maxPitchAngle);
-                gen.m_yawSpeed = EditorGUILayout.FloatField("旋回速度", gen.m_yawSpeed);
-                gen.m_shotPower = EditorGUILayout.FloatField("射撃力", gen.m_shotPower);
-                gen.m_shot3WayAngle = EditorGUILayout.FloatField("3Wayの角度差", gen.m_shot3WayAngle);
-                gen.m_knockbackTime = EditorGUILayout.FloatField("ノックバック時間", gen.m_knockbackTime);
-                gen.m_chargeShotTime = EditorGUILayout.FloatField("チャージショット時間", gen.m_chargeShotTime);
-
-                gen.m_reloadTime = EditorGUILayout.FloatField("リロード時間", gen.m_reloadTime);
-            }
-
-            m_collapsedUserCamera = EditorGUILayout.Foldout(m_collapsedUserCamera, "カメラ情報");
-            if (m_collapsedUserCamera)
-            {
-                gen.m_cameraRotateSpeed = EditorGUILayout.FloatField("自動回転速度", gen.m_cameraRotateSpeed);
-                gen.m_cameraPivotLerpTime = EditorGUILayout.FloatField("カメラ切りかえの時間", gen.m_cameraPivotLerpTime);
-            }
-
-        }
-
-        m_collapsedBasis = EditorGUILayout.Foldout(m_collapsedBasis, "BaseObjects");
-
-        if (m_collapsedBasis)
-        {
-            UpdateEditorObjectField("UserCtrl", ref gen.m_baseUserCtrl);
-            UpdateEditorObjectField("UserMeshP1", ref gen.m_baseUserMesh[0]);
-            UpdateEditorObjectField("UserMeshP2", ref gen.m_baseUserMesh[1]);
-            UpdateEditorObjectField("UserMeshP3", ref gen.m_baseUserMesh[2]);
-            UpdateEditorObjectField("UserMeshP4", ref gen.m_baseUserMesh[3]);
-            UpdateEditorObjectField("UserCamera", ref gen.m_baseUserCamera);
-
-        }
+                UpdateEditorObjectField("UserCtrl", ref gen.m_baseUserCtrl);
+                UpdateEditorObjectField("UserMeshP1", ref gen.m_baseUserMesh[0]);
+                UpdateEditorObjectField("UserMeshP2", ref gen.m_baseUserMesh[1]);
+                UpdateEditorObjectField("UserMeshP3", ref gen.m_baseUserMesh[2]);
+                UpdateEditorObjectField("UserMeshP4", ref gen.m_baseUserMesh[3]);
+                UpdateEditorObjectField("UserCamera", ref gen.m_baseUserCamera);
+            });
 
         if (isExecInstance)
         {
