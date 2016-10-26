@@ -64,7 +64,7 @@ public class SpriteEventManager : MonoBehaviour {
         int i = 0;
         while (m_remainingEventKeyList[i].Time < m_deltaTime)
         {
-            m_remainingEventKeyList[i].EventAction.Action();
+         //   m_remainingEventKeyList[i].EventAction.Action();
         }
     }
 }
