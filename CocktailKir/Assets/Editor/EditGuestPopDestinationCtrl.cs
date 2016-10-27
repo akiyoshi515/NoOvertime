@@ -23,8 +23,15 @@ public class EditGuestPopDestinationCtrl : Editor
 
         {
             float radius = EditorGUILayout.FloatField("直径", gen.m_radius);
-            Transform transEditMesh = gen.transform.FindChild("EditMesh").transform;
-            transEditMesh.localScale = new Vector3(radius, transEditMesh.localScale.y, radius);
+            Transform transEditMesh = gen.transform.FindChild("EditMesh");
+            if (transEditMesh != null)
+            {
+                transEditMesh.localScale = new Vector3(radius, transEditMesh.localScale.y, radius);
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("EditMeshがありません", MessageType.Warning);
+            }
             gen.m_radius = radius;
         }
 
@@ -56,7 +63,7 @@ public class EditGuestPopDestinationCtrl : Editor
             "戦略データ",
             () =>
             {
-                int size = EditorGUILayout.IntField("個数", gen.m_slotStrategy.Length);
+                int size = EditorGUILayout.IntField("個数", gen.m_slotStrategy.Length).MinLimitedZero();
                 if (gen.m_slotStrategy.Length != size)
                 {
                     GuestPopDestinationCtrl.StrategySlot[] newParam = new GuestPopDestinationCtrl.StrategySlot[size];
@@ -73,16 +80,27 @@ public class EditGuestPopDestinationCtrl : Editor
                     gen.m_slotStrategy = newParam;
                 }
 
+                if (gen.m_slotStrategy.Length == 0)
+                {
+                    EditorGUILayout.HelpBox("戦略Slotが設定されていません", MessageType.Error);
+                }
                 for (int i = 0; i < gen.m_slotStrategy.Length; ++i)
                 {
                     EditorGUILayout.LabelField("戦略Slot" + (i + 1).ToString());
                     EditorGUI.indentLevel++;
                     GuestPopStrategy.StrategyType selectedType = (GuestPopStrategy.StrategyType)EditorGUILayout.EnumPopup(
                         "戦略タイプ", gen.m_slotStrategy[i].m_strategy.ToStrategyType());
-
+                    bool isNewcomer = true;
+                    if (gen.m_slotStrategy[i].m_strategy != null)
+                    {
+                        if (gen.m_slotStrategy[i].m_strategy.ToStrategyType() == selectedType)
+                        {
+                            isNewcomer = false;
+                        }
+                    }
                     gen.m_slotStrategy[i].m_strategy = GuestPopStrategy.CreatePopStrategy(selectedType);
                     gen.m_slotStrategy[i].m_time = EditorGUILayout.FloatField("実行時間", gen.m_slotStrategy[i].m_time);
-                    EditStrategySlotValues(ref gen.m_slotStrategy[i]);
+                    EditStrategySlotValues(ref gen.m_slotStrategy[i], isNewcomer);
                     EditorGUI.indentLevel--;
                 }
 
@@ -95,6 +113,10 @@ public class EditGuestPopDestinationCtrl : Editor
             () =>
             {
                 GuestPopPointerCtrl[] table = gen.GetComponentsInChildren<GuestPopPointerCtrl>();
+                if (table.Length == 0)
+                {
+                    EditorGUILayout.HelpBox("PopPointが設定されていません", MessageType.Error);
+                }
                 foreach (GuestPopPointerCtrl unit in table)
                 {
                     EditorGUILayout.ObjectField("PopPointer", unit.gameObject, typeof(GameObject), false);
@@ -104,7 +126,7 @@ public class EditGuestPopDestinationCtrl : Editor
             });
     }
 
-    private void EditStrategySlotValues(ref GuestPopDestinationCtrl.StrategySlot slot)
+    private void EditStrategySlotValues(ref GuestPopDestinationCtrl.StrategySlot slot, bool isNewcomer)
     {
         switch(slot.m_strategy.ToStrategyType())
         {
@@ -113,10 +135,13 @@ public class EditGuestPopDestinationCtrl : Editor
                 slot.m_fvalues = null;
                 break;
             case GuestPopStrategy.StrategyType.Standard:
-                slot.m_fvalues = new float[1];
-                slot.m_values = new int[1];
-                slot.m_fvalues[0] = EditorGUILayout.FloatField("出現間隔", slot.m_fvalues[0]);
-                slot.m_values[0] = EditorGUILayout.IntField("同時出現数", slot.m_values[0]);
+                if (isNewcomer)
+                {
+                    slot.m_fvalues = new float[1];
+                    slot.m_values = new int[1];
+                }
+                slot.m_fvalues[0] = EditorGUILayout.FloatField("出現間隔(Sec)", slot.m_fvalues[0]);
+                slot.m_values[0] = EditorGUILayout.IntField("同時出現数(Num)", slot.m_values[0]).MinLimitedOne();
                 break;
         }
     }
