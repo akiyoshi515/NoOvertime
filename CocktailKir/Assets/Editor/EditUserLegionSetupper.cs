@@ -9,15 +9,17 @@ using System.Collections;
 
 using AkiVACO.XUnityGameObject;
 
+using AkiVACO.EditorUtil;
+
 [CustomEditor(typeof(UserLegionSetupper))]
 public class EditUserLegionSetupper : Editor
 {
-    private static bool m_collapsed = true;
-    private static bool m_collapsedBasis = false;
+    private static EditorUtilFoldout m_collapsed = new EditorUtilFoldout(true);
+    private static EditorUtilFoldout m_collapsedBasis = new EditorUtilFoldout();
 
-    private static bool m_collapsedUserChar = true;
-    private static bool m_collapsedUserLauncher = true;
-    private static bool m_collapsedUserCamera = true;
+    private static EditorUtilFoldout m_collapsedUserChar = new EditorUtilFoldout(true);
+    private static EditorUtilFoldout m_collapsedUserLauncher = new EditorUtilFoldout(true);
+    private static EditorUtilFoldout m_collapsedUserCamera = new EditorUtilFoldout(true);
 
     public override void OnInspectorGUI()
     {
@@ -27,53 +29,77 @@ public class EditUserLegionSetupper : Editor
 
         bool isExecInstance = GUILayout.Button("セットアップ");
 
-        m_collapsed = EditorGUILayout.Foldout(m_collapsed, "Setup情報");
-
-        if (m_collapsed) 
-        {
-            m_collapsedUserChar = EditorGUILayout.Foldout(m_collapsedUserChar, "UserChar情報");
-            if (m_collapsedUserChar)
+        m_collapsed.Invoke(
+            "Setup情報",
+            () =>
             {
-                gen.m_moveSpeed = EditorGUILayout.FloatField("移動速度", gen.m_moveSpeed);
-                gen.m_jumpPower = EditorGUILayout.FloatField("ジャンプ力", gen.m_jumpPower);
-            }
+                m_collapsedUserChar.Invoke(
+                    "UserChar情報",
+                    () =>
+                    {
+                        gen.m_moveSpeed = EditorGUILayout.FloatField("移動速度", gen.m_moveSpeed);
+                        gen.m_jumpPower = EditorGUILayout.FloatField("ジャンプ力", gen.m_jumpPower);
+                    });
 
-            m_collapsedUserLauncher = EditorGUILayout.Foldout(m_collapsedUserLauncher, "ランチャー情報");
-            if (m_collapsedUserLauncher)
+                m_collapsedUserLauncher.Invoke(
+                    "ランチャー情報",
+                    () =>
+                    {
+                        gen.m_pitchSpeed = EditorGUILayout.FloatField("射撃角制御速度", gen.m_pitchSpeed);
+                        gen.m_minPitchAngle = EditorGUILayout.FloatField("最小射撃角度", gen.m_minPitchAngle);
+                        gen.m_maxPitchAngle = EditorGUILayout.FloatField("最大射撃角度", gen.m_maxPitchAngle);
+                        gen.m_yawSpeed = EditorGUILayout.FloatField("旋回速度", gen.m_yawSpeed);
+                        gen.m_shotPower = EditorGUILayout.FloatField("射撃力", gen.m_shotPower);
+                        gen.m_shot3WayAngle = EditorGUILayout.FloatField("3Wayの角度差", gen.m_shot3WayAngle);
+                        gen.m_knockbackTime = EditorGUILayout.FloatField("ノックバック時間", gen.m_knockbackTime);
+                        gen.m_chargeShotTime = EditorGUILayout.FloatField("チャージショット時間", gen.m_chargeShotTime);
+
+                        gen.m_reloadTime = EditorGUILayout.FloatField("リロード時間", gen.m_reloadTime);
+                    });
+
+                m_collapsedUserCamera.Invoke(
+                    "カメラ情報",
+                    () =>
+                    {
+                        gen.m_cameraRotateSpeed = EditorGUILayout.FloatField("自動回転速度", gen.m_cameraRotateSpeed);
+                        gen.m_cameraPivotLerpTime = EditorGUILayout.FloatField("カメラ切りかえの時間", gen.m_cameraPivotLerpTime);
+                    });
+
+            });
+
+        m_collapsedBasis.Invoke(
+            "BaseObjects",
+            () =>
             {
-                gen.m_pitchSpeed = EditorGUILayout.FloatField("射撃角制御速度", gen.m_pitchSpeed);
-                gen.m_minPitchAngle = EditorGUILayout.FloatField("最小射撃角度", gen.m_minPitchAngle);
-                gen.m_maxPitchAngle = EditorGUILayout.FloatField("最大射撃角度", gen.m_maxPitchAngle);
-                gen.m_yawSpeed = EditorGUILayout.FloatField("旋回速度", gen.m_yawSpeed);
-                gen.m_shotPower = EditorGUILayout.FloatField("射撃力", gen.m_shotPower);
-                gen.m_shot3WayAngle = EditorGUILayout.FloatField("3Wayの角度差", gen.m_shot3WayAngle);
-                gen.m_knockbackTime = EditorGUILayout.FloatField("ノックバック時間", gen.m_knockbackTime);
-                gen.m_chargeShotTime = EditorGUILayout.FloatField("チャージショット時間", gen.m_chargeShotTime);
+                UpdateEditorObjectField("UserCtrl", ref gen.m_baseUserCtrl);
 
-                gen.m_reloadTime = EditorGUILayout.FloatField("リロード時間", gen.m_reloadTime);
-            }
+                EditorGUILayout.LabelField("UserMesh");
+                EditorGUI.indentLevel++;
+                UpdateEditorObjectField("UserMeshP1", ref gen.m_baseUserMesh[0]);
+                UpdateEditorObjectField("UserMeshP2", ref gen.m_baseUserMesh[1]);
+                UpdateEditorObjectField("UserMeshP3", ref gen.m_baseUserMesh[2]);
+                UpdateEditorObjectField("UserMeshP4", ref gen.m_baseUserMesh[3]);
+                EditorGUI.indentLevel--;
 
-            m_collapsedUserCamera = EditorGUILayout.Foldout(m_collapsedUserCamera, "カメラ情報");
-            if (m_collapsedUserCamera)
-            {
-                gen.m_cameraRotateSpeed = EditorGUILayout.FloatField("自動回転速度", gen.m_cameraRotateSpeed);
-                gen.m_cameraPivotLerpTime = EditorGUILayout.FloatField("カメラ切りかえの時間", gen.m_cameraPivotLerpTime);
-            }
+                EditorGUILayout.LabelField("UI UserNo");
+                EditorGUI.indentLevel++;
+                UpdateEditorObjectField("UserNoP1", ref gen.m_baseUserUIUserNo[0]);
+                UpdateEditorObjectField("UserNoP2", ref gen.m_baseUserUIUserNo[1]);
+                UpdateEditorObjectField("UserNoP3", ref gen.m_baseUserUIUserNo[2]);
+                UpdateEditorObjectField("UserNoP4", ref gen.m_baseUserUIUserNo[3]);
+                EditorGUI.indentLevel--;
 
-        }
+                EditorGUILayout.LabelField("UI Magazine");
+                EditorGUI.indentLevel++;
+                UpdateEditorObjectField("MagazineP1", ref gen.m_baseUserUIMagazine[0]);
+                UpdateEditorObjectField("MagazineP2", ref gen.m_baseUserUIMagazine[1]);
+                UpdateEditorObjectField("MagazineP3", ref gen.m_baseUserUIMagazine[2]);
+                UpdateEditorObjectField("MagazineP4", ref gen.m_baseUserUIMagazine[3]);
+                EditorGUI.indentLevel--;
 
-        m_collapsedBasis = EditorGUILayout.Foldout(m_collapsedBasis, "BaseObjects");
-
-        if (m_collapsedBasis)
-        {
-            UpdateEditorObjectField("UserCtrl", ref gen.m_baseUserCtrl);
-            UpdateEditorObjectField("UserMeshP1", ref gen.m_baseUserMesh[0]);
-            UpdateEditorObjectField("UserMeshP2", ref gen.m_baseUserMesh[1]);
-            UpdateEditorObjectField("UserMeshP3", ref gen.m_baseUserMesh[2]);
-            UpdateEditorObjectField("UserMeshP4", ref gen.m_baseUserMesh[3]);
-            UpdateEditorObjectField("UserCamera", ref gen.m_baseUserCamera);
-
-        }
+                EditorGUILayout.Space();
+                UpdateEditorObjectField("UserCamera", ref gen.m_baseUserCamera);
+            });
 
         if (isExecInstance)
         {
@@ -179,23 +205,45 @@ public class EditUserLegionSetupper : Editor
 
         UnityAction<int> act = (idx) => 
         {
+            // Target Unit
             GameObject unit = targetLegion.GetChild(idx);
-            GameObject basemesh = setupper.m_baseUserMesh[idx];
+
+            // Ctrl
             GameObject ctrl = GameObject.Instantiate(setupper.m_baseUserCtrl);
             ctrl.name = setupper.m_baseUserCtrl.name;
-            GameObject mesh = GameObject.Instantiate(basemesh);
+
+            // Mesh
+            GameObject mesh = GameObject.Instantiate(setupper.m_baseUserMesh[idx]);
             mesh.name = "Mesh";
+
+            // UI UserNo
+            GameObject uiUserNo = GameObject.Instantiate(setupper.m_baseUserUIUserNo[idx]);
+            uiUserNo.name = "UIUserNo";
+            uiUserNo.SetParent(ctrl, false);
+
+            // UI Magazine
+            GameObject uiMagazine = GameObject.Instantiate(setupper.m_baseUserUIMagazine[idx]);
+            uiMagazine.name = "UIMagazine";
+            uiMagazine.SetParent(ctrl, false);
+
+            // Switch Mesh
             GameObject defmesh = ctrl.FindChild("DefMesh");
             int meshindex = defmesh.transform.GetSiblingIndex();
             GameObject.DestroyImmediate(defmesh);
             mesh.SetParent(ctrl, false);
-            ctrl.SetParent(unit, false);
             mesh.transform.SetSiblingIndex(meshindex);  // DefMeshと同じヒエラルキー順位にソート
 
+            // Set Ctrl for TargerUnit
+            ctrl.SetParent(unit, false);
+
+            // Camera
             GameObject camera = GameObject.Instantiate(setupper.m_baseUserCamera);
             camera.name = setupper.m_baseUserCamera.name;
+
+            // Set Camera for TargerUnit
             camera.SetParent(unit, false);
 
+            // Setup Parameter
             SetupUnit(ctrl, camera, idx);
         };
 
@@ -203,6 +251,43 @@ public class EditUserLegionSetupper : Editor
         act.Invoke(1);
         act.Invoke(2);
         act.Invoke(3);
+
+        SetupLegion(targetLegion);
+    }
+
+    private void SetupLegion(GameObject targetLegion)
+    {
+        // TODO
+        UnilUpdatePrefab<UserLegionCtrl>(
+            targetLegion, 
+            (ser) => 
+            {
+                GameObject user1 = targetLegion.GetChild(0).gameObject;
+                GameObject user2 = targetLegion.GetChild(1).gameObject;
+                GameObject user3 = targetLegion.GetChild(2).gameObject;
+                GameObject user4 = targetLegion.GetChild(3).gameObject;
+
+                /* TypeName
+                SerializedProperty uiUserNo1 = ser.FindProperty("m_uiUserNo1");
+                uiUserNo1.objectReferenceValue = user1GetComponentInChildren<ISwitchViewCtrl>();
+                SerializedProperty uiUserNo2 = ser.FindProperty("m_uiUserNo2");
+                uiUserNo2.objectReferenceValue = user2.GetComponentInChildren<ISwitchViewCtrl>();
+                SerializedProperty uiUserNo3 = ser.FindProperty("m_uiUserNo3");
+                uiUserNo3.objectReferenceValue = user3.GetComponentInChildren<ISwitchViewCtrl>();
+                SerializedProperty uiUserNo4 = ser.FindProperty("m_uiUserNo4");
+                uiUserNo4.objectReferenceValue = user4.GetComponentInChildren<ISwitchViewCtrl>();
+
+                SerializedProperty uiMagazine1 = ser.FindProperty("m_uiMagazine1");
+                uiMagazine1.objectReferenceValue = user1.GetComponentInChildren<ISwitchViewCtrl>();
+                SerializedProperty uiMagazine2 = ser.FindProperty("m_uiMagazine2");
+                uiMagazine2.objectReferenceValue = user2.GetComponentInChildren<ISwitchViewCtrl>();
+                SerializedProperty uiMagazine3 = ser.FindProperty("m_uiMagazine3");
+                uiMagazine3.objectReferenceValue = user3.GetComponentInChildren<ISwitchViewCtrl>();
+                SerializedProperty uiMagazine4 = ser.FindProperty("m_uiMagazine4");
+                uiMagazine4.objectReferenceValue = user4.GetComponentInChildren<ISwitchViewCtrl>();
+                */
+            });
+
     }
 
     private void SetupUnit(GameObject ctrl, GameObject camera, int index)

@@ -1,6 +1,8 @@
 ﻿
 // Author     : Atuki Yoshinaga
 
+//#define ENABLE_EDIT_NAVOBSTACLE_MESH
+
 using UnityEngine;
 using System.Collections;
 
@@ -14,19 +16,24 @@ using AkiVACO.EditorUtil;
 
 using UnityEditor;
 
-[CustomEditor(typeof(XObjLabelUnit))]
-public class EditObjectLabel : Editor
+[CustomEditor(typeof(XNavObstacleViewer))]
+public class EditNavObstacleViewer : Editor
 {
     private EditorUtilFoldout m_collapsed = new EditorUtilFoldout(true);
 
     public override void OnInspectorGUI()
     {
-        XObjLabelUnit gen = target as XObjLabelUnit;
+        XNavObstacleViewer gen = target as XNavObstacleViewer;
 
+#if ENABLE_EDIT_NAVOBSTACLE_MESH
+        gen.m_viewUnitSphere = EditorGUILayout.ObjectField("MeshSphere", gen.m_viewUnitSphere, typeof(GameObject)) as GameObject;
+        gen.m_viewUnitBox = EditorGUILayout.ObjectField("MeshBox", gen.m_viewUnitBox, typeof(GameObject)) as GameObject;
+        gen.m_viewUnitCapsule = EditorGUILayout.ObjectField("MeshCapsule", gen.m_viewUnitCapsule, typeof(GameObject)) as GameObject;
+#endif
         gen.m_keyCode = (KeyCode)(EditorGUILayout.EnumPopup("KeyCode", gen.m_keyCode));
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.PrefixLabel("背景アルファ値");
-        gen.m_backScreenAlpha = EditorGUILayout.Slider(gen.m_backScreenAlpha, 0.0f, 1.0f);
+        EditorGUILayout.PrefixLabel("アルファ値");
+        gen.m_meshAlpha = EditorGUILayout.Slider(gen.m_meshAlpha, 0.0f, 1.0f);
         EditorGUILayout.EndHorizontal();
 
         m_collapsed.Invoke(
@@ -39,39 +46,33 @@ public class EditObjectLabel : Editor
                 if (gen.m_tags == null)
                 {
                     gen.m_tags = new string[size];
-                    gen.m_labelSize = new Vector2[size];
-                    gen.m_backScreenColor = new Color[size];
+                    gen.m_meshColor = new Color[size];
                     for (int i = 0; i < size; ++i)
                     {
                         gen.m_tags[i] = "";
-                        gen.m_labelSize[i] = new Vector2(50.0f, 50.0f);
-                        gen.m_backScreenColor[i] = Color.grey;
+                        gen.m_meshColor[i] = Color.red;
                     }
                 }
                 else if (gen.m_tags.Length != size)
                 {
                     string[] tags = new string[size];
-                    Vector2[] labelSize = new Vector2[size];
-                    Color[] backScreenColor = new Color[size];
+                    Color[] meshColor = new Color[size];
 
                     int index = Mathf.Min(gen.m_tags.Length, size);
                     int idx;
                     for (idx = 0; idx < index; ++idx)
                     {
                         tags[idx] = gen.m_tags[idx];
-                        labelSize[idx] = gen.m_labelSize[idx];
-                        backScreenColor[idx] = gen.m_backScreenColor[idx];
+                        meshColor[idx] = gen.m_meshColor[idx];
                     }
                     for (; idx < size; ++idx)
                     {
                         tags[idx] = "";
-                        labelSize[idx] = new Vector2(50.0f, 50.0f);
-                        backScreenColor[idx] = Color.grey;
+                        meshColor[idx] = Color.red;
                     }
 
                     gen.m_tags = tags;
-                    gen.m_labelSize = labelSize;
-                    gen.m_backScreenColor = backScreenColor;
+                    gen.m_meshColor = meshColor;
                 }
 
                 for (int i = 0; i < size; ++i)
@@ -80,8 +81,7 @@ public class EditObjectLabel : Editor
                     EditorGUILayout.BeginHorizontal();
                     gen.m_tags[i] = EditorGUILayout.TagField("タグ名", gen.m_tags[i]);
                     EditorGUILayout.EndVertical();
-                    gen.m_labelSize[i] = EditorGUILayout.Vector2Field("ラベルサイズ", gen.m_labelSize[i]);
-                    gen.m_backScreenColor[i] = EditorGUILayout.ColorField("ラベルカラー", gen.m_backScreenColor[i]);
+                    gen.m_meshColor[i] = EditorGUILayout.ColorField("ラベルカラー", gen.m_meshColor[i]);
                     EditorGUILayout.EndVertical();
 
                     EditorGUILayout.Space();

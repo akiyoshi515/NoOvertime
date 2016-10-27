@@ -21,6 +21,11 @@ public class UserCameraAutoCtrl : MonoBehaviour
     private UserCharCtrl m_charCtrl = null;
     private bool m_prevLauncherStance = false;
 
+    public Transform targetUser
+    {
+        get { return m_targetUser; }
+    }
+
     void Awake()
     {
         XLogger.LogValidObject(m_pivot == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Pivot"), gameObject);

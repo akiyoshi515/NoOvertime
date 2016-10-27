@@ -12,6 +12,30 @@ namespace XUnityGameObject
 {
     public static class UnityGameObjectExtensions
     {
+        public static T GetSafeComponent<T>(this UnityEngine.GameObject obj, T target) where T : MonoBehaviour
+        {
+            T component = obj.GetComponent<T>();
+
+            if (component == null)
+            {
+                Debug.LogError("Expected to find component of type " + typeof(T) + " but found none", obj);
+            }
+
+            return component;
+        }
+
+        public static T GetSafeComponent<T>(this UnityEngine.Component obj, T target) where T : MonoBehaviour
+        {
+            T component = obj.GetComponent<T>();
+
+            if (component == null)
+            {
+                Debug.LogError("Expected to find component of type " + typeof(T) + " but found none", obj);
+            }
+
+            return component;
+        }
+
         /// <summary>
         /// 指定した UnityEngine.GameObject の子を name で検索します。
         /// </summary>

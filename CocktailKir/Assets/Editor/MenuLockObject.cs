@@ -6,7 +6,6 @@ using UnityEditor;
 
 public class LockObject : EditorWindow
 {
-
     static LockObject instance;
 
     [MenuItem("Window/LockObject")]
