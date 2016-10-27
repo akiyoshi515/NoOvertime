@@ -14,6 +14,16 @@ public class GuestPopPointerCtrl : MonoBehaviour
     [SerializeField]
     private GameObject m_standardGuest = null;
 
+    void Awake()
+    {
+#if DEBUG
+        // Empty
+#else
+        GameObject.Destroy(this.GetComponent<MeshRenderer>());
+        GameObject.Destroy(this.GetComponent<MeshFilter>());
+#endif
+    }
+
     /// <summary>
     /// GuestのPopを指示する
     /// </summary>

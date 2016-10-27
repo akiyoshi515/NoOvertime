@@ -22,6 +22,8 @@ public class GuestPopDestinationCtrl : MonoBehaviour
         public float[] m_fvalues = null;
     }
 
+    public GameObject m_popPointer = null;
+
     public float m_radius = 10.0f;
 
     public GuestParam[] m_param = null;

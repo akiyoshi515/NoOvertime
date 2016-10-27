@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿
+//#define EDIT_BASIS_INSPECTOR
+
+using UnityEngine;
 using System.Collections;
 
 #if DEBUG
@@ -16,6 +19,10 @@ public class EditGuestPopDestinationCtrl : Editor
     private static EditorUtilFoldout m_param = new EditorUtilFoldout();
     private static EditorUtilFoldout m_slotStrategy = new EditorUtilFoldout();
     private static EditorUtilFoldout m_costPointer = new EditorUtilFoldout();
+
+#if EDIT_BASIS_INSPECTOR
+    private static EditorUtilFoldout m_basis = new EditorUtilFoldout();
+#endif
 
     public override void OnInspectorGUI()
     {
@@ -88,8 +95,16 @@ public class EditGuestPopDestinationCtrl : Editor
                 {
                     EditorGUILayout.LabelField("戦略Slot" + (i + 1).ToString());
                     EditorGUI.indentLevel++;
+                    GuestPopStrategy.StrategyType oldSelectedType = GuestPopStrategy.StrategyType.Wait;
+                    if (gen.m_slotStrategy[i] != null)
+                    {
+                        if (gen.m_slotStrategy[i].m_strategy != null)
+                        {
+                            oldSelectedType = gen.m_slotStrategy[i].m_strategy.ToStrategyType();
+                        }
+                    }
                     GuestPopStrategy.StrategyType selectedType = (GuestPopStrategy.StrategyType)EditorGUILayout.EnumPopup(
-                        "戦略タイプ", gen.m_slotStrategy[i].m_strategy.ToStrategyType());
+                        "戦略タイプ", oldSelectedType);
                     bool isNewcomer = true;
                     if (gen.m_slotStrategy[i].m_strategy != null)
                     {
@@ -116,7 +131,16 @@ public class EditGuestPopDestinationCtrl : Editor
                 if (table.Length == 0)
                 {
                     EditorGUILayout.HelpBox("PopPointが設定されていません", MessageType.Error);
+
                 }
+                if (GUILayout.Button("PopPointを生成"))
+                {
+                    GameObject obj = GameObject.Instantiate(gen.m_popPointer, gen.transform) as GameObject;
+                    obj.name = gen.m_popPointer.name + table.Length;
+                    table = gen.GetComponentsInChildren<GuestPopPointerCtrl>();
+                }
+                EditorGUILayout.Space();
+
                 foreach (GuestPopPointerCtrl unit in table)
                 {
                     EditorGUILayout.ObjectField("PopPointer", unit.gameObject, typeof(GameObject), false);
@@ -124,6 +148,17 @@ public class EditGuestPopDestinationCtrl : Editor
                 }
 
             });
+
+#if EDIT_BASIS_INSPECTOR
+        EditorGUILayout.Space();
+        m_basis.Invoke(
+            "<Warning>BasisInstance",
+            () =>
+            {
+                EditorGUILayout.HelpBox("ここからは制御しないでください", MessageType.Warning);
+                this.DrawDefaultInspector();
+            });
+#endif
     }
 
     private void EditStrategySlotValues(ref GuestPopDestinationCtrl.StrategySlot slot, bool isNewcomer)
