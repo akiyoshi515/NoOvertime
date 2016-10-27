@@ -25,6 +25,11 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
         get { return m_charCtrl.isJumping; }
     }
 
+    public UserID userID
+    {
+        get { return m_userdata.userID; }
+    }
+
     void Start()
     {
         XLogger.LogValidObject(m_camera == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Camera"), gameObject);
