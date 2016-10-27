@@ -3,6 +3,11 @@ using System.Collections;
 
 public enum GuestType 
 {
-    Standard,
+    Standard = 0,
 
+}
+
+public static class GuestConstParam
+{
+    public const int SumGuestType = 1;
 }
