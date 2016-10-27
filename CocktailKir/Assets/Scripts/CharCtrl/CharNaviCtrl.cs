@@ -51,4 +51,14 @@ public class CharNaviCtrl : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        if (m_target != null)
+        {
+            if (m_target.GetComponent<NavPointOneShot>() != null)
+            {
+                Destroy(m_target.gameObject);
+            }
+        }
+    }
 }

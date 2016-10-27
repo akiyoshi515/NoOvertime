@@ -78,7 +78,7 @@ public class EditNavObstacleViewer : Editor
                 for (int i = 0; i < size; ++i)
                 {
                     EditorGUILayout.BeginVertical();
-                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.BeginVertical();
                     gen.m_tags[i] = EditorGUILayout.TagField("タグ名", gen.m_tags[i]);
                     EditorGUILayout.EndVertical();
                     gen.m_meshColor[i] = EditorGUILayout.ColorField("ラベルカラー", gen.m_meshColor[i]);
