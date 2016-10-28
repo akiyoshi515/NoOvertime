@@ -6,7 +6,9 @@ public class MeshUIMagazine
     :
     MonoBehaviour
 {
-    bool m_isReloading;
+
+    [SerializeField]
+    bool m_isReloading = false;
     public bool Reloading
     {
         get { return m_isReloading; }
@@ -110,7 +112,7 @@ public class MeshUIMagazine
     ///
     /// <summary>   The reload time rate.   </summary>
     ///
-
+    [SerializeField]
     float m_reloadTimeRate;
     public float ReloadTimeRate
     {
@@ -176,7 +178,7 @@ public class MeshUIMagazine
         }
         transform.LookAt(transform.position - m_targetCamera.transform.rotation * Vector3.back, m_targetCamera.transform.rotation * Vector3.up);
 
-
+        // 弾無いなら非表示
         for (int i = 0; i < m_normalBullletQuadMeshRenderer.Length; i++)
         {
             if (i < m_numberOfBullet)
@@ -186,6 +188,20 @@ public class MeshUIMagazine
             else
             {
                 m_normalBullletQuadMeshRenderer[i].enabled = false;
+            }
+        }
+
+
+
+        for (int i = 0; i < m_3wayBulletQuadMeshRenderer.Length; i++)
+        {
+            if (i < m_numberOf3WayBullet)
+            {
+                m_3wayBulletQuadMeshRenderer[i].enabled = true;
+            }
+            else
+            {
+                m_3wayBulletQuadMeshRenderer[i].enabled = false;
             }
         }
     }
