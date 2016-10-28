@@ -17,9 +17,15 @@ public class GuestPopDestinationCtrl : MonoBehaviour
     public class StrategySlot
     {
         public IGuestPopStrategy m_strategy = null;
+        public GuestPopStrategy.StrategyType m_strategyType = GuestPopStrategy.StrategyType.Wait;
         public float m_time = 1.0f;
         public int[] m_values = null;
         public float[] m_fvalues = null;
+
+        public StrategySlot()
+        {
+            m_strategy = GuestPopStrategy.CreatePopStrategy(m_strategyType);
+        }
     }
 
     public GameObject m_popPointer = null;

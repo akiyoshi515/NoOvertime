@@ -113,6 +113,7 @@ public class EditGuestPopDestinationCtrl : Editor
                             isNewcomer = false;
                         }
                     }
+                    gen.m_slotStrategy[i].m_strategyType = selectedType;
                     gen.m_slotStrategy[i].m_strategy = GuestPopStrategy.CreatePopStrategy(selectedType);
                     gen.m_slotStrategy[i].m_time = EditorGUILayout.FloatField("実行時間", gen.m_slotStrategy[i].m_time);
                     EditStrategySlotValues(ref gen.m_slotStrategy[i], isNewcomer);
