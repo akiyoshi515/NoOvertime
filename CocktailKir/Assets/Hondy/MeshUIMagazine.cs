@@ -2,13 +2,29 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MgazineUI : MonoBehaviour {
-
+public class MeshUIMagazine 
+    :
+    MonoBehaviour
+{
+    bool m_isReloading;
+    public bool Reloading
+    {
+        get { return m_isReloading; }
+        set { m_isReloading = value; }
+    }
     ///
     /// <summary>   残り弾数.   </summary>
     ///
     [SerializeField,Header("残り弾数")]
     uint m_numberOfBullet;
+
+
+    [SerializeField, Header("残り弾数(3way)")]
+    uint m_numberOf3WayBullet;
+
+
+    [SerializeField, Header("残り弾数(チャームアップ)")]
+    uint m_numberOfCharmBullet;
 
     ///
     /// <summary>   残り弾数のゲッターとセッター. </summary>
@@ -26,6 +42,13 @@ public class MgazineUI : MonoBehaviour {
         set
         {
             m_numberOfBullet = value;
+            for (int i = 0; i < m_normalBullletQuadMeshRenderer.Length; i++)
+            {
+                if ( i < m_numberOfBullet )
+                {
+                    m_normalBullletQuadMeshRenderer[i].enabled = true;
+                }
+            }
         }
     }
 
@@ -56,10 +79,27 @@ public class MgazineUI : MonoBehaviour {
     }
 
     ///
-    /// <summary>   ゲージとして使うメッシュレンダラー.  </summary>
+    /// <summary>   ゲージ本体として使うメッシュレンダラー.  </summary>
     ///
-    
-    MeshRenderer m_meshRenderer;
+    [SerializeField]
+    MeshRenderer m_gaugeQuadMeshRenderer;
+
+    ///
+    /// <summary>   通常弾を表現しているメッシュレンダラー.    </summary>
+    ///
+
+    [SerializeField]
+    MeshRenderer[] m_normalBullletQuadMeshRenderer;
+
+
+
+    ///
+    /// <summary>   3way弾を表現しているメッシュレンダラー.    </summary>
+    ///
+
+    [SerializeField]
+    MeshRenderer[] m_3wayBulletQuadMeshRenderer;
+
 
     ///
     /// <summary>   シェーダー入ってるマテリアル. </summary>
@@ -67,7 +107,15 @@ public class MgazineUI : MonoBehaviour {
 
     Material m_material;
 
+    ///
+    /// <summary>   The reload time rate.   </summary>
+    ///
 
+    float m_reloadTimeRate;
+    public float ReloadTimeRate
+    {
+        set { m_reloadTimeRate = value; }
+    }
     ///
     /// <summary>   回転の指標にするカメラ.  </summary>
     ///
@@ -89,11 +137,11 @@ public class MgazineUI : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        if (m_meshRenderer == null)
+        if (m_gaugeQuadMeshRenderer == null)
         {
-            m_meshRenderer = gameObject.GetComponent<MeshRenderer>();
+            m_gaugeQuadMeshRenderer = gameObject.GetComponent<MeshRenderer>();
         }
-        m_material = m_meshRenderer.material;
+        m_material = m_gaugeQuadMeshRenderer.material;
         float maskvaule = (float)((float)NumberOfBullet / (float)m_maximumNumberOfBullet);
         // maskのテクスチャミスってると若干残る場合があるからマイナスにする
         if (maskvaule <= 0)
@@ -108,19 +156,38 @@ public class MgazineUI : MonoBehaviour {
             m_material.SetFloat("_Mask", maskvaule);
         }
     }
-    
-    // Update is called once per frame
-    void Update ()
-    {
-        float maskvaule = (float)((float)NumberOfBullet / (float)m_maximumNumberOfBullet);
-        // maskのテクスチャミスってると若干残る場合があるからマイナスにする
-        if (maskvaule <= 0)
-        {
-            maskvaule = -0.01f;
-        }
-        m_material.SetFloat("_Mask", maskvaule);
-        transform.LookAt(transform.position - m_targetCamera.transform.rotation * Vector3.back, m_targetCamera.transform.rotation * Vector3.up);
-    }
 
+    // Update is called once per frame
+    void Update()
+    {
+        float maskvaule = (float)(m_reloadTimeRate);
+
+        if (m_isReloading)
+        {
+            if (maskvaule <= 0)
+            {
+                maskvaule = -0.01f;
+            }
+            m_material.SetFloat("_Mask", maskvaule);
+        }
+        else
+        {
+            m_material.SetFloat("_Mask", maskvaule);
+        }
+        transform.LookAt(transform.position - m_targetCamera.transform.rotation * Vector3.back, m_targetCamera.transform.rotation * Vector3.up);
+
+
+        for (int i = 0; i < m_normalBullletQuadMeshRenderer.Length; i++)
+        {
+            if (i < m_numberOfBullet)
+            {
+                m_normalBullletQuadMeshRenderer[i].enabled = true;
+            }
+            else
+            {
+                m_normalBullletQuadMeshRenderer[i].enabled = false;
+            }
+        }
+    }
 
 }

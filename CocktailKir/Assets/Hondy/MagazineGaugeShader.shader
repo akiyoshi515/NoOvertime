@@ -1,10 +1,11 @@
 ﻿
-Shader "Custom/GaugeSpriteShader" 
+Shader "Custom/MagazineGaugeShader"
 {
 	Properties
 	{
 		_MainTex("Main", 2D) = "white" {}
 		_MaskTex("Mask", 2D) = "white" {}
+		_MaskTex("Frame", 2D) = "white" {}
 		_Color("Tint", Color) = (1,1,1,1)
 		_Mask("MaskVaule", Float) = 0
 	}
@@ -71,7 +72,7 @@ Shader "Custom/GaugeSpriteShader"
 	fixed4 frag(v2f IN) : SV_Target
 	{
 		fixed4 c = tex2D(_MainTex, IN.texcoord);
-	// マスクの閾値で表示するか判断
+		// マスクの閾値で表示するか判断
 		c *= step(tex2D(_MaskTex, IN.texcoord).a,_Mask);
 		return c;
 	}
