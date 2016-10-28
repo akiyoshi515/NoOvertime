@@ -17,7 +17,6 @@ public class UserCameraAutoCtrl : MonoBehaviour
     [SerializeField]
     private float m_pivotLerpTime = 0.50f;
 
-    private IXVInput m_input = null;
     private UserCharCtrl m_charCtrl = null;
     private bool m_prevLauncherStance = false;
 
@@ -37,7 +36,6 @@ public class UserCameraAutoCtrl : MonoBehaviour
         UserCameraPivotSetupper setupper = m_pivot.GetComponent<UserCameraPivotSetupper>();
         setupper.SetLerpTime(m_pivotLerpTime);
 
-        m_input = m_targetUser.GetComponent<UserData>().input;
         m_charCtrl = m_targetUser.GetComponent<UserCharCtrl>();
     }
 

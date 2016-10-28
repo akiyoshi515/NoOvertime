@@ -135,7 +135,7 @@ public class EditGuestPopDestinationCtrl : Editor
                 }
                 if (GUILayout.Button("PopPointを生成"))
                 {
-                    GameObject obj = GameObject.Instantiate(gen.m_popPointer, gen.transform) as GameObject;
+                    GameObject obj = GameObject.Instantiate(gen.m_popPointer, gen.transform.position, gen.transform.rotation, gen.transform) as GameObject;
                     obj.name = gen.m_popPointer.name + table.Length;
                     table = gen.GetComponentsInChildren<GuestPopPointerCtrl>();
                 }
