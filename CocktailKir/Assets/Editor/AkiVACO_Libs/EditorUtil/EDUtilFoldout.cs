@@ -2,6 +2,7 @@
 #if UNITY_EDITOR
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEditor;
 using System.Collections;
 
@@ -10,7 +11,7 @@ namespace AkiVACO
 namespace EditorUtil
 {
 
-public class EditorUtilFoldout
+public class EDUtilFoldout
 {
     public bool collapsed
     {
@@ -18,7 +19,7 @@ public class EditorUtilFoldout
         protected set;
     }
 
-    public EditorUtilFoldout(bool startValue = false)
+    public EDUtilFoldout(bool startValue = false)
     {
         collapsed = startValue;
     }

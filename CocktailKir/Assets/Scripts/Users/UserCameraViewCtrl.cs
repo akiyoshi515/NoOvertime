@@ -21,12 +21,12 @@ public class UserCameraViewCtrl : MonoBehaviour
 
     void OnPreCull()
     {
-        m_legionCtrl.SetEnables(m_userID, true);
+//        m_legionCtrl.SetEnables(m_userID, true);
     }
 
     void OnPostRender()
     {
-        m_legionCtrl.SetEnables(m_userID, false);
+//        m_legionCtrl.SetEnables(m_userID, false);
     }
 
 }
