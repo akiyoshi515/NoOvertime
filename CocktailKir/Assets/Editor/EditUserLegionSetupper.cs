@@ -118,7 +118,7 @@ public class EditUserLegionSetupper : Editor
 
     private void UpdateUserPrefab(UserLegionSetupper setupper)
     {
-        EditFunctions.EditApplySerializedPrefab<CharAnimateCtrl>(
+        EDUtilFunctions.EditApplySerializedPrefab<CharAnimateCtrl>(
             setupper.m_baseUserCtrl, 
             (ser) => 
             {
@@ -126,7 +126,7 @@ public class EditUserLegionSetupper : Editor
                 ser.FindProperty("m_jumpPower").floatValue = setupper.m_jumpPower;
             });
 
-        EditFunctions.EditApplySerializedPrefab<LauncherCtrl>(
+        EDUtilFunctions.EditApplySerializedPrefab<LauncherCtrl>(
             setupper.m_baseUserCtrl,
             (ser) =>
             {
@@ -140,7 +140,7 @@ public class EditUserLegionSetupper : Editor
                 ser.FindProperty("m_chargeShotTime").floatValue = setupper.m_chargeShotTime;
             });
 
-        EditFunctions.EditApplySerializedPrefab<LauncherMagazine>(
+        EDUtilFunctions.EditApplySerializedPrefab<LauncherMagazine>(
             setupper.m_baseUserCtrl,
             (ser) =>
             {
@@ -148,7 +148,7 @@ public class EditUserLegionSetupper : Editor
                 reloadTime.floatValue = setupper.m_reloadTime;
             });
 
-        EditFunctions.EditApplySerializedPrefab<UserCameraAutoCtrl>(
+        EDUtilFunctions.EditApplySerializedPrefab<UserCameraAutoCtrl>(
             setupper.m_baseUserCamera,
             (ser) =>
             {
@@ -231,7 +231,7 @@ public class EditUserLegionSetupper : Editor
     private void SetupLegion(GameObject targetLegion)
     {
         // TODO
-        EditFunctions.EditApplySerializedPrefab<UserLegionCtrl>(
+        EDUtilFunctions.EditApplySerializedPrefab<UserLegionCtrl>(
             targetLegion, 
             (ser) => 
             {
