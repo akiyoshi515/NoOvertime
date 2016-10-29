@@ -46,7 +46,7 @@ namespace GuestPopStrategyInternal
                 }
 
                 // TODO GuestType
-                startPoint.SendPopGuest(GuestType.Standard, ctrl.GetDestination(), endPoint.transform);
+                ctrl.SendPopGuest(GuestType.Standard, startPoint, ctrl.GetDestination(), endPoint);
             }
         }
 

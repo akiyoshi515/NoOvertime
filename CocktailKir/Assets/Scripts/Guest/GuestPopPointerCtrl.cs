@@ -49,12 +49,11 @@ public class GuestPopPointerCtrl : MonoBehaviour
     /// <param name="goOutDestination">退避時の目的地</param>
     public void SendPopGuest(GuestType type, Vector3 destination, Transform goOutDestination)
     {
-        GameObject obj = GameObject.Instantiate(m_targetPoint, destination, Quaternion.identity) as GameObject;
-
+        GameObject targetobj = GameObject.Instantiate(m_targetPoint, destination, Quaternion.identity) as GameObject;
         switch (type)
         {
             case GuestType.Standard:
-                obj = PopGuest(m_standardGuest, obj.transform, goOutDestination);
+                PopGuest(m_standardGuest, targetobj.transform, goOutDestination);
                 break;
             // TODO
         }
@@ -69,7 +68,7 @@ public class GuestPopPointerCtrl : MonoBehaviour
     private GameObject PopGuest(GameObject baseObject, Transform destination, Transform goOutDestination)
     {
         GameObject obj = XFunctions.Instance(baseObject, this.transform.position, this.transform.rotation);
-
+        obj.GetComponent<CharNaviCtrl>().target = destination;
         // TODO
         return obj;
     }

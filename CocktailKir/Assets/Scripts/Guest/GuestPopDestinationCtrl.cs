@@ -11,6 +11,10 @@ public class GuestPopDestinationCtrl : MonoBehaviour
         public int m_capacity = 0;
         public int m_num = 0;
 
+        public bool IsCapacity()
+        {
+            return (m_num >= m_capacity);
+        }
     }
 
     [System.Serializable]
@@ -22,7 +26,7 @@ public class GuestPopDestinationCtrl : MonoBehaviour
         public int[] m_values = null;
         public float[] m_fvalues = null;
 
-        public StrategySlot()
+        public void Initialize()
         {
             m_strategy = GuestPopStrategy.CreatePopStrategy(m_strategyType);
         }
@@ -53,6 +57,11 @@ public class GuestPopDestinationCtrl : MonoBehaviour
         protected set;
     }
 
+    void Awake()
+    {
+
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -62,6 +71,16 @@ public class GuestPopDestinationCtrl : MonoBehaviour
         foreach (GuestPopPointerCtrl unit in pointTable)
         {
             baseSumCost += unit.m_cost;
+        }
+
+        foreach (GuestParam unit in m_param)
+        {
+            unit.m_num = 0;
+        }
+
+        foreach (StrategySlot slot in m_slotStrategy)
+        {
+            slot.Initialize();
         }
     }
 
@@ -84,6 +103,31 @@ public class GuestPopDestinationCtrl : MonoBehaviour
         float r = Random.Range(0.0f, 360.0f);
         Vector3 offset =  Quaternion.AngleAxis(r, this.transform.up) * this.transform.right;
         return this.transform.position + offset;
+    }
+
+    public void SendPopGuest(GuestType type, GuestPopPointerCtrl popPoint, Vector3 destination, GuestPopPointerCtrl goOutDestination)
+    {
+        if (ValidPopGuest(type))
+        {
+            popPoint.SendPopGuest(type, destination, goOutDestination.transform);
+        }
+    }
+
+    public bool ValidPopGuest(GuestType type)
+    {
+        switch(type)
+        {
+            case GuestType.Standard:
+                if (m_param[0].IsCapacity())
+                {
+                    return false;
+                }
+                ++(m_param[0].m_num);
+                break;
+                // TODO
+        }
+
+        return true;
     }
 
     public void NextSlot(int jumpValue = 1)

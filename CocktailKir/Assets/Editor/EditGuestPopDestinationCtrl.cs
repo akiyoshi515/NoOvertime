@@ -1,5 +1,5 @@
 ﻿
-//#define EDIT_BASIS_INSPECTOR
+#define EDIT_BASIS_INSPECTOR
 
 using UnityEngine;
 using System.Collections;
@@ -16,17 +16,19 @@ using AkiVACO.EditorUtil;
 [CustomEditor(typeof(GuestPopDestinationCtrl))]
 public class EditGuestPopDestinationCtrl : Editor
 {
-    private static EditorUtilFoldout m_param = new EditorUtilFoldout();
-    private static EditorUtilFoldout m_slotStrategy = new EditorUtilFoldout();
-    private static EditorUtilFoldout m_costPointer = new EditorUtilFoldout();
+    private static EDUtilFoldout m_param = new EDUtilFoldout();
+    private static EDUtilFoldout m_slotStrategy = new EDUtilFoldout();
+    private static EDUtilFoldout m_costPointer = new EDUtilFoldout();
 
 #if EDIT_BASIS_INSPECTOR
-    private static EditorUtilFoldout m_basis = new EditorUtilFoldout();
+    private static EDUtilFoldout m_basis = new EDUtilFoldout();
 #endif
 
     public override void OnInspectorGUI()
     {
         GuestPopDestinationCtrl gen = target as GuestPopDestinationCtrl;
+        SerializedObject ser = new SerializedObject(gen);
+        ser.Update();
 
         {
             float radius = EditorGUILayout.FloatField("直径", gen.m_radius);
@@ -39,7 +41,7 @@ public class EditGuestPopDestinationCtrl : Editor
             {
                 EditorGUILayout.HelpBox("EditMeshがありません", MessageType.Warning);
             }
-            gen.m_radius = radius;
+            ser.FindProperty("m_radius").floatValue = radius;
         }
 
         m_param.Invoke(
@@ -63,7 +65,7 @@ public class EditGuestPopDestinationCtrl : Editor
 
                 gen.m_param[0].m_capacity = EditorGUILayout.IntField("キャパシティ", gen.m_param[0].m_capacity);
 
-                gen.m_param[0].m_num = EditorGUILayout.IntField("残人数", gen.m_param[0].m_num);
+                EditorGUILayout.IntField("残人数", gen.m_param[0].m_num);
             });
 
         m_slotStrategy.Invoke(
@@ -98,20 +100,14 @@ public class EditGuestPopDestinationCtrl : Editor
                     GuestPopStrategy.StrategyType oldSelectedType = GuestPopStrategy.StrategyType.Wait;
                     if (gen.m_slotStrategy[i] != null)
                     {
-                        if (gen.m_slotStrategy[i].m_strategy != null)
-                        {
-                            oldSelectedType = gen.m_slotStrategy[i].m_strategy.ToStrategyType();
-                        }
+                        oldSelectedType = gen.m_slotStrategy[i].m_strategyType;
                     }
                     GuestPopStrategy.StrategyType selectedType = (GuestPopStrategy.StrategyType)EditorGUILayout.EnumPopup(
                         "戦略タイプ", oldSelectedType);
                     bool isNewcomer = true;
-                    if (gen.m_slotStrategy[i].m_strategy != null)
+                    if (gen.m_slotStrategy[i].m_strategyType == selectedType)
                     {
-                        if (gen.m_slotStrategy[i].m_strategy.ToStrategyType() == selectedType)
-                        {
-                            isNewcomer = false;
-                        }
+                        isNewcomer = false;
                     }
                     gen.m_slotStrategy[i].m_strategyType = selectedType;
                     gen.m_slotStrategy[i].m_strategy = GuestPopStrategy.CreatePopStrategy(selectedType);
@@ -122,7 +118,7 @@ public class EditGuestPopDestinationCtrl : Editor
 
             });
 
-        gen.m_isLoop = EditorGUILayout.Toggle("戦略データはループするか？", gen.m_isLoop);
+        ser.FindProperty("m_isLoop").boolValue = EditorGUILayout.Toggle("戦略データはループするか？", gen.m_isLoop);
 
         m_costPointer.Invoke(
             "各PopPointのコスト",
@@ -145,7 +141,7 @@ public class EditGuestPopDestinationCtrl : Editor
                 foreach (GuestPopPointerCtrl unit in table)
                 {
                     EditorGUILayout.ObjectField("PopPointer", unit.gameObject, typeof(GameObject), false);
-                    unit.m_cost = EditorGUILayout.IntField("コスト", unit.m_cost).MinLimitedZero();
+                    ser.FindProperty("m_cost").intValue = EditorGUILayout.IntField("コスト", unit.m_cost).MinLimitedZero();
                 }
 
             });
@@ -160,6 +156,7 @@ public class EditGuestPopDestinationCtrl : Editor
                 this.DrawDefaultInspector();
             });
 #endif
+        ser.ApplyModifiedProperties();
     }
 
     private void EditStrategySlotValues(ref GuestPopDestinationCtrl.StrategySlot slot, bool isNewcomer)
