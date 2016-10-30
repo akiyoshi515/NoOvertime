@@ -20,7 +20,6 @@ Shader "Custom/GaugeSpriteShader"
 		"CanUseSpriteAtlas" = "True"
 	}
 
-		Cull Off
 		Lighting Off
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
