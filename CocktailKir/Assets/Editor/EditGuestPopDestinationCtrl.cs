@@ -48,22 +48,26 @@ public class EditGuestPopDestinationCtrl : Editor
             "お客さんのパラメータ",
             () =>
             {
-                if (gen.m_param.Length != GuestConstParam.SumGuestType)
+                SerializedProperty param = ser.FindProperty("m_param");
+                if (param.arraySize != GuestConstParam.SumGuestType)
                 {
-                    GuestPopDestinationCtrl.GuestParam[] newParam = new GuestPopDestinationCtrl.GuestParam[GuestConstParam.SumGuestType];
-                    for (int i = 0; i < newParam.Length; ++i)
+                    int size = param.arraySize;
+                    if (size < GuestConstParam.SumGuestType)
                     {
-                        newParam[i] = new GuestPopDestinationCtrl.GuestParam();
+                        for (int i = size; i < GuestConstParam.SumGuestType; ++i)
+                        {
+                            param.InsertArrayElementAtIndex(i);
+                        }
                     }
-
-                    for (int i = 0; (i < GuestConstParam.SumGuestType) && (i < gen.m_param.Length); ++i)
+                    else
                     {
-                        newParam[i] = gen.m_param[i];
+                        for (int i = size; i >= GuestConstParam.SumGuestType; --i)
+                        {
+                            param.DeleteArrayElementAtIndex(i);
+                        }
                     }
-                    gen.m_param = newParam;
                 }
-
-                gen.m_param[0].m_capacity = EditorGUILayout.IntField("キャパシティ", gen.m_param[0].m_capacity);
+                param.GetArrayElementAtIndex(0).FindPropertyRelative("m_capacity").intValue = EditorGUILayout.IntField("キャパシティ", gen.m_param[0].m_capacity);
 
                 EditorGUILayout.IntField("残人数", gen.m_param[0].m_num);
             });
@@ -72,47 +76,36 @@ public class EditGuestPopDestinationCtrl : Editor
             "戦略データ",
             () =>
             {
-                int size = EditorGUILayout.IntField("個数", gen.m_slotStrategy.Length).MinLimitedZero();
-                if (gen.m_slotStrategy.Length != size)
-                {
-                    GuestPopDestinationCtrl.StrategySlot[] newParam = new GuestPopDestinationCtrl.StrategySlot[size];
-                    for (int i = 0; i < newParam.Length; ++i)
-                    {
-                        newParam[i] = new GuestPopDestinationCtrl.StrategySlot();
-                        newParam[i].m_strategy = new GuestPopStrategyInternal.GuestPopStrategy_Wait();
-                    }
+                SerializedProperty slotStrategy = ser.FindProperty("m_slotStrategy");
+                EDUtilFunctions.ResizeArray(ref slotStrategy, "個数");
 
-                    for (int i = 0; (i < size) && (i < gen.m_slotStrategy.Length); ++i)
-                    {
-                        newParam[i] = gen.m_slotStrategy[i];
-                    }
-                    gen.m_slotStrategy = newParam;
-                }
-
-                if (gen.m_slotStrategy.Length == 0)
+                if (slotStrategy.arraySize == 0)
                 {
                     EditorGUILayout.HelpBox("戦略Slotが設定されていません", MessageType.Error);
                 }
-                for (int i = 0; i < gen.m_slotStrategy.Length; ++i)
+                for (int i = 0; i < slotStrategy.arraySize; ++i)
                 {
                     EditorGUILayout.LabelField("戦略Slot" + (i + 1).ToString());
                     EditorGUI.indentLevel++;
                     GuestPopStrategy.StrategyType oldSelectedType = GuestPopStrategy.StrategyType.Wait;
-                    if (gen.m_slotStrategy[i] != null)
+                    SerializedProperty strategyType = slotStrategy.GetArrayElementAtIndex(i).FindPropertyRelative("m_strategyType");
+                    if (strategyType != null)
                     {
-                        oldSelectedType = gen.m_slotStrategy[i].m_strategyType;
+                        oldSelectedType = (GuestPopStrategy.StrategyType)strategyType.enumValueIndex;
                     }
                     GuestPopStrategy.StrategyType selectedType = (GuestPopStrategy.StrategyType)EditorGUILayout.EnumPopup(
                         "戦略タイプ", oldSelectedType);
                     bool isNewcomer = true;
-                    if (gen.m_slotStrategy[i].m_strategyType == selectedType)
+                    if (selectedType == oldSelectedType)
                     {
                         isNewcomer = false;
                     }
-                    gen.m_slotStrategy[i].m_strategyType = selectedType;
-                    gen.m_slotStrategy[i].m_strategy = GuestPopStrategy.CreatePopStrategy(selectedType);
-                    gen.m_slotStrategy[i].m_time = EditorGUILayout.FloatField("実行時間", gen.m_slotStrategy[i].m_time);
-                    EditStrategySlotValues(ref gen.m_slotStrategy[i], isNewcomer);
+                    strategyType.enumValueIndex = (int)selectedType;
+                    SerializedProperty time = slotStrategy.GetArrayElementAtIndex(i).FindPropertyRelative("m_time");
+                    time.floatValue = EditorGUILayout.FloatField("実行時間", time.floatValue);
+//                    gen.m_slotStrategy[i].m_strategy = GuestPopStrategy.CreatePopStrategy(selectedType);
+                    SerializedProperty slot = slotStrategy.GetArrayElementAtIndex(i);
+                    EditStrategySlotValues(ref slot, isNewcomer);
                     EditorGUI.indentLevel--;
                 }
 
@@ -140,8 +133,11 @@ public class EditGuestPopDestinationCtrl : Editor
 
                 foreach (GuestPopPointerCtrl unit in table)
                 {
+                    SerializedObject serobj = new SerializedObject(unit);
+                    serobj.Update();
                     EditorGUILayout.ObjectField("PopPointer", unit.gameObject, typeof(GameObject), false);
-                    ser.FindProperty("m_cost").intValue = EditorGUILayout.IntField("コスト", unit.m_cost).MinLimitedZero();
+                    serobj.FindProperty("m_cost").intValue = EditorGUILayout.IntField("優先度", unit.m_cost).MinLimitedZero();
+                    serobj.ApplyModifiedProperties();
                 }
 
             });
@@ -159,22 +155,25 @@ public class EditGuestPopDestinationCtrl : Editor
         ser.ApplyModifiedProperties();
     }
 
-    private void EditStrategySlotValues(ref GuestPopDestinationCtrl.StrategySlot slot, bool isNewcomer)
+    private void EditStrategySlotValues(ref SerializedProperty slot, bool isNewcomer)
     {
-        switch(slot.m_strategy.ToStrategyType())
+        switch ((GuestPopStrategy.StrategyType)slot.FindPropertyRelative("m_strategyType").enumValueIndex)
         {
             case GuestPopStrategy.StrategyType.Wait:
-                slot.m_values = null;
-                slot.m_fvalues = null;
+                slot.FindPropertyRelative("m_values").ClearArray();
+                slot.FindPropertyRelative("m_fvalues").ClearArray();
                 break;
             case GuestPopStrategy.StrategyType.Standard:
+                SerializedProperty values = slot.FindPropertyRelative("m_values");
+                SerializedProperty fvalues = slot.FindPropertyRelative("m_fvalues");
                 if (isNewcomer)
                 {
-                    slot.m_fvalues = new float[1];
-                    slot.m_values = new int[1];
+                    int arraySize = 1;
+                    EDUtilFunctions.ResizeConstArray(ref values, arraySize);
+                    EDUtilFunctions.ResizeConstArray(ref fvalues, arraySize);
                 }
-                slot.m_fvalues[0] = EditorGUILayout.FloatField("出現間隔(Sec)", slot.m_fvalues[0]);
-                slot.m_values[0] = EditorGUILayout.IntField("同時出現数(Num)", slot.m_values[0]).MinLimitedOne();
+                fvalues.GetArrayElementAtIndex(0).floatValue = EditorGUILayout.FloatField("出現間隔(Sec)", fvalues.GetArrayElementAtIndex(0).floatValue);
+                values.GetArrayElementAtIndex(0).intValue = EditorGUILayout.IntField("同時出現数(Num)", values.GetArrayElementAtIndex(0).intValue).MinLimitedOne();
                 break;
         }
     }
