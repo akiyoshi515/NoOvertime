@@ -31,6 +31,12 @@ public class CharNaviCtrl : MonoBehaviour
         set;
     }
 
+    public bool isStaticTarget
+    {
+        get;
+        set;
+    }
+
     void Awake()
     {
         staticTarget = Vector3.zero;
@@ -47,13 +53,16 @@ public class CharNaviCtrl : MonoBehaviour
 
     void Update()
     {
-        if (target != null)
+        if (isStaticTarget)
         {
-            naviAgent.SetDestination(target.position);
+            naviAgent.SetDestination(staticTarget);
         }
         else
         {
-            naviAgent.SetDestination(staticTarget);
+            if (target != null)
+            {
+                naviAgent.SetDestination(target.position);
+            }
         }
 
         if (naviAgent.remainingDistance > naviAgent.stoppingDistance)
