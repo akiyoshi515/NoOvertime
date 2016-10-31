@@ -231,7 +231,7 @@ public class EditUserLegionSetupper : Editor
     private void SetupLegion(GameObject targetLegion)
     {
         // TODO
-        EDUtilFunctions.EditApplySerializedPrefab<UserLegionCtrl>(
+        EDUtilFunctions.EditSerializedObject<UserLegionCtrl>(
             targetLegion, 
             (ser) => 
             {
@@ -265,12 +265,20 @@ public class EditUserLegionSetupper : Editor
 
     private void SetupUnit(GameObject ctrl, GameObject camera, int index)
     {
+        const float SliceWidth = 0.470f;
+        const float SliceHeight = 0.460f;
+        const float SliceOffsetW = 1.0f - (SliceWidth + SliceWidth);
+        const float SliceOffsetH = 1.0f - (SliceHeight + SliceHeight);
         Rect[] viewportTable = new Rect[4]
             {
-                new Rect(0.0f, 0.5f, 0.5f, 0.5f),
-                new Rect(0.5f, 0.5f, 0.5f, 0.5f),
-                new Rect(0.0f, 0.0f, 0.5f, 0.5f),
-                new Rect(0.5f, 0.0f, 0.5f, 0.5f),
+                new Rect(0.0f, SliceHeight + SliceOffsetH,
+                    SliceWidth, SliceHeight),
+                new Rect(0.0f, 0.0f,
+                    SliceWidth, SliceHeight),
+                new Rect(SliceWidth + SliceOffsetW, SliceHeight + SliceOffsetH, 
+                    SliceWidth, SliceHeight),
+                new Rect(SliceWidth + SliceOffsetW, 0.0f, 
+                    SliceWidth, SliceHeight),
             };
 
         // UserData
