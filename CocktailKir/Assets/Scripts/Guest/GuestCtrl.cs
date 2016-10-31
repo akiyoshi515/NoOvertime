@@ -6,15 +6,9 @@ using AkiVACO;
 [RequireComponent(typeof(CharNaviCtrl))]
 public class GuestCtrl : MonoBehaviour
 {
-    protected class CtrlStateNone
-    {
-        public virtual void OnAwake(GuestCtrl ctrl) { }
-        public virtual void OnExit(GuestCtrl ctrl) { }
-
-        public virtual void OnUpdate(GuestCtrl ctrl) { }
-        public virtual void OnHitBallet(GuestCtrl ctrl) { }
-        public virtual void OnDestroyedAttractField(GuestCtrl ctrl) { }
-    }
+    protected virtual void OnUpdate() { }
+    protected virtual void OnHitBallet() { }
+    protected virtual void OnDestroyedAttractField() { }
 
     protected GuestScoreUnit m_unit = new GuestScoreUnit();
     public GuestScoreUnit unit
@@ -33,15 +27,8 @@ public class GuestCtrl : MonoBehaviour
     protected Vector3 m_destination = Vector3.zero;
     protected Vector3 m_goOutDestination = Vector3.zero;
 
-    private CtrlStateNone m_stateCtrl = new CtrlStateNone();
-
-    protected void SetStateCtrl<T>() where T: CtrlStateNone, new()
-    {
-        m_stateCtrl = new T();
-    }
-
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
         m_unit.Initialize();
 
@@ -51,7 +38,7 @@ public class GuestCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_stateCtrl.OnUpdate(this); // TODO
+        OnUpdate(); // TODO
 
     }
 
@@ -70,7 +57,7 @@ public class GuestCtrl : MonoBehaviour
             {
                 this.transform.GetChild(0).GetComponent<MeshMaterialCtrl>().SetMaterial(m_unit.topUserId + 1);  // -1 -> 0
             }
-            m_stateCtrl.OnHitBallet(this);
+            OnHitBallet();
         }
         
         if (col.tag == "AttractField")
@@ -100,7 +87,7 @@ public class GuestCtrl : MonoBehaviour
     {
         m_attractTarget = null;
         m_naviCtrl.SetNavTarget(m_destination); // TODO
-        m_stateCtrl.OnDestroyedAttractField(this);
+        OnDestroyedAttractField();
     }
 
 }

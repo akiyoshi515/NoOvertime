@@ -49,27 +49,31 @@ public class EditGuestPopDestinationCtrl : Editor
             () =>
             {
                 SerializedProperty param = ser.FindProperty("m_param");
-                if (param.arraySize != GuestConstParam.SumGuestType)
-                {
-                    int size = param.arraySize;
-                    if (size < GuestConstParam.SumGuestType)
-                    {
-                        for (int i = size; i < GuestConstParam.SumGuestType; ++i)
-                        {
-                            param.InsertArrayElementAtIndex(i);
-                        }
-                    }
-                    else
-                    {
-                        for (int i = size; i >= GuestConstParam.SumGuestType; --i)
-                        {
-                            param.DeleteArrayElementAtIndex(i);
-                        }
-                    }
-                }
-                param.GetArrayElementAtIndex(0).FindPropertyRelative("m_capacity").intValue = EditorGUILayout.IntField("キャパシティ", gen.m_param[0].m_capacity);
+                EDUtilFunctions.ResizeConstArray(ref param, GuestConstParam.SumGuestType);
 
-                EditorGUILayout.IntField("残人数", gen.m_param[0].m_num);
+                EditorGUILayout.LabelField("キャパシティ");
+                EditorGUI.indentLevel++;
+                SerializedProperty cap0 = param.GetArrayElementAtIndex(0).FindPropertyRelative("m_capacity");
+                SerializedProperty cap1 = param.GetArrayElementAtIndex(1).FindPropertyRelative("m_capacity");
+                SerializedProperty cap2 = param.GetArrayElementAtIndex(2).FindPropertyRelative("m_capacity");
+                SerializedProperty cap3 = param.GetArrayElementAtIndex(3).FindPropertyRelative("m_capacity");
+                cap0.intValue = EditorGUILayout.IntField("通常", cap0.intValue);
+                cap1.intValue = EditorGUILayout.IntField("のんびり", cap1.intValue);
+                cap2.intValue = EditorGUILayout.IntField("せっかち", cap2.intValue);
+                cap3.intValue = EditorGUILayout.IntField("居残る", cap3.intValue);
+                EditorGUI.indentLevel--;
+
+                EditorGUILayout.LabelField("残人数");
+                EditorGUI.indentLevel++;
+                SerializedProperty num0 = param.GetArrayElementAtIndex(0).FindPropertyRelative("m_num");
+                SerializedProperty num1 = param.GetArrayElementAtIndex(1).FindPropertyRelative("m_num");
+                SerializedProperty num2 = param.GetArrayElementAtIndex(2).FindPropertyRelative("m_num");
+                SerializedProperty num3 = param.GetArrayElementAtIndex(3).FindPropertyRelative("m_num");
+                EditorGUILayout.IntField("通常", num0.intValue);
+                EditorGUILayout.IntField("のんびり", num1.intValue);
+                EditorGUILayout.IntField("せっかち", num2.intValue);
+                EditorGUILayout.IntField("居残る", num3.intValue);
+                EditorGUI.indentLevel--;
             });
 
         m_slotStrategy.Invoke(

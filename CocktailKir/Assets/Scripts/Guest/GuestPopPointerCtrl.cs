@@ -12,7 +12,16 @@ public class GuestPopPointerCtrl : MonoBehaviour
     private GameObject m_targetPoint = null;
 
     [SerializeField]
-    private GameObject m_standardGuest = null;
+    private GameObject m_normalGuest = null;
+
+    [SerializeField]
+    private GameObject m_gentleGuest = null;
+
+    [SerializeField]
+    private GameObject m_impatientGuest = null;
+
+    [SerializeField]
+    private GameObject m_stayBehindGuest = null;
 
     void Awake()
     {
@@ -53,9 +62,17 @@ public class GuestPopPointerCtrl : MonoBehaviour
         switch (type)
         {
             case GuestType.Standard:
-                PopGuest(m_standardGuest, destination, goOutDestination);
+                PopGuest(m_normalGuest, destination, goOutDestination);
                 break;
-            // TODO
+            case GuestType.Gentle:
+                PopGuest(m_gentleGuest, destination, goOutDestination);
+                break;
+            case GuestType.Impatient:
+                PopGuest(m_impatientGuest, destination, goOutDestination);
+                break;
+            case GuestType.StayBehind:
+                PopGuest(m_stayBehindGuest, destination, goOutDestination);
+                break;
         }
     }
     /*
