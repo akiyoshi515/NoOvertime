@@ -25,6 +25,17 @@ public class CharNaviCtrl : MonoBehaviour
         set { m_target = value; }
     }
 
+    public Vector3 staticTarget
+    {
+        get;
+        set;
+    }
+
+    void Awake()
+    {
+        staticTarget = Vector3.zero;
+    }
+
     void Start()
     {
         naviAgent = this.GetComponentInChildren<NavMeshAgent>();
@@ -39,6 +50,10 @@ public class CharNaviCtrl : MonoBehaviour
         if (target != null)
         {
             naviAgent.SetDestination(target.position);
+        }
+        else
+        {
+            naviAgent.SetDestination(staticTarget);
         }
 
         if (naviAgent.remainingDistance > naviAgent.stoppingDistance)
