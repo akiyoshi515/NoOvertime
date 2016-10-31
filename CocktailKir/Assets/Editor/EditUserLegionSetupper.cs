@@ -14,12 +14,12 @@ using AkiVACO.EditorUtil;
 [CustomEditor(typeof(UserLegionSetupper))]
 public class EditUserLegionSetupper : Editor
 {
-    private static EditorUtilFoldout m_collapsed = new EditorUtilFoldout(true);
-    private static EditorUtilFoldout m_collapsedBasis = new EditorUtilFoldout();
+    private static EDUtilFoldout m_collapsed = new EDUtilFoldout(true);
+    private static EDUtilFoldout m_collapsedBasis = new EDUtilFoldout();
 
-    private static EditorUtilFoldout m_collapsedUserChar = new EditorUtilFoldout(true);
-    private static EditorUtilFoldout m_collapsedUserLauncher = new EditorUtilFoldout(true);
-    private static EditorUtilFoldout m_collapsedUserCamera = new EditorUtilFoldout(true);
+    private static EDUtilFoldout m_collapsedUserChar = new EDUtilFoldout(true);
+    private static EDUtilFoldout m_collapsedUserLauncher = new EDUtilFoldout(true);
+    private static EDUtilFoldout m_collapsedUserCamera = new EDUtilFoldout(true);
 
     public override void OnInspectorGUI()
     {
@@ -116,58 +116,31 @@ public class EditUserLegionSetupper : Editor
         obj = EditorGUILayout.ObjectField(msg, obj, typeof(GameObject), allowSceneObjects) as GameObject;
     }
 
-    private void UnilUpdatePrefab<T>(GameObject baseprefab, UnityAction<SerializedObject> callback)
-    {
-        GameObject prefab = PrefabUtility.InstantiatePrefab(baseprefab) as GameObject;
-        {
-            T[] table = prefab.GetComponentsInChildren<T>();
-            foreach (T cs in table)
-            {
-                SerializedObject ser = new SerializedObject(cs as UnityEngine.Object);
-                ser.Update();
-                callback.Invoke(ser);
-                ser.ApplyModifiedProperties();
-            }
-        }
-        PrefabUtility.ReplacePrefab(prefab, baseprefab);
-        GameObject.DestroyImmediate(prefab);
-    }
-
     private void UpdateUserPrefab(UserLegionSetupper setupper)
     {
-        UnilUpdatePrefab<CharAnimateCtrl>(
+        EDUtilFunctions.EditApplySerializedPrefab<CharAnimateCtrl>(
             setupper.m_baseUserCtrl, 
             (ser) => 
             {
-                SerializedProperty moveSpeed = ser.FindProperty("m_moveSpeed");
-                moveSpeed.floatValue = setupper.m_moveSpeed;
-                SerializedProperty jumpPower = ser.FindProperty("m_jumpPower");
-                jumpPower.floatValue = setupper.m_jumpPower;
+                ser.FindProperty("m_moveSpeed").floatValue = setupper.m_moveSpeed;
+                ser.FindProperty("m_jumpPower").floatValue = setupper.m_jumpPower;
             });
 
-        UnilUpdatePrefab<LauncherCtrl>(
+        EDUtilFunctions.EditApplySerializedPrefab<LauncherCtrl>(
             setupper.m_baseUserCtrl,
             (ser) =>
             {
-                SerializedProperty pitchSpeed = ser.FindProperty("m_pitchSpeed");
-                pitchSpeed.floatValue = setupper.m_pitchSpeed;
-                SerializedProperty minPitchAngle = ser.FindProperty("m_minPitchAngle");
-                minPitchAngle.floatValue = setupper.m_minPitchAngle;
-                SerializedProperty maxPitchAngle = ser.FindProperty("m_maxPitchAngle");
-                maxPitchAngle.floatValue = setupper.m_maxPitchAngle;
-                SerializedProperty yawSpeed = ser.FindProperty("m_yawSpeed");
-                yawSpeed.floatValue = setupper.m_yawSpeed;
-                SerializedProperty shotPower = ser.FindProperty("m_shotPower");
-                shotPower.floatValue = setupper.m_shotPower;
-                SerializedProperty shot3WayAngle = ser.FindProperty("m_shot3WayAngle");
-                shot3WayAngle.floatValue = setupper.m_shot3WayAngle;
-                SerializedProperty knockbackTime = ser.FindProperty("m_knockbackTime");
-                knockbackTime.floatValue = setupper.m_knockbackTime;
-                SerializedProperty chargeShotTime = ser.FindProperty("m_chargeShotTime");
-                chargeShotTime.floatValue = setupper.m_chargeShotTime;
+                ser.FindProperty("m_pitchSpeed").floatValue = setupper.m_pitchSpeed;
+                ser.FindProperty("m_minPitchAngle").floatValue = setupper.m_minPitchAngle;
+                ser.FindProperty("m_maxPitchAngle").floatValue = setupper.m_maxPitchAngle;
+                ser.FindProperty("m_yawSpeed").floatValue = setupper.m_yawSpeed;
+                ser.FindProperty("m_shotPower").floatValue = setupper.m_shotPower;
+                ser.FindProperty("m_shot3WayAngle").floatValue = setupper.m_shot3WayAngle;
+                ser.FindProperty("m_knockbackTime").floatValue = setupper.m_knockbackTime;
+                ser.FindProperty("m_chargeShotTime").floatValue = setupper.m_chargeShotTime;
             });
 
-        UnilUpdatePrefab<LauncherMagazine>(
+        EDUtilFunctions.EditApplySerializedPrefab<LauncherMagazine>(
             setupper.m_baseUserCtrl,
             (ser) =>
             {
@@ -175,7 +148,7 @@ public class EditUserLegionSetupper : Editor
                 reloadTime.floatValue = setupper.m_reloadTime;
             });
 
-        UnilUpdatePrefab<UserCameraAutoCtrl>(
+        EDUtilFunctions.EditApplySerializedPrefab<UserCameraAutoCtrl>(
             setupper.m_baseUserCamera,
             (ser) =>
             {
@@ -258,7 +231,7 @@ public class EditUserLegionSetupper : Editor
     private void SetupLegion(GameObject targetLegion)
     {
         // TODO
-        UnilUpdatePrefab<UserLegionCtrl>(
+        EDUtilFunctions.EditSerializedObject<UserLegionCtrl>(
             targetLegion, 
             (ser) => 
             {
@@ -292,12 +265,20 @@ public class EditUserLegionSetupper : Editor
 
     private void SetupUnit(GameObject ctrl, GameObject camera, int index)
     {
+        const float SliceWidth = 0.470f;
+        const float SliceHeight = 0.460f;
+        const float SliceOffsetW = 1.0f - (SliceWidth + SliceWidth);
+        const float SliceOffsetH = 1.0f - (SliceHeight + SliceHeight);
         Rect[] viewportTable = new Rect[4]
             {
-                new Rect(0.0f, 0.5f, 0.5f, 0.5f),
-                new Rect(0.5f, 0.5f, 0.5f, 0.5f),
-                new Rect(0.0f, 0.0f, 0.5f, 0.5f),
-                new Rect(0.5f, 0.0f, 0.5f, 0.5f),
+                new Rect(0.0f, SliceHeight + SliceOffsetH,
+                    SliceWidth, SliceHeight),
+                new Rect(0.0f, 0.0f,
+                    SliceWidth, SliceHeight),
+                new Rect(SliceWidth + SliceOffsetW, SliceHeight + SliceOffsetH, 
+                    SliceWidth, SliceHeight),
+                new Rect(SliceWidth + SliceOffsetW, 0.0f, 
+                    SliceWidth, SliceHeight),
             };
 
         // UserData

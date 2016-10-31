@@ -19,7 +19,7 @@ using UnityEditor;
 [CustomEditor(typeof(XNavObstacleViewer))]
 public class EditNavObstacleViewer : Editor
 {
-    private EditorUtilFoldout m_collapsed = new EditorUtilFoldout(true);
+    private EDUtilFoldout m_collapsed = new EDUtilFoldout(true);
 
     public override void OnInspectorGUI()
     {
