@@ -29,6 +29,8 @@ public class CharNaviLineCtrl : MonoBehaviour
 
         naviAgent.updateRotation = false;
         naviAgent.updatePosition = true;
+
+        naviAgent.speed = charCtrl.moveSpeed;
     }
 
     void Update()

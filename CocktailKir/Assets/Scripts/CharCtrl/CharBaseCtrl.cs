@@ -18,6 +18,11 @@ public class CharBaseCtrl : MonoBehaviour
     [SerializeField]
     private float m_groundCheckDistance = 0.1f;
 
+    public float moveSpeed
+    {
+        get { return m_moveSpeed; }
+    }
+
     private Rigidbody m_rigidbody = null;
 
     private Vector3 m_groundNormal;
