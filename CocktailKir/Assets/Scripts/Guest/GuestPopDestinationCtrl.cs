@@ -109,7 +109,7 @@ public class GuestPopDestinationCtrl : MonoBehaviour
     {
         if (ValidPopGuest(type))
         {
-            popPoint.SendPopGuest(type, destination, goOutDestination.transform);
+            popPoint.SendPopGuest(type, destination, goOutDestination.transform.position);
         }
     }
 
