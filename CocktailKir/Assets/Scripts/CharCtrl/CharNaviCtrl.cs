@@ -22,7 +22,24 @@ public class CharNaviCtrl : MonoBehaviour
     public Transform target
     {
         get { return m_target; }
-        set { m_target = value; }
+        private set { m_target = value; }
+    }
+
+    public Vector3 staticTarget
+    {
+        get;
+        private set;
+    }
+
+    public bool isStaticTarget
+    {
+        get;
+        private set;
+    }
+
+    void Awake()
+    {
+        staticTarget = Vector3.zero;
     }
 
     void Start()
@@ -36,9 +53,16 @@ public class CharNaviCtrl : MonoBehaviour
 
     void Update()
     {
-        if (target != null)
+        if (isStaticTarget)
         {
-            naviAgent.SetDestination(target.position);
+            naviAgent.SetDestination(staticTarget);
+        }
+        else
+        {
+            if (target != null)
+            {
+                naviAgent.SetDestination(target.position);
+            }
         }
 
         if (naviAgent.remainingDistance > naviAgent.stoppingDistance)
@@ -60,5 +84,17 @@ public class CharNaviCtrl : MonoBehaviour
                 Destroy(m_target.gameObject);
             }
         }
+    }
+
+    public void SetNavTarget(Transform target)
+    {
+        m_target = target;
+        isStaticTarget = false;
+    }
+
+    public void SetNavTarget(Vector3 target)
+    {
+        staticTarget = target;
+        isStaticTarget = true;
     }
 }

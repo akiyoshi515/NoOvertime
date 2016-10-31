@@ -49,11 +49,10 @@ public class GuestPopPointerCtrl : MonoBehaviour
     /// <param name="goOutDestination">退避時の目的地</param>
     public void SendPopGuest(GuestType type, Vector3 destination, Transform goOutDestination)
     {
-        GameObject targetobj = GameObject.Instantiate(m_targetPoint, destination, Quaternion.identity) as GameObject;
         switch (type)
         {
             case GuestType.Standard:
-                PopGuest(m_standardGuest, targetobj.transform, goOutDestination);
+                PopGuest(m_standardGuest, destination, goOutDestination);
                 break;
             // TODO
         }
@@ -68,7 +67,23 @@ public class GuestPopPointerCtrl : MonoBehaviour
     private GameObject PopGuest(GameObject baseObject, Transform destination, Transform goOutDestination)
     {
         GameObject obj = XFunctions.Instance(baseObject, this.transform.position, this.transform.rotation);
-        obj.GetComponent<CharNaviCtrl>().target = destination;
+        CharNaviCtrl ctrl = obj.GetComponent<CharNaviCtrl>();
+        ctrl.SetNavTarget(destination);
+        // TODO
+        return obj;
+    }
+
+    /// <summary>
+    /// GuestのPop処理
+    /// </summary>
+    /// <param name="baseObject">GuestのBaseObject</param>
+    /// <param name="destination">目的地(固定)</param>
+    /// <param name="goOutDestination">退避時の目的地</param>
+    private GameObject PopGuest(GameObject baseObject, Vector3 destination, Transform goOutDestination)
+    {
+        GameObject obj = XFunctions.Instance(baseObject, this.transform.position, this.transform.rotation);
+        CharNaviCtrl ctrl = obj.GetComponent<CharNaviCtrl>();
+        ctrl.SetNavTarget(destination);
         // TODO
         return obj;
     }
