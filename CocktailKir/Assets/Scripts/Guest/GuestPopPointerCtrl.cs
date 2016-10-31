@@ -68,8 +68,7 @@ public class GuestPopPointerCtrl : MonoBehaviour
     {
         GameObject obj = XFunctions.Instance(baseObject, this.transform.position, this.transform.rotation);
         CharNaviCtrl ctrl = obj.GetComponent<CharNaviCtrl>();
-        ctrl.target = destination;
-        ctrl.isStaticTarget = false;
+        ctrl.SetNavTarget(destination);
         // TODO
         return obj;
     }
@@ -84,9 +83,7 @@ public class GuestPopPointerCtrl : MonoBehaviour
     {
         GameObject obj = XFunctions.Instance(baseObject, this.transform.position, this.transform.rotation);
         CharNaviCtrl ctrl = obj.GetComponent<CharNaviCtrl>();
-        ctrl.target = null;
-        ctrl.staticTarget = destination;
-        ctrl.isStaticTarget = true;
+        ctrl.SetNavTarget(destination);
         // TODO
         return obj;
     }

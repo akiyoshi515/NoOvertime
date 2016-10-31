@@ -22,19 +22,19 @@ public class CharNaviCtrl : MonoBehaviour
     public Transform target
     {
         get { return m_target; }
-        set { m_target = value; }
+        private set { m_target = value; }
     }
 
     public Vector3 staticTarget
     {
         get;
-        set;
+        private set;
     }
 
     public bool isStaticTarget
     {
         get;
-        set;
+        private set;
     }
 
     void Awake()
@@ -84,5 +84,17 @@ public class CharNaviCtrl : MonoBehaviour
                 Destroy(m_target.gameObject);
             }
         }
+    }
+
+    public void SetNavTarget(Transform target)
+    {
+        m_target = target;
+        isStaticTarget = false;
+    }
+
+    public void SetNavTarget(Vector3 target)
+    {
+        staticTarget = target;
+        isStaticTarget = true;
     }
 }

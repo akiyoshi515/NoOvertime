@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+using RegistedList = System.Collections.Generic.Queue<GuestCtrl>;
 
 [RequireComponent(typeof(SphereCollider))]
 public class AttractFieldCtrl : MonoBehaviour
@@ -14,6 +17,8 @@ public class AttractFieldCtrl : MonoBehaviour
         get { return m_time; }
         set { m_time = value; }
     }
+
+    private RegistedList m_registedList = new RegistedList();
 
     // Use this for initialization
     void Start()
@@ -31,6 +36,19 @@ public class AttractFieldCtrl : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        foreach (GuestCtrl unit in m_registedList)
+        {
+            unit.SendDestroyedAttractField();
+        }
+        m_registedList.Clear();
+    }
+
+    public void RegistObject(GuestCtrl obj)
+    {
+        m_registedList.Enqueue(obj);
+    }
 
 
 }
