@@ -19,7 +19,7 @@ using UnityEditor;
 [CustomEditor(typeof(XCollisionViewer))]
 public class EditCollisionViewer : Editor
 {
-    private EditorUtilFoldout m_collapsed = new EditorUtilFoldout(true);
+    private EDUtilFoldout m_collapsed = new EDUtilFoldout(true);
 
     public override void OnInspectorGUI()
     {

@@ -17,7 +17,7 @@ using UnityEditor;
 [CustomEditor(typeof(XObjLabelUnit))]
 public class EditObjectLabel : Editor
 {
-    private EditorUtilFoldout m_collapsed = new EditorUtilFoldout(true);
+    private EDUtilFoldout m_collapsed = new EDUtilFoldout(true);
 
     public override void OnInspectorGUI()
     {
