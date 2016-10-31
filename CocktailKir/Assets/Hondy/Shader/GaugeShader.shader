@@ -72,7 +72,7 @@ Shader "Custom/GaugeSpriteShader"
 	{
 		fixed4 c = tex2D(_MainTex, IN.texcoord);
 	// マスクの閾値で表示するか判断
-		c *= step(tex2D(_MaskTex, IN.texcoord).a,_Mask);
+		c *= step(tex2D(_MaskTex, IN.texcoord).a,_Mask)*c.a;
 		return c;
 	}
 		ENDCG
