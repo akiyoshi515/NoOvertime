@@ -301,6 +301,13 @@ public class EditUserLegionSetupper : Editor
             cs.Edit_SetTargetUser(ctrl.transform);
         }
 
+        // UserNoUI
+        {
+            UserNoUI cs = ctrl.GetComponentInChildren<UserNoUI>();
+            Camera csCamera = camera.GetComponentInChildren<Camera>();
+            cs.TargetCamera = csCamera;
+        }
+
     }
 
 }
