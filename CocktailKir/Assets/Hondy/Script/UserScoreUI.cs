@@ -8,14 +8,14 @@ public class UserScoreUI
     MonoBehaviour
 {
 
-    [SerializeField]
+    [SerializeField,Header("フォントのスプライト")]
     Sprite[] m_numberSpriteArray;
 
     ///
     /// <summary>   UIImage 0が一の位～3が百の位.   </summary>
     ///
 
-    [SerializeField]
+    [SerializeField,Header("0から1の位,1は10の位....")]
     Image[] m_numberImage;
 
     ///
@@ -49,7 +49,7 @@ public class UserScoreUI
         set
         {
             m_userID = value;
-
+            // 色変更
             for (int i = 0; i < m_numberImage.Length; i++)
             {
                 m_numberImage[i].color = m_userColor[(int)m_userID];
@@ -64,13 +64,7 @@ public class UserScoreUI
 	// Update is called once per frame
 	void Update ()
     {
-
-        for (int i = 0; i < m_numberImage.Length; i++)
-        {
-            m_numberImage[i].color = m_userColor[(int)m_userID];
-        }
-
-        // カウントアップ演出はアルファ終わってから
+        // カウントアップ演出はアルファ終わってから?
 
         int temp = m_userScore;
 
