@@ -37,6 +37,21 @@ public class CharNaviCtrl : MonoBehaviour
         private set;
     }
 
+    public Vector3 targetPosition
+    {
+        get 
+        {
+            if (isStaticTarget)
+            {
+                return staticTarget;
+            }
+            else
+            {
+                return target.position;
+            }
+        }
+    }
+
     void Awake()
     {
         staticTarget = Vector3.zero;

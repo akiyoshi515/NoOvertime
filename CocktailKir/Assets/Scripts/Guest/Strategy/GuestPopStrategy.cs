@@ -5,21 +5,20 @@ using GuestPopStrategyInternal;
 
 public class GuestPopStrategy
 {
-    public enum StrategyType
+    public enum PopStrategyType
     {
         Wait,
         Standard,
         // TODO
     }
 
-
-    public static IGuestPopStrategy CreatePopStrategy(StrategyType type)
+    public static IGuestPopStrategy CreatePopStrategy(PopStrategyType type)
     {
         switch(type)
         {
-            case StrategyType.Wait:
+            case PopStrategyType.Wait:
                 return new GuestPopStrategy_Wait();
-            case StrategyType.Standard:
+            case PopStrategyType.Standard:
                 return new GuestPopStrategy_Standard();
         }
 

@@ -6,13 +6,10 @@ using AkiVACO;
 public class GuestPopPointerCtrl : MonoBehaviour
 {
     [SerializeField]
-    public int m_cost = 0;
+    public int m_priority = 0;
 
     [SerializeField]
     private GameObject m_targetPoint = null;
-
-    [SerializeField]
-    private GameObject m_standardGuest = null;
 
     void Awake()
     {
@@ -23,7 +20,7 @@ public class GuestPopPointerCtrl : MonoBehaviour
         GameObject.Destroy(this.GetComponent<MeshFilter>());
 #endif
     }
-
+    /*
     /// <summary>
     /// GuestのPopを指示する
     /// </summary>
@@ -40,6 +37,7 @@ public class GuestPopPointerCtrl : MonoBehaviour
                 // TODO
         }
     }
+    */
 
     /// <summary>
     /// GuestのPopを指示する
@@ -47,17 +45,12 @@ public class GuestPopPointerCtrl : MonoBehaviour
     /// <param name="type">PopするGuestのType</param>
     /// <param name="destination">目的地(Vector3)</param>
     /// <param name="goOutDestination">退避時の目的地</param>
-    public void SendPopGuest(GuestType type, Vector3 destination, Transform goOutDestination)
+    public void SendPopGuest(GameObject obj, Vector3 destination, Vector3 goOutDestination)
     {
-        switch (type)
-        {
-            case GuestType.Standard:
-                PopGuest(m_standardGuest, destination, goOutDestination);
-                break;
-            // TODO
-        }
+        PopGuest(obj, destination, goOutDestination);
     }
 
+    /*
     /// <summary>
     /// GuestのPop処理
     /// </summary>
@@ -72,18 +65,17 @@ public class GuestPopPointerCtrl : MonoBehaviour
         // TODO
         return obj;
     }
-
+    */
     /// <summary>
     /// GuestのPop処理
     /// </summary>
     /// <param name="baseObject">GuestのBaseObject</param>
     /// <param name="destination">目的地(固定)</param>
     /// <param name="goOutDestination">退避時の目的地</param>
-    private GameObject PopGuest(GameObject baseObject, Vector3 destination, Transform goOutDestination)
+    private GameObject PopGuest(GameObject baseObject, Vector3 destination, Vector3 goOutDestination)
     {
         GameObject obj = XFunctions.Instance(baseObject, this.transform.position, this.transform.rotation);
-        CharNaviCtrl ctrl = obj.GetComponent<CharNaviCtrl>();
-        ctrl.SetNavTarget(destination);
+        obj.GetComponent<GuestCtrl>().SetDestination(destination, goOutDestination);
         // TODO
         return obj;
     }

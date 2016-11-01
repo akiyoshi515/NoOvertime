@@ -3,7 +3,7 @@ using System.Collections;
 
 public interface IGuestPopStrategy
 {
-    void UpdatePopStrategy(GuestPopDestinationCtrl ctrl, int[] values, float[] fvalues);
+    void UpdatePopStrategy(GuestPopDestinationCtrl ctrl, IGuestTypeStrategy typeStrategy, int[] values, float[] fvalues);
 
-    GuestPopStrategy.StrategyType ToStrategyType();
+    GuestPopStrategy.PopStrategyType ToStrategyType();
 }
