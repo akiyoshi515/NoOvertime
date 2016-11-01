@@ -3,6 +3,7 @@ using System.Collections;
 
 using AkiVACO;
 
+// TODO
 public class UserCameraViewCtrl : MonoBehaviour
 {
     [SerializeField]
@@ -19,14 +20,15 @@ public class UserCameraViewCtrl : MonoBehaviour
         m_userID = m_ctrl.targetUser.GetComponent<UserData>().userID;
     }
 
-    void OnPreCull()
+    void OnPreRender()
     {
-//        m_legionCtrl.SetEnables(m_userID, true);
+        // TODO
+        m_legionCtrl.SetEnables(m_userID, this.GetComponent<Camera>());
     }
 
     void OnPostRender()
     {
-//        m_legionCtrl.SetEnables(m_userID, false);
+        // TODO
     }
 
 }
