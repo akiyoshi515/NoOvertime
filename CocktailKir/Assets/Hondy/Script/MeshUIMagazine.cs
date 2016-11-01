@@ -214,7 +214,6 @@ public class MeshUIMagazine
         RELOAD
     }
 
-
     TestReloadState m_testState;
 
     // Use this for initialization

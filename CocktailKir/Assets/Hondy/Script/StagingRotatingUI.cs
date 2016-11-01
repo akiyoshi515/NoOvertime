@@ -157,7 +157,14 @@ public class StagingRotatingUI : IStagingUI {
             m_totalAbsoluteAmountOfRotate += Mathf.Abs( m_rotationSpeedPerSecond * AkiVACO.XTime.deltaTime);
 
             // 回転
-            m_controlUIImage.rectTransform.eulerAngles = new Vector3(0, 0, m_startAngle + m_totalAmountOfRotate);
+            if (m_controlUIImage != null)
+            {
+                m_controlUIImage.rectTransform.eulerAngles = new Vector3(0, 0, m_startAngle + m_totalAmountOfRotate);
+            } 
+            else
+            {
+                transform.transform.eulerAngles = new Vector3(0, 0, m_startAngle + m_totalAmountOfRotate);
+            }
         }
         CheckDoRotation();
     }
