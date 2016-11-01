@@ -25,7 +25,7 @@ namespace GuestPopStrategyInternal
                 GuestPopPointerCtrl endPoint = null;
 
                 {
-                    int r = Random.Range(0, ctrl.baseSumCost);
+                    int r = Random.Range(0, ctrl.baseSumCost+1);
                     int sum = 0;
                     foreach (GuestPopPointerCtrl unit in ctrl.pointTable)
                     {
