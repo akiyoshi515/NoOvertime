@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UserNoUI : MonoBehaviour
+public class UserNoUI : MonoBehaviour, ISwitchViewCtrl
 {
     
     ///
@@ -51,4 +51,10 @@ public class UserNoUI : MonoBehaviour
 
     }
 
+    public void EnableView(bool isEnable)
+    {
+        m_isDisplay = isEnable;
+        m_meshRenderer.enabled = m_isDisplay;
+        transform.LookAt(transform.position - m_targetCamera.transform.rotation * Vector3.back, m_targetCamera.transform.rotation * Vector3.up);
+    }
 }

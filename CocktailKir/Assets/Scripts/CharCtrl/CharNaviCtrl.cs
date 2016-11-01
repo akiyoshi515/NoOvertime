@@ -47,7 +47,14 @@ public class CharNaviCtrl : MonoBehaviour
             }
             else
             {
-                return target.position;
+                if (target != null)
+                {
+                    return target.position;
+                }
+                else
+                {
+                    return Vector3.zero;
+                }
             }
         }
     }

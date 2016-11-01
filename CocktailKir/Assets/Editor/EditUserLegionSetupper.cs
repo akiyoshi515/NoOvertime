@@ -193,12 +193,12 @@ public class EditUserLegionSetupper : Editor
             GameObject uiUserNo = GameObject.Instantiate(setupper.m_baseUserUIUserNo[idx]);
             uiUserNo.name = "UIUserNo";
             uiUserNo.SetParent(ctrl, false);
-
+            
             // UI Magazine
             GameObject uiMagazine = GameObject.Instantiate(setupper.m_baseUserUIMagazine[idx]);
             uiMagazine.name = "UIMagazine";
             uiMagazine.SetParent(ctrl, false);
-
+            
             // Switch Mesh
             GameObject defmesh = ctrl.FindChild("DefMesh");
             int meshindex = defmesh.transform.GetSiblingIndex();
@@ -240,25 +240,25 @@ public class EditUserLegionSetupper : Editor
                 GameObject user3 = targetLegion.GetChild(2).gameObject;
                 GameObject user4 = targetLegion.GetChild(3).gameObject;
 
-                /* TypeName
+                //
                 SerializedProperty uiUserNo1 = ser.FindProperty("m_uiUserNo1");
-                uiUserNo1.objectReferenceValue = user1GetComponentInChildren<ISwitchViewCtrl>();
+                uiUserNo1.objectReferenceValue = user1.GetComponentInChildren<UserNoUI>();
                 SerializedProperty uiUserNo2 = ser.FindProperty("m_uiUserNo2");
-                uiUserNo2.objectReferenceValue = user2.GetComponentInChildren<ISwitchViewCtrl>();
+                uiUserNo2.objectReferenceValue = user2.GetComponentInChildren<UserNoUI>();
                 SerializedProperty uiUserNo3 = ser.FindProperty("m_uiUserNo3");
-                uiUserNo3.objectReferenceValue = user3.GetComponentInChildren<ISwitchViewCtrl>();
+                uiUserNo3.objectReferenceValue = user3.GetComponentInChildren<UserNoUI>();
                 SerializedProperty uiUserNo4 = ser.FindProperty("m_uiUserNo4");
-                uiUserNo4.objectReferenceValue = user4.GetComponentInChildren<ISwitchViewCtrl>();
+                uiUserNo4.objectReferenceValue = user4.GetComponentInChildren<UserNoUI>();
 
                 SerializedProperty uiMagazine1 = ser.FindProperty("m_uiMagazine1");
-                uiMagazine1.objectReferenceValue = user1.GetComponentInChildren<ISwitchViewCtrl>();
+                uiMagazine1.objectReferenceValue = user1.GetComponentInChildren<UserNoUI>();
                 SerializedProperty uiMagazine2 = ser.FindProperty("m_uiMagazine2");
-                uiMagazine2.objectReferenceValue = user2.GetComponentInChildren<ISwitchViewCtrl>();
+                uiMagazine2.objectReferenceValue = user2.GetComponentInChildren<UserNoUI>();
                 SerializedProperty uiMagazine3 = ser.FindProperty("m_uiMagazine3");
-                uiMagazine3.objectReferenceValue = user3.GetComponentInChildren<ISwitchViewCtrl>();
+                uiMagazine3.objectReferenceValue = user3.GetComponentInChildren<UserNoUI>();
                 SerializedProperty uiMagazine4 = ser.FindProperty("m_uiMagazine4");
-                uiMagazine4.objectReferenceValue = user4.GetComponentInChildren<ISwitchViewCtrl>();
-                */
+                uiMagazine4.objectReferenceValue = user4.GetComponentInChildren<UserNoUI>();
+
             });
 
     }
