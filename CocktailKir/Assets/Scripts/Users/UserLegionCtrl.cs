@@ -14,13 +14,13 @@ public class UserLegionCtrl : MonoBehaviour
     private UserNoUI m_uiUserNo4 = null;
 
     [SerializeField]
-    private UserNoUI m_uiMagazine1 = null;
+    private Billboard m_uiMagazine1 = null;
     [SerializeField]
-    private UserNoUI m_uiMagazine2 = null;
+    private Billboard m_uiMagazine2 = null;
     [SerializeField]
-    private UserNoUI m_uiMagazine3 = null;
+    private Billboard m_uiMagazine3 = null;
     [SerializeField]
-    private UserNoUI m_uiMagazine4 = null;
+    private Billboard m_uiMagazine4 = null;
 
     public void SetEnables(UserID myid, Camera target)
     {
