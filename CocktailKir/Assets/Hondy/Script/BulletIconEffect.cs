@@ -46,13 +46,15 @@ public class BulletIconEffect
         set { m_isReload = value; }
     }
 
-
+    Material m_material;
 
     // Use this for initialization
-    void Start () {
-
+    void Start ()
+    {
+        m_material = gameObject.GetComponent<MeshRenderer>().material;
         m_state = BulletState.HIDE_COMPLETE;
         transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+        m_material.SetFloat("_Sat", -1);
 
     }
 	
@@ -75,6 +77,7 @@ public class BulletIconEffect
                     m_time += Time.deltaTime;
                     transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) *(m_time / 0.2f);
                     transform.transform.eulerAngles = new Vector3(0, 0, 360*(m_time / 0.2f));
+                    m_material.SetFloat("_Sat", 2 * (m_time / 0.2f));
                 } 
                 else
                 {
@@ -98,6 +101,7 @@ public class BulletIconEffect
                     m_time += Time.deltaTime;
                     transform.localScale = new Vector3(1.0f, 1.0f, 1.0f) - (new Vector3(1.0f, 1.0f, 1.0f) * (m_time / 0.1f));
                     transform.transform.eulerAngles = new Vector3(0, 0, 360- 360 * (m_time / 0.1f));
+                    m_material.SetFloat("_Sat", 2 - 2* (m_time / 0.2f));
                 }
                 else
                 {
@@ -105,6 +109,7 @@ public class BulletIconEffect
                     m_time = 0;
                     transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
                     transform.transform.eulerAngles = new Vector3(0, 0, 0);
+                    m_material.SetFloat("_Sat", 0);
                     m_isNoneBullet = false;
                     
 
