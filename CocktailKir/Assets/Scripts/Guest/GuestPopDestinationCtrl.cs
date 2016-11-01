@@ -5,6 +5,8 @@ using AkiVACO.XValue;
 
 public class GuestPopDestinationCtrl : MonoBehaviour
 {
+    private const float GuestCenterPositionHeight = 0.350f;
+
     [System.Serializable]
     public class GuestParam
     {
@@ -125,19 +127,22 @@ public class GuestPopDestinationCtrl : MonoBehaviour
     {
         if (ValidPopGuest(type))
         {
+            Vector3 vecGoOutDestination = goOutDestination.transform.position;
+            vecGoOutDestination.y = GuestCenterPositionHeight;
+
             switch (type)
             {
                 case GuestType.Standard:
-                    popPoint.SendPopGuest(m_normalGuest, destination, goOutDestination.transform.position);
+                    popPoint.SendPopGuest(m_normalGuest, destination, vecGoOutDestination);
                     break;
                 case GuestType.Gentle:
-                    popPoint.SendPopGuest(m_gentleGuest, destination, goOutDestination.transform.position);
+                    popPoint.SendPopGuest(m_gentleGuest, destination, vecGoOutDestination);
                     break;
                 case GuestType.Impatient:
-                    popPoint.SendPopGuest(m_impatientGuest, destination, goOutDestination.transform.position);
+                    popPoint.SendPopGuest(m_impatientGuest, destination, vecGoOutDestination);
                     break;
                 case GuestType.StayBehind:
-                    popPoint.SendPopGuest(m_stayBehindGuest, destination, goOutDestination.transform.position);
+                    popPoint.SendPopGuest(m_stayBehindGuest, destination, vecGoOutDestination);
                     break;
             } 
         }

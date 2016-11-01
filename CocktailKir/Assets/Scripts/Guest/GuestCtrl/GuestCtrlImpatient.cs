@@ -7,6 +7,7 @@ public class GuestCtrlImpatient : GuestCtrl
     {
         void OnAwake(GuestCtrlImpatient ctrl);
         void OnUpdate(GuestCtrlImpatient ctrl);
+        void OnNearTarget(GuestCtrlImpatient ctrl);
         void OnHitBallet(GuestCtrlImpatient ctrl);
         void OnDestroyedAttractField(GuestCtrlImpatient ctrl);
     }
@@ -34,6 +35,11 @@ public class GuestCtrlImpatient : GuestCtrl
         m_stateCtrl.OnUpdate(this);
     }
 
+    protected override void OnNearTarget()
+    {
+        m_stateCtrl.OnNearTarget(this);
+    }
+
     protected override void OnHitBallet()
     {
         m_stateCtrl.OnHitBallet(this);
@@ -54,6 +60,11 @@ public class GuestCtrlImpatient : GuestCtrl
         {
         }
 
+        public void OnNearTarget(GuestCtrlImpatient ctrl)
+        {
+            ctrl.SetState<CtrlStateWait>();
+        }
+
         public void OnHitBallet(GuestCtrlImpatient ctrl)
         {
         }
@@ -61,7 +72,6 @@ public class GuestCtrlImpatient : GuestCtrl
         public void OnDestroyedAttractField(GuestCtrlImpatient ctrl)
         {
         }
-
     }
 
     protected class CtrlStateWait : ICtrlState
@@ -87,6 +97,11 @@ public class GuestCtrlImpatient : GuestCtrl
             }
         }
 
+        public void OnNearTarget(GuestCtrlImpatient ctrl)
+        {
+
+        }
+
         public void OnHitBallet(GuestCtrlImpatient ctrl)
         {
             ctrl.SetState<CtrlStateStay>();
@@ -110,6 +125,11 @@ public class GuestCtrlImpatient : GuestCtrl
         {
         }
 
+        public void OnNearTarget(GuestCtrlImpatient ctrl)
+        {
+
+        }
+
         public void OnHitBallet(GuestCtrlImpatient ctrl)
         {
         }
@@ -123,10 +143,16 @@ public class GuestCtrlImpatient : GuestCtrl
     {
         public void OnAwake(GuestCtrlImpatient ctrl)
         {
+            ctrl.SetNavTarget(ctrl.m_goOutDestination);
         }
 
         public void OnUpdate(GuestCtrlImpatient ctrl)
         {
+        }
+
+        public void OnNearTarget(GuestCtrlImpatient ctrl)
+        {
+            GameObject.Destroy(ctrl.gameObject);
         }
 
         public void OnHitBallet(GuestCtrlImpatient ctrl)
@@ -135,7 +161,7 @@ public class GuestCtrlImpatient : GuestCtrl
 
         public void OnDestroyedAttractField(GuestCtrlImpatient ctrl)
         {
-            ctrl.m_naviCtrl.SetNavTarget(ctrl.m_goOutDestination);
+            ctrl.SetNavTarget(ctrl.m_goOutDestination);
         }
 
     }

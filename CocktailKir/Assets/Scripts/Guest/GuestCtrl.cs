@@ -7,8 +7,13 @@ using AkiVACO;
 public class GuestCtrl : MonoBehaviour
 {
     protected virtual void OnUpdate() { }
+    protected virtual void OnNearTarget() { }
     protected virtual void OnHitBallet() { }
     protected virtual void OnDestroyedAttractField() { }
+
+    protected const float NearOffsetDistance = 1.0f;
+    protected const float StopedDistance = 0.250f;
+    protected const float IllegalStopedTime = 5.0f;
 
     protected GuestScoreUnit m_unit = new GuestScoreUnit();
     public GuestScoreUnit unit
@@ -16,7 +21,7 @@ public class GuestCtrl : MonoBehaviour
         get { return m_unit; }
     }
 
-    protected CharNaviCtrl m_naviCtrl = null;
+    private CharNaviCtrl m_naviCtrl = null;
 
     protected Transform m_attractTarget = null;
     public bool isAttractTarget
@@ -26,6 +31,9 @@ public class GuestCtrl : MonoBehaviour
 
     protected Vector3 m_destination = Vector3.zero;
     protected Vector3 m_goOutDestination = Vector3.zero;
+
+    private Vector3 m_prevPosition = Vector3.zero;
+    private float m_stopedTime = 0.0f;
 
     // Use this for initialization
     protected virtual void Start()
@@ -38,8 +46,9 @@ public class GuestCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        OnUpdate(); // TODO
+        OnUpdate();
 
+        CheckDistanceToTargetPoint();
     }
 
     void OnTriggerEnter(Collider col)
@@ -80,14 +89,51 @@ public class GuestCtrl : MonoBehaviour
     {
         m_attractTarget = obj.transform;
         m_naviCtrl.SetNavTarget(obj.transform);
+        m_stopedTime = 0.0f;
         obj.GetComponent<AttractFieldCtrl>().RegistObject(this);
     }
 
     public void SendDestroyedAttractField()
     {
         m_attractTarget = null;
-        m_naviCtrl.SetNavTarget(m_destination); // TODO
+        m_naviCtrl.SetNavTarget(m_destination);
+        m_stopedTime = 0.0f;
         OnDestroyedAttractField();
     }
 
+    public void SetNavTarget(Vector3 target)
+    {
+        m_naviCtrl.SetNavTarget(target);
+        m_stopedTime = 0.0f;
+    }
+
+    private void CheckDistanceToTargetPoint()
+    {
+        if (!isAttractTarget)
+        {
+
+            if (Vector3.Distance(m_naviCtrl.targetPosition, this.transform.position) <= NearOffsetDistance)
+            {
+                OnNearTarget();
+            }
+            else if (Vector3.Distance(m_prevPosition, this.transform.position) <= StopedDistance)
+            {
+                m_stopedTime += Time.deltaTime;
+                if (m_stopedTime >= IllegalStopedTime)
+                {
+                    m_stopedTime = 0.0f;
+                    if (m_naviCtrl.targetPosition != this.m_goOutDestination)
+                    {
+                        OnNearTarget();
+                    }
+                }
+            }
+            else
+            {
+                m_stopedTime = 0.0f;
+            }
+        }
+
+        m_prevPosition = this.transform.position;
+    }
 }

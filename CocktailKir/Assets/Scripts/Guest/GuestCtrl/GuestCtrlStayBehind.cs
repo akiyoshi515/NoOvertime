@@ -7,6 +7,7 @@ public class GuestCtrlStayBehind : GuestCtrl
     {
         void OnAwake(GuestCtrlStayBehind ctrl);
         void OnUpdate(GuestCtrlStayBehind ctrl);
+        void OnNearTarget(GuestCtrlStayBehind ctrl);
         void OnHitBallet(GuestCtrlStayBehind ctrl);
         void OnDestroyedAttractField(GuestCtrlStayBehind ctrl);
     }
@@ -29,6 +30,11 @@ public class GuestCtrlStayBehind : GuestCtrl
         m_stateCtrl.OnUpdate(this);
     }
 
+    protected override void OnNearTarget()
+    {
+        m_stateCtrl.OnNearTarget(this);
+    }
+
     protected override void OnHitBallet()
     {
         m_stateCtrl.OnHitBallet(this);
@@ -49,6 +55,11 @@ public class GuestCtrlStayBehind : GuestCtrl
         {
         }
 
+        public void OnNearTarget(GuestCtrlStayBehind ctrl)
+        {
+            ctrl.SetState<CtrlStateWait>();
+        }
+
         public void OnHitBallet(GuestCtrlStayBehind ctrl)
         {
         }
@@ -56,7 +67,6 @@ public class GuestCtrlStayBehind : GuestCtrl
         public void OnDestroyedAttractField(GuestCtrlStayBehind ctrl)
         {
         }
-
     }
 
     protected class CtrlStateWait : ICtrlState
@@ -66,6 +76,10 @@ public class GuestCtrlStayBehind : GuestCtrl
         }
 
         public void OnUpdate(GuestCtrlStayBehind ctrl)
+        {
+        }
+
+        public void OnNearTarget(GuestCtrlStayBehind ctrl)
         {
         }
 
@@ -87,6 +101,11 @@ public class GuestCtrlStayBehind : GuestCtrl
 
         public void OnUpdate(GuestCtrlStayBehind ctrl)
         {
+        }
+
+        public void OnNearTarget(GuestCtrlStayBehind ctrl)
+        {
+            GameObject.Destroy(ctrl.gameObject);
         }
 
         public void OnHitBallet(GuestCtrlStayBehind ctrl)
