@@ -7,7 +7,7 @@ namespace GuestPopStrategyInternal
     {
         private float m_remainTime = 0.0f;
 
-        public void UpdatePopStrategy(GuestPopDestinationCtrl ctrl, int[] values, float[] fvalues)
+        public void UpdatePopStrategy(GuestPopDestinationCtrl ctrl, IGuestTypeStrategy typeStrategy, int[] values, float[] fvalues)
         {
             m_remainTime -= Time.deltaTime;
             if (m_remainTime > 0.0f)
@@ -29,9 +29,9 @@ namespace GuestPopStrategyInternal
                     int sum = 0;
                     foreach (GuestPopPointerCtrl unit in ctrl.pointTable)
                     {
-                        if (unit.m_cost != 0)
+                        if (unit.m_priority != 0)
                         {
-                            sum += unit.m_cost;
+                            sum += unit.m_priority;
                             if (r <= sum)
                             {
                                 startPoint = unit;
@@ -45,14 +45,13 @@ namespace GuestPopStrategyInternal
                     endPoint = ctrl.pointTable[r];
                 }
 
-                // TODO GuestType
-                ctrl.SendPopGuest(GuestType.Standard, startPoint, ctrl.GetDestination(), endPoint);
+                ctrl.SendPopGuest(typeStrategy.CalcType(ctrl), startPoint, ctrl.GetDestination(), endPoint);
             }
         }
 
-        public GuestPopStrategy.StrategyType ToStrategyType()
+        public GuestPopStrategy.PopStrategyType ToStrategyType()
         {
-            return GuestPopStrategy.StrategyType.Standard;
+            return GuestPopStrategy.PopStrategyType.Standard;
         }
     }
 

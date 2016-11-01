@@ -6,14 +6,14 @@ namespace GuestPopStrategyInternal
 
     public class GuestPopStrategy_Wait : IGuestPopStrategy
     {
-        public void UpdatePopStrategy(GuestPopDestinationCtrl ctrl, int[] values, float[] fvalues)
+        public void UpdatePopStrategy(GuestPopDestinationCtrl ctrl, IGuestTypeStrategy typeStrategy, int[] values, float[] fvalues)
         {
             // Empty
         }
 
-        public GuestPopStrategy.StrategyType ToStrategyType()
+        public GuestPopStrategy.PopStrategyType ToStrategyType()
         {
-            return GuestPopStrategy.StrategyType.Wait;
+            return GuestPopStrategy.PopStrategyType.Wait;
         }
     }
 

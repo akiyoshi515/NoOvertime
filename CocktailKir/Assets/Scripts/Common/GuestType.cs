@@ -3,6 +3,8 @@ using System.Collections;
 
 public enum GuestType 
 {
+    InvalidType = -1,
+
     Standard = 0,
     Gentle = 1,
     Impatient = 2,

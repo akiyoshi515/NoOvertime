@@ -52,28 +52,46 @@ public class EditGuestPopDestinationCtrl : Editor
                 EDUtilFunctions.ResizeConstArray(ref param, GuestConstParam.SumGuestType);
 
                 EditorGUILayout.LabelField("キャパシティ");
-                EditorGUI.indentLevel++;
-                SerializedProperty cap0 = param.GetArrayElementAtIndex(0).FindPropertyRelative("m_capacity");
-                SerializedProperty cap1 = param.GetArrayElementAtIndex(1).FindPropertyRelative("m_capacity");
-                SerializedProperty cap2 = param.GetArrayElementAtIndex(2).FindPropertyRelative("m_capacity");
-                SerializedProperty cap3 = param.GetArrayElementAtIndex(3).FindPropertyRelative("m_capacity");
-                cap0.intValue = EditorGUILayout.IntField("通常", cap0.intValue);
-                cap1.intValue = EditorGUILayout.IntField("のんびり", cap1.intValue);
-                cap2.intValue = EditorGUILayout.IntField("せっかち", cap2.intValue);
-                cap3.intValue = EditorGUILayout.IntField("居残る", cap3.intValue);
-                EditorGUI.indentLevel--;
+                {
+                    EditorGUI.indentLevel++;
+                    SerializedProperty cap0 = param.GetArrayElementAtIndex(0).FindPropertyRelative("m_capacity");
+                    SerializedProperty cap1 = param.GetArrayElementAtIndex(1).FindPropertyRelative("m_capacity");
+                    SerializedProperty cap2 = param.GetArrayElementAtIndex(2).FindPropertyRelative("m_capacity");
+                    SerializedProperty cap3 = param.GetArrayElementAtIndex(3).FindPropertyRelative("m_capacity");
+                    cap0.intValue = EditorGUILayout.IntField("通常", cap0.intValue);
+                    cap1.intValue = EditorGUILayout.IntField("のんびり", cap1.intValue);
+                    cap2.intValue = EditorGUILayout.IntField("せっかち", cap2.intValue);
+                    cap3.intValue = EditorGUILayout.IntField("居残る", cap3.intValue);
+                    EditorGUI.indentLevel--;
+                }
+
+                EditorGUILayout.LabelField("プライオリティ");
+                {
+                    EditorGUI.indentLevel++;
+                    SerializedProperty pri0 = param.GetArrayElementAtIndex(0).FindPropertyRelative("m_priority");
+                    SerializedProperty pri1 = param.GetArrayElementAtIndex(1).FindPropertyRelative("m_priority");
+                    SerializedProperty pri2 = param.GetArrayElementAtIndex(2).FindPropertyRelative("m_priority");
+                    SerializedProperty pri3 = param.GetArrayElementAtIndex(3).FindPropertyRelative("m_priority");
+                    pri0.intValue = EditorGUILayout.IntField("通常", pri0.intValue).MinLimitedZero();
+                    pri1.intValue = EditorGUILayout.IntField("のんびり", pri1.intValue).MinLimitedZero();
+                    pri2.intValue = EditorGUILayout.IntField("せっかち", pri2.intValue).MinLimitedZero();
+                    pri3.intValue = EditorGUILayout.IntField("居残る", pri3.intValue).MinLimitedZero();
+                    EditorGUI.indentLevel--;
+                }
 
                 EditorGUILayout.LabelField("残人数");
-                EditorGUI.indentLevel++;
-                SerializedProperty num0 = param.GetArrayElementAtIndex(0).FindPropertyRelative("m_num");
-                SerializedProperty num1 = param.GetArrayElementAtIndex(1).FindPropertyRelative("m_num");
-                SerializedProperty num2 = param.GetArrayElementAtIndex(2).FindPropertyRelative("m_num");
-                SerializedProperty num3 = param.GetArrayElementAtIndex(3).FindPropertyRelative("m_num");
-                EditorGUILayout.IntField("通常", num0.intValue);
-                EditorGUILayout.IntField("のんびり", num1.intValue);
-                EditorGUILayout.IntField("せっかち", num2.intValue);
-                EditorGUILayout.IntField("居残る", num3.intValue);
-                EditorGUI.indentLevel--;
+                {
+                    EditorGUI.indentLevel++;
+                    SerializedProperty num0 = param.GetArrayElementAtIndex(0).FindPropertyRelative("m_num");
+                    SerializedProperty num1 = param.GetArrayElementAtIndex(1).FindPropertyRelative("m_num");
+                    SerializedProperty num2 = param.GetArrayElementAtIndex(2).FindPropertyRelative("m_num");
+                    SerializedProperty num3 = param.GetArrayElementAtIndex(3).FindPropertyRelative("m_num");
+                    EditorGUILayout.IntField("通常", num0.intValue);
+                    EditorGUILayout.IntField("のんびり", num1.intValue);
+                    EditorGUILayout.IntField("せっかち", num2.intValue);
+                    EditorGUILayout.IntField("居残る", num3.intValue);
+                    EditorGUI.indentLevel--;
+                }
             });
 
         m_slotStrategy.Invoke(
@@ -91,13 +109,13 @@ public class EditGuestPopDestinationCtrl : Editor
                 {
                     EditorGUILayout.LabelField("戦略Slot" + (i + 1).ToString());
                     EditorGUI.indentLevel++;
-                    GuestPopStrategy.StrategyType oldSelectedType = GuestPopStrategy.StrategyType.Wait;
+                    GuestPopStrategy.PopStrategyType oldSelectedType = GuestPopStrategy.PopStrategyType.Wait;
                     SerializedProperty strategyType = slotStrategy.GetArrayElementAtIndex(i).FindPropertyRelative("m_strategyType");
                     if (strategyType != null)
                     {
-                        oldSelectedType = (GuestPopStrategy.StrategyType)strategyType.enumValueIndex;
+                        oldSelectedType = (GuestPopStrategy.PopStrategyType)strategyType.enumValueIndex;
                     }
-                    GuestPopStrategy.StrategyType selectedType = (GuestPopStrategy.StrategyType)EditorGUILayout.EnumPopup(
+                    GuestPopStrategy.PopStrategyType selectedType = (GuestPopStrategy.PopStrategyType)EditorGUILayout.EnumPopup(
                         "戦略タイプ", oldSelectedType);
                     bool isNewcomer = true;
                     if (selectedType == oldSelectedType)
@@ -140,7 +158,7 @@ public class EditGuestPopDestinationCtrl : Editor
                     SerializedObject serobj = new SerializedObject(unit);
                     serobj.Update();
                     EditorGUILayout.ObjectField("PopPointer", unit.gameObject, typeof(GameObject), false);
-                    serobj.FindProperty("m_cost").intValue = EditorGUILayout.IntField("優先度", unit.m_cost).MinLimitedZero();
+                    serobj.FindProperty("m_priority").intValue = EditorGUILayout.IntField("優先度", unit.m_priority).MinLimitedZero();
                     serobj.ApplyModifiedProperties();
                 }
 
@@ -161,13 +179,13 @@ public class EditGuestPopDestinationCtrl : Editor
 
     private void EditStrategySlotValues(ref SerializedProperty slot, bool isNewcomer)
     {
-        switch ((GuestPopStrategy.StrategyType)slot.FindPropertyRelative("m_strategyType").enumValueIndex)
+        switch ((GuestPopStrategy.PopStrategyType)slot.FindPropertyRelative("m_strategyType").enumValueIndex)
         {
-            case GuestPopStrategy.StrategyType.Wait:
+            case GuestPopStrategy.PopStrategyType.Wait:
                 slot.FindPropertyRelative("m_values").ClearArray();
                 slot.FindPropertyRelative("m_fvalues").ClearArray();
                 break;
-            case GuestPopStrategy.StrategyType.Standard:
+            case GuestPopStrategy.PopStrategyType.Standard:
                 SerializedProperty values = slot.FindPropertyRelative("m_values");
                 SerializedProperty fvalues = slot.FindPropertyRelative("m_fvalues");
                 if (isNewcomer)

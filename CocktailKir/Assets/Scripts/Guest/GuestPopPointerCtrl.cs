@@ -6,22 +6,10 @@ using AkiVACO;
 public class GuestPopPointerCtrl : MonoBehaviour
 {
     [SerializeField]
-    public int m_cost = 0;
+    public int m_priority = 0;
 
     [SerializeField]
     private GameObject m_targetPoint = null;
-
-    [SerializeField]
-    private GameObject m_normalGuest = null;
-
-    [SerializeField]
-    private GameObject m_gentleGuest = null;
-
-    [SerializeField]
-    private GameObject m_impatientGuest = null;
-
-    [SerializeField]
-    private GameObject m_stayBehindGuest = null;
 
     void Awake()
     {
@@ -57,24 +45,11 @@ public class GuestPopPointerCtrl : MonoBehaviour
     /// <param name="type">PopするGuestのType</param>
     /// <param name="destination">目的地(Vector3)</param>
     /// <param name="goOutDestination">退避時の目的地</param>
-    public void SendPopGuest(GuestType type, Vector3 destination, Vector3 goOutDestination)
+    public void SendPopGuest(GameObject obj, Vector3 destination, Vector3 goOutDestination)
     {
-        switch (type)
-        {
-            case GuestType.Standard:
-                PopGuest(m_normalGuest, destination, goOutDestination);
-                break;
-            case GuestType.Gentle:
-                PopGuest(m_gentleGuest, destination, goOutDestination);
-                break;
-            case GuestType.Impatient:
-                PopGuest(m_impatientGuest, destination, goOutDestination);
-                break;
-            case GuestType.StayBehind:
-                PopGuest(m_stayBehindGuest, destination, goOutDestination);
-                break;
-        }
+        PopGuest(obj, destination, goOutDestination);
     }
+
     /*
     /// <summary>
     /// GuestのPop処理
