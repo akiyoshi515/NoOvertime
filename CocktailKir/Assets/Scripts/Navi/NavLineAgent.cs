@@ -32,6 +32,19 @@ public class NavLineAgent : MonoBehaviour
         }
     }
 
+    public float GetWaitTime(int idx = 0)
+    {
+        int index = m_index + idx;
+        for (int i = 0; i < m_navLines.waitPoint.Length; ++i)
+        {
+            if (m_navLines.waitPoint[i] == index)
+            {
+                return m_navLines.waitTime[i];
+            }
+        }
+        return 0.0f;
+    }
+
     void SetTrans(Vector3 position)
     {
         position.y = this.transform.position.y;
