@@ -116,18 +116,5 @@ public class UserLegionCtrl : MonoBehaviour
         m_uiUserNo1.TargetCamera = target;
         m_uiMagazine1.EnableView(false);
     }
-
-    ///
-    /// <summary>   billboard全表示.   </summary>
-    ///
-    /// <remarks>   Hondy, 2016/11/02.  </remarks>
-    ///
-
-    public void SetEnablesAll()
-    {
-        m_uiUserNo4.EnableView(true);
-        m_uiUserNo3.EnableView(true);
-        m_uiUserNo2.EnableView(true);
-        m_uiUserNo1.EnableView(true);
-    }
+    
 }
