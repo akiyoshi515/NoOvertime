@@ -51,6 +51,9 @@ public class TitleMain : MonoBehaviour {
                 break;
 
             case TITLE_STATE.UNINIT:
+                Debug.Log("load");
+                //TODO ロード
+
                 break;
         }
 	}
