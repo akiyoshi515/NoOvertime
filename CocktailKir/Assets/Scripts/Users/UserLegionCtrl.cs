@@ -41,6 +41,7 @@ public class UserLegionCtrl : MonoBehaviour
         }
     }
 
+    // User1用の表示非表示設定
     private void SetUser1(Camera target)
     {
         m_uiUserNo1.EnableView(false);
@@ -59,6 +60,7 @@ public class UserLegionCtrl : MonoBehaviour
         m_uiMagazine4.EnableView(false);
     }
 
+    // User2用の表示非表示設定
     private void SetUser2(Camera target)
     {
         m_uiUserNo2.EnableView(false);
@@ -77,6 +79,7 @@ public class UserLegionCtrl : MonoBehaviour
         m_uiMagazine4.EnableView(false);
     }
 
+    // User3用の表示非表示設定
     private void SetUser3(Camera target)
     {
         m_uiUserNo3.EnableView(false);
@@ -95,6 +98,7 @@ public class UserLegionCtrl : MonoBehaviour
         m_uiMagazine4.EnableView(false);
     }
 
+    // User4用の表示非表示設定
     private void SetUser4(Camera target)
     {
         m_uiUserNo4.EnableView(false);
@@ -113,4 +117,17 @@ public class UserLegionCtrl : MonoBehaviour
         m_uiMagazine1.EnableView(false);
     }
 
+    ///
+    /// <summary>   billboard全表示.   </summary>
+    ///
+    /// <remarks>   Hondy, 2016/11/02.  </remarks>
+    ///
+
+    public void SetEnablesAll()
+    {
+        m_uiUserNo4.EnableView(true);
+        m_uiUserNo3.EnableView(true);
+        m_uiUserNo2.EnableView(true);
+        m_uiUserNo1.EnableView(true);
+    }
 }

@@ -29,6 +29,8 @@ public class UserCameraViewCtrl : MonoBehaviour
     void OnPostRender()
     {
         // TODO
+        // なんか前のDisable処理が残ってるから一旦表示処理を行う
+        m_legionCtrl.SetEnablesAll();
     }
 
 }
