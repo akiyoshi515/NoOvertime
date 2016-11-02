@@ -65,6 +65,17 @@ public class UIBillboard : MonoBehaviour
         if (m_meshRenderer != null)
         {
             m_meshRenderer.enabled = m_isDisplay;
-        } 
+        }
+        if (m_isDisplay)
+        {
+            Vector3 difference = Camera.current.transform.position - transform.position;
+            transform.LookAt(transform.position - difference, Camera.current.transform.up);
+        }
+        else
+        {
+        }
+
     }
+
+    
 }
