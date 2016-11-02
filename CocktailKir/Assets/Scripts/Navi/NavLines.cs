@@ -12,6 +12,20 @@ public class NavLines : MonoBehaviour
     }
 
     [SerializeField]
+    protected int[] m_tableWaitPoint = null;
+    public int[] waitPoint
+    {
+        get { return m_tableWaitPoint; }
+    }
+
+    [SerializeField]
+    protected float[] m_tableWaitTime = null;
+    public float[] waitTime
+    {
+        get { return m_tableWaitTime; }
+    }
+
+    [SerializeField]
     protected int m_resolution = 4;
     public int resolution
     {
@@ -37,7 +51,7 @@ public class NavLines : MonoBehaviour
         get { return (m_loopPoint != -1); }
     }
 
-    public int GetPointerCount()
+    public int Edit_GetPointerCount()
     {
         return this.transform.childCount -1;
     }
