@@ -5,22 +5,22 @@ using System.Collections;
 public class UserLegionCtrl : MonoBehaviour
 {
     [SerializeField]
-    private UserNoUI m_uiUserNo1 = null;
+    private UIBillboard m_uiUserNo1 = null;
     [SerializeField]
-    private UserNoUI m_uiUserNo2 = null;
+    private UIBillboard m_uiUserNo2 = null;
     [SerializeField]
-    private UserNoUI m_uiUserNo3 = null;
+    private UIBillboard m_uiUserNo3 = null;
     [SerializeField]
-    private UserNoUI m_uiUserNo4 = null;
+    private UIBillboard m_uiUserNo4 = null;
 
     [SerializeField]
-    private UserNoUI m_uiMagazine1 = null;
+    private UIBillboard m_uiMagazine1 = null;
     [SerializeField]
-    private UserNoUI m_uiMagazine2 = null;
+    private UIBillboard m_uiMagazine2 = null;
     [SerializeField]
-    private UserNoUI m_uiMagazine3 = null;
+    private UIBillboard m_uiMagazine3 = null;
     [SerializeField]
-    private UserNoUI m_uiMagazine4 = null;
+    private UIBillboard m_uiMagazine4 = null;
 
     public void SetEnables(UserID myid, Camera target)
     {

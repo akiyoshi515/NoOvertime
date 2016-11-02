@@ -52,14 +52,42 @@ public class EditNavLines : Editor
 
         if (m_collapsed)
         {
-            EditorGUILayout.BeginVertical();
-            int idx = 0;
-            foreach (Vector3 vec in gen.table)
             {
-                EditorGUILayout.Vector3Field(idx.ToString(), vec);
-                ++idx;
+                EditorGUILayout.LabelField("座標情報");
+                EditorGUILayout.BeginVertical();
+                int idx = 0;
+                foreach (Vector3 vec in gen.table)
+                {
+                    EditorGUI.indentLevel++;
+                    EditorGUILayout.Vector3Field(idx.ToString(), vec);
+                    EditorGUI.indentLevel--;
+                    ++idx;
+                }
+                EditorGUILayout.EndVertical();
             }
-            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space();
+            {
+                EditorGUILayout.LabelField("WaitPoint情報");
+                EditorGUILayout.BeginVertical();
+                int idx = 0;
+                if ((gen.waitPoint != null) && (gen.waitPoint.Length != 0))
+                {
+                    for (int i = 0; i < gen.waitPoint.Length; ++i)
+                    {
+                        EditorGUI.indentLevel++;
+                        EditorGUILayout.LabelField(idx.ToString());
+                        EditorGUILayout.IntField("Index", gen.waitPoint[i]);
+                        EditorGUILayout.FloatField("Time", gen.waitTime[i]);
+                        EditorGUI.indentLevel--;
+                        ++idx;
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("停止点を設定していません", MessageType.Info);
+                }
+                EditorGUILayout.EndVertical();
+            }
         }
 
         serializedObject.ApplyModifiedProperties();
@@ -78,7 +106,7 @@ public class EditNavLines : Editor
         int resolution = gen.resolution;
         float resolutionRate = 1.0f / resolution;
 
-        if (gen.GetPointerCount() >= 4)
+        if (gen.Edit_GetPointerCount() >= 4)
         {
             Queue<Vector3> que = new Queue<Vector3>();
 
@@ -137,6 +165,11 @@ public class EditNavLines : Editor
                 v2 = v;
             };
 
+            SerializedProperty waitPoint = serializedObject.FindProperty("m_tableWaitPoint");
+            SerializedProperty waitTime = serializedObject.FindProperty("m_tableWaitTime");
+            waitPoint.ClearArray();
+            waitTime.ClearArray();
+            int idxWaitPoint = 0;
             for (; idx < gen.transform.childCount; )
             {
                 Transform trans = gen.transform.GetChild(idx);
@@ -148,6 +181,20 @@ public class EditNavLines : Editor
                         loopPoint.intValue = idx;
                     }
                 }
+                else
+                {
+                    NavLineWaitPointer csWait = trans.GetComponent<NavLineWaitPointer>();
+                    if (csWait!= null)
+                    {
+                        waitPoint.InsertArrayElementAtIndex(idxWaitPoint);
+                        waitTime.InsertArrayElementAtIndex(idxWaitPoint);
+
+                        waitPoint.GetArrayElementAtIndex(idxWaitPoint).intValue = (idx-1).MinLimitedZero() * resolution;
+                        waitTime.GetArrayElementAtIndex(idxWaitPoint).floatValue = csWait.waitTime;
+
+                        ++idxWaitPoint;
+                    }
+                }
                 ++idx;
                 v = trans.transform.position;
                 namelessCardinal.Invoke();
@@ -157,7 +204,6 @@ public class EditNavLines : Editor
 
             if (gen.isLoop)
             {
-                // TODO
                 v = gen.transform.GetChild(gen.loopPoint).transform.position;
                 namelessCardinal.Invoke();
             }
