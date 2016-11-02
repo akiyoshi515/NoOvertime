@@ -70,14 +70,21 @@ public class EditNavLines : Editor
                 EditorGUILayout.LabelField("WaitPoint情報");
                 EditorGUILayout.BeginVertical();
                 int idx = 0;
-                for (int i = 0; i < gen.waitPoint.Length; ++i)
+                if ((gen.waitPoint != null) && (gen.waitPoint.Length != 0))
                 {
-                    EditorGUI.indentLevel++;
-                    EditorGUILayout.LabelField(idx.ToString());
-                    EditorGUILayout.IntField("Index", gen.waitPoint[i]);
-                    EditorGUILayout.FloatField("Time", gen.waitTime[i]);
-                    EditorGUI.indentLevel--;
-                    ++idx;
+                    for (int i = 0; i < gen.waitPoint.Length; ++i)
+                    {
+                        EditorGUI.indentLevel++;
+                        EditorGUILayout.LabelField(idx.ToString());
+                        EditorGUILayout.IntField("Index", gen.waitPoint[i]);
+                        EditorGUILayout.FloatField("Time", gen.waitTime[i]);
+                        EditorGUI.indentLevel--;
+                        ++idx;
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("停止点を設定していません", MessageType.Info);
                 }
                 EditorGUILayout.EndVertical();
             }
