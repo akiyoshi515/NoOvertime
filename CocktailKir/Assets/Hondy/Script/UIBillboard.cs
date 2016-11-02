@@ -36,7 +36,10 @@ public class UIBillboard : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        m_meshRenderer = GetComponent<MeshRenderer>();
+        if (m_meshRenderer == null)
+        {
+            m_meshRenderer = GetComponent<MeshRenderer>();
+        }
     }
 
     // Update is called once per frame
@@ -59,6 +62,9 @@ public class UIBillboard : MonoBehaviour
     public void EnableView(bool isEnable)
     {
         m_isDisplay = isEnable;
-        m_meshRenderer.enabled = m_isDisplay;
+        if (m_meshRenderer != null)
+        {
+            m_meshRenderer.enabled = m_isDisplay;
+        } 
     }
 }
