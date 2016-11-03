@@ -53,7 +53,7 @@ namespace XVInputInternal
             return Input.GetKeyDown(KeyCode.X);
         }
 
-        public bool Dbg_IsUnlimitedBallet()
+        public bool Dbg_IsUnlimitedBullet()
         {
 #if DEBUG
             return Input.GetKeyDown(KeyCode.W);

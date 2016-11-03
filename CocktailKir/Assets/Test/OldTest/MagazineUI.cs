@@ -15,11 +15,11 @@ public class MagazineUI : MonoBehaviour
     /// 弾数
     /// </summary>
     [SerializeField]
-    private int m_balletNum = 0;
-    public int balletNum
+    private int m_bulletNum = 0;
+    public int bulletNum
     {
-        get { return m_balletNum; }
-        protected set { m_balletNum = value; }
+        get { return m_bulletNum; }
+        protected set { m_bulletNum = value; }
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class MagazineUI : MonoBehaviour
     /// </summary>
     public bool isMax
     {
-        get { return (balletNum == capacity); }
+        get { return (bulletNum == capacity); }
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class MagazineUI : MonoBehaviour
     /// </summary>
     public bool isEnabledShot
     {
-        get { return (balletNum > 0) && (!isReloading); }
+        get { return (bulletNum > 0) && (!isReloading); }
     }
 
     private float m_time = 0.0f;
@@ -76,7 +76,7 @@ public class MagazineUI : MonoBehaviour
 
     void Start()
     {
-        m_balletNum = m_capacity;
+        m_bulletNum = m_capacity;
         m_time = 0.0f;
     }
 
@@ -97,7 +97,7 @@ public class MagazineUI : MonoBehaviour
             if (m_time >= m_reloadTime)
             {
                 m_time -= m_reloadTime;
-                this.AddBallet(1);
+                this.AddBullet(1);
             }
         }
     }
@@ -106,31 +106,31 @@ public class MagazineUI : MonoBehaviour
     /// 残弾数の追加
     /// </summary>
     /// <param name="val">追加量：(value > 0)</param>
-    public void AddBallet(int val)
+    public void AddBullet(int val)
     {
-        XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit AddBallet: " + val.ToString());
-        balletNum += val;
-        if (balletNum >= capacity)
+        XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit AddBullet: " + val.ToString());
+        bulletNum += val;
+        if (bulletNum >= capacity)
         {
-            balletNum = capacity;
+            bulletNum = capacity;
         }
-        XLogger.Log("Magazine AddBallet: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
+        XLogger.Log("Magazine AddBullet: " + val.ToString() + "  " + bulletNum.ToString() + "/" + capacity.ToString());
     }
 
     /// <summary>
     /// 残弾数の減算
     /// </summary>
     /// <param name="val">追加量：(value > 0)</param>
-    public void SubBallet(int val)
+    public void SubBullet(int val)
     {
-        XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit SubBallet: " + val.ToString());
-        balletNum -= val;
-        if (balletNum < 0)
+        XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit SubBullet: " + val.ToString());
+        bulletNum -= val;
+        if (bulletNum < 0)
         {
-            balletNum = 0;
-            XLogger.LogError("Ballet Overflow");
+            bulletNum = 0;
+            XLogger.LogError("Bullet Overflow");
         }
-        XLogger.Log("Magazine SubBallet: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
+        XLogger.Log("Magazine SubBullet: " + val.ToString() + "  " + bulletNum.ToString() + "/" + capacity.ToString());
     }
 
     /// <summary>
@@ -141,7 +141,7 @@ public class MagazineUI : MonoBehaviour
     {
         XLogger.LogValidObject(val <= 0, "Invalid Argument MagazineUnit AddCapacity: " + val.ToString());
         capacity += val;
-        XLogger.Log("Magazine AddCapacity: " + val.ToString() + "  " + balletNum.ToString() + "/" + capacity.ToString());
+        XLogger.Log("Magazine AddCapacity: " + val.ToString() + "  " + bulletNum.ToString() + "/" + capacity.ToString());
     }
 
     public void StartReload()

@@ -49,10 +49,10 @@ public class LauncherCtrl : MonoBehaviour {
     private float m_lineWidth = 0.250f;
 
     [SerializeField]
-    private GameObject m_ballet = null;
+    private GameObject m_bullet = null;
 
     [SerializeField]
-    private GameObject m_balletBouquet = null;
+    private GameObject m_bulletBouquet = null;
 
     [SerializeField]
     private GameObject m_hitPoint = null;
@@ -76,14 +76,14 @@ public class LauncherCtrl : MonoBehaviour {
     private float m_knockback = 0.0f;
     private float m_chargeTime = 0.0f;
 
-    private int m_costBallet = 1;
-    private int m_costChargeBallet = 1;
+    private int m_costBullet = 1;
+    private int m_costChargeBullet = 1;
 
     void Awake()
     {
         XLogger.LogValidObject(m_parent == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Parent"), gameObject);
-        XLogger.LogValidObject(m_ballet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Ballte"), gameObject);
-        XLogger.LogValidObject(m_balletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteBouquet"), gameObject);
+        XLogger.LogValidObject(m_bullet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Ballte"), gameObject);
+        XLogger.LogValidObject(m_bulletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteBouquet"), gameObject);
         XLogger.LogValidObject(m_hitPoint == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("HitPoint"), gameObject);
 
         XLogger.LogValidObject(m_efReload == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Effect Reload"), gameObject);
@@ -104,8 +104,8 @@ public class LauncherCtrl : MonoBehaviour {
     {
         m_lineRenderer.SetWidth(m_lineWidth, m_lineWidth);
 
-        m_costBallet = this.m_ballet.GetComponent<BalletCtrl>().cost;
-        m_costChargeBallet = this.m_balletBouquet.GetComponent<BalletCtrl>().cost;
+        m_costBullet = this.m_bullet.GetComponent<BulletCtrl>().cost;
+        m_costChargeBullet = this.m_bulletBouquet.GetComponent<BulletCtrl>().cost;
 
         m_pitchAngle = m_minPitchAngle;
         this.transform.Rotate(Vector3.right, m_pitchAngle, Space.Self);
@@ -117,8 +117,8 @@ public class LauncherCtrl : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
-        UpdateReloadBallet();
-        UpdateShotBallet();
+        UpdateReloadBullet();
+        UpdateShotBullet();
 
         Vector2 vec = Vector2.zero;
         if (m_charCtrl.isLauncherStance)
@@ -131,19 +131,19 @@ public class LauncherCtrl : MonoBehaviour {
         m_parent.Rotate(Vector3.up, vec.x * m_yawSpeed * Time.deltaTime, Space.World);
 
 #if DEBUG
-        if (m_input.Dbg_IsUnlimitedBallet())
+        if (m_input.Dbg_IsUnlimitedBullet())
         {
-            m_magazine.StartUnlimitedBallet(10.0f); // TODO
+            m_magazine.StartUnlimitedBullet(10.0f); // TODO
         }
 
         if (m_input.Dbg_IsShot3Way())
         {
-            m_magazine.ReloadBonus3WayBallet(3); // TODO
+            m_magazine.ReloadBonus3WayBullet(3); // TODO
         }
 
         if (m_input.Dbg_IsReloadBonusCharm())
         {
-            m_magazine.ReloadBonusCharmBallet(6); // TODO
+            m_magazine.ReloadBonusCharmBullet(6); // TODO
         }
 #endif
 
@@ -154,7 +154,7 @@ public class LauncherCtrl : MonoBehaviour {
         Queue<Vector3> que = new Queue<Vector3>();
 
         ParabolaLines.Draw(
-            this.transform, m_shotPower, m_ballet.GetComponent<Rigidbody>().mass,
+            this.transform, m_shotPower, m_bullet.GetComponent<Rigidbody>().mass,
             m_lineRenderTimeSlice, m_hitPointOffset,
             m_hitPoint.transform,
             (idx, pos) =>
@@ -166,7 +166,7 @@ public class LauncherCtrl : MonoBehaviour {
         m_lineRenderer.SetPositions(vec);
     }
 
-    void UpdateReloadBallet()
+    void UpdateReloadBullet()
     {
         if (m_magazine.isReloading)
         {
@@ -189,7 +189,7 @@ public class LauncherCtrl : MonoBehaviour {
         }
     }
 
-    void UpdateShotBallet()
+    void UpdateShotBullet()
     {
         if (m_knockback > 0.0f)
         {
@@ -212,13 +212,13 @@ public class LauncherCtrl : MonoBehaviour {
             {
                 if (!m_magazine.isReloading)
                 {
-                    if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.balletNum >= m_costChargeBallet))
+                    if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.bulletNum >= m_costChargeBullet))
                     {
                         LaunchBouquet();
                     }
-                    else if (m_magazine.balletNum >= m_costBallet)
+                    else if (m_magazine.bulletNum >= m_costBullet)
                     {
-                        LaunchBallet();
+                        LaunchBullet();
                     }
                     else
                     {
@@ -229,7 +229,7 @@ public class LauncherCtrl : MonoBehaviour {
             }
         }
 
-        if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.balletNum >= m_costChargeBallet))
+        if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.bulletNum >= m_costChargeBullet))
         {
             m_csEfMaxCharge.WakeupEffect();
         }
@@ -245,32 +245,32 @@ public class LauncherCtrl : MonoBehaviour {
         m_magazine.StartReload(() => { m_csEfReload.SleepEffect(); });
     }
 
-    private void LaunchBallet()
+    private void LaunchBullet()
     {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
-        int bonusCharm = m_magazine.UseBonusCharmBallet();
+        int bonusCharm = m_magazine.UseBonusCharmBullet();
 
         UnityAction<Vector3> act = (vec) =>
         {
-            GameObject obj = XFunctions.Instance(m_ballet, pos, rot);
+            GameObject obj = XFunctions.Instance(m_bullet, pos, rot);
             Rigidbody rb = obj.GetComponent<Rigidbody>();
             rb.AddForce(vec * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
+            BulletCtrl ctrl = obj.GetComponent<BulletCtrl>();
             ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
             ctrl.AddBonusCharm(bonusCharm);
         };
 
         act.Invoke(this.transform.forward);
-        if (m_magazine.UseBonus3WayBallet())
+        if (m_magazine.UseBonus3WayBullet())
         {
             act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
             act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
         }
 
         // TODO
-        m_magazine.SubBallet(m_costBallet);
+        m_magazine.SubBullet(m_costBullet);
 
         m_knockback += m_knockbackTime;
     }
@@ -280,27 +280,27 @@ public class LauncherCtrl : MonoBehaviour {
         Quaternion rot = this.gameObject.transform.rotation;
         Vector3 pos = this.transform.position + (rot * m_launchPoint);
 
-        int bonusCharm = m_magazine.UseBonusCharmBallet();
+        int bonusCharm = m_magazine.UseBonusCharmBullet();
 
         UnityAction<Vector3> act = (vec) => 
         {
-            GameObject obj = XFunctions.Instance(m_balletBouquet, pos, rot);
+            GameObject obj = XFunctions.Instance(m_bulletBouquet, pos, rot);
             Rigidbody rb = obj.GetComponent<Rigidbody>();
             rb.AddForce(vec * m_shotPower, ForceMode.Impulse);
-            BalletCtrl ctrl = obj.GetComponent<BalletCtrl>();
+            BulletCtrl ctrl = obj.GetComponent<BulletCtrl>();
             ctrl.SetUserID(m_parent.GetComponent<UserData>().userID);
             ctrl.AddBonusCharm(bonusCharm);
         };
 
         act.Invoke(this.transform.forward);
-        if (m_magazine.UseBonus3WayBallet())
+        if (m_magazine.UseBonus3WayBullet())
         {
             act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
             act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
         }
 
         // TODO
-        m_magazine.SubBallet(m_costChargeBallet);
+        m_magazine.SubBullet(m_costChargeBullet);
 
         m_knockback += m_knockbackTime;
     }

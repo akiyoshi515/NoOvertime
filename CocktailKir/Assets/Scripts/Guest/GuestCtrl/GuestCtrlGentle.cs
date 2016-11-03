@@ -8,7 +8,7 @@ public class GuestCtrlGentle : GuestCtrl
         void OnAwake(GuestCtrlGentle ctrl);
         void OnUpdate(GuestCtrlGentle ctrl);
         void OnNearTarget(GuestCtrlGentle ctrl);
-        void OnHitBallet(GuestCtrlGentle ctrl);
+        void OnHitBullet(GuestCtrlGentle ctrl);
         void OnDestroyedAttractField(GuestCtrlGentle ctrl);
     }
 
@@ -43,9 +43,9 @@ public class GuestCtrlGentle : GuestCtrl
         m_stateCtrl.OnNearTarget(this);
     }
 
-    protected override void OnHitBallet()
+    protected override void OnHitBullet()
     {
-        m_stateCtrl.OnHitBallet(this);
+        m_stateCtrl.OnHitBullet(this);
     }
 
     protected override void OnDestroyedAttractField()
@@ -68,7 +68,7 @@ public class GuestCtrlGentle : GuestCtrl
             ctrl.SetState<CtrlStateWait>();
         }
 
-        public void OnHitBallet(GuestCtrlGentle ctrl)
+        public void OnHitBullet(GuestCtrlGentle ctrl)
         {
         }
 
@@ -98,7 +98,7 @@ public class GuestCtrlGentle : GuestCtrl
 
         }
 
-        public void OnHitBallet(GuestCtrlGentle ctrl)
+        public void OnHitBullet(GuestCtrlGentle ctrl)
         {
             ctrl.SetState<CtrlStateStay>();
         }
@@ -130,7 +130,7 @@ public class GuestCtrlGentle : GuestCtrl
 
         }
 
-        public void OnHitBallet(GuestCtrlGentle ctrl)
+        public void OnHitBullet(GuestCtrlGentle ctrl)
         {
             ctrl.m_time = ctrl.m_stayTime;
         }
@@ -157,7 +157,7 @@ public class GuestCtrlGentle : GuestCtrl
             GameObject.Destroy(ctrl.gameObject);
         }
 
-        public void OnHitBallet(GuestCtrlGentle ctrl)
+        public void OnHitBullet(GuestCtrlGentle ctrl)
         {
         }
 

@@ -8,7 +8,7 @@ public class GuestCtrl : MonoBehaviour
 {
     protected virtual void OnUpdate() { }
     protected virtual void OnNearTarget() { }
-    protected virtual void OnHitBallet() { }
+    protected virtual void OnHitBullet() { }
     protected virtual void OnDestroyedAttractField() { }
 
     protected const float NearOffsetDistance = 1.0f;
@@ -53,20 +53,20 @@ public class GuestCtrl : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Ballet")
+        if (col.tag == "Bullet")
         {
-            BalletCtrl ctrl = col.gameObject.GetComponent<BalletCtrl>();
+            BulletCtrl ctrl = col.gameObject.GetComponent<BulletCtrl>();
             ctrl.SendHit();
         }
-        else if (col.tag == "BalletTrigger")
+        else if (col.tag == "BulletTrigger")
         {
             AkiVACO.XLogger.Log("Hit!");
-            BalletTrigger tr = col.GetComponent<BalletTrigger>();
+            BulletTrigger tr = col.GetComponent<BulletTrigger>();
             if (m_unit.AddCharm(tr.userID, tr.charm))
             {
                 this.transform.GetChild(0).GetComponent<MeshMaterialCtrl>().SetMaterial(m_unit.topUserId + 1);  // -1 -> 0
             }
-            OnHitBallet();
+            OnHitBullet();
         }
         
         if (col.tag == "AttractField")

@@ -40,7 +40,7 @@ namespace XVInputInternal
             return false;
         }
 
-        public bool Dbg_IsUnlimitedBallet()
+        public bool Dbg_IsUnlimitedBullet()
         {
             return false;
         }

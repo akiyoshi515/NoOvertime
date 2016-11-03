@@ -41,7 +41,7 @@ public interface IXVInput
     /// <summary>
     /// Debug 弾数無制限
     /// </summary>
-    bool Dbg_IsUnlimitedBallet();
+    bool Dbg_IsUnlimitedBullet();
 
     /// <summary>
     /// Debug 3Way射撃
