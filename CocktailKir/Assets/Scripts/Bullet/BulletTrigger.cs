@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BalletTrigger : MonoBehaviour
+public class BulletTrigger : MonoBehaviour
 {
     protected UserID m_userID = UserID.User1;
     public UserID userID

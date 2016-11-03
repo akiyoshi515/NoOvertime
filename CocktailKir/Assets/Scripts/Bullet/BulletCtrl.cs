@@ -3,7 +3,7 @@ using System.Collections;
 
 using AkiVACO;
 
-public class BalletCtrl : MonoBehaviour
+public class BulletCtrl : MonoBehaviour
 {
     [SerializeField]
     private float m_hitRadius = 1;
@@ -38,7 +38,7 @@ public class BalletCtrl : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.collider.tag != "Ballet")
+        if (col.collider.tag != "Bullet")
         {
             SendHit();
         }
@@ -64,7 +64,7 @@ public class BalletCtrl : MonoBehaviour
         if (m_hitTrigger != null)
         {
             GameObject obj = GameObject.Instantiate(m_hitTrigger, this.transform.position, Quaternion.identity) as GameObject;
-            obj.GetComponent<BalletTrigger>().SetParam(userID, m_charm, m_hitRadius);
+            obj.GetComponent<BulletTrigger>().SetParam(userID, m_charm, m_hitRadius);
         }
 
         if (m_onDestroyedObject != null)

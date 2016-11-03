@@ -83,9 +83,9 @@ public class UserCharCtrl : MonoBehaviour, AkiVACO.IXObjLabelEx
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Ballet")
+        if (col.tag == "Bullet")
         {
-            BalletCtrl ctrl = col.gameObject.GetComponent<BalletCtrl>();
+            BulletCtrl ctrl = col.gameObject.GetComponent<BulletCtrl>();
             if (ctrl.userID != m_userdata.userID)
             {
                 ctrl.SendHit();

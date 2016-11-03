@@ -89,7 +89,7 @@ namespace XVInputInternal
             return XBGamePad.IsTriggered(XBKeyCode.Button.B, m_userCode);
         }
 
-        public bool Dbg_IsUnlimitedBallet()
+        public bool Dbg_IsUnlimitedBullet()
         {
 #if DEBUG
             return (XBGamePad.IsTriggered(XBKeyCode.Button.RightShoulder, m_userCode)) 
