@@ -58,8 +58,13 @@ public class UserScoreUI
     }
     // Use this for initialization
     void Start () {
-	
-	}
+
+        // 色変更
+        for (int i = 0; i < m_numberImage.Length; i++)
+        {
+            m_numberImage[i].color = m_userColor[(int)m_userID];
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()
