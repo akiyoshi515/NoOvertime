@@ -11,51 +11,81 @@ using UnityEngine.UI;
 
 public class DistanceUI : MonoBehaviour {
 
+    Image m_distanceImage;
+
+    ///
+    /// <summary>   パレードフロートのアイコン. </summary>
+    ///
+
     [SerializeField]
     Image m_floatIcon;
+
+    ///
+    /// <summary>   コース距離. </summary>
+    ///
+
     [SerializeField]
     float m_distanceOfCourse;
+
+    ///
+    /// <summary>   現在の距離.  </summary>
+    ///
+
     [SerializeField]
     float m_currrentDistance;
 
-    Vector3 pos;
+    ///
+    /// <summary>   キャンバスでのアイコンの位置.  </summary>
+    ///
+
+    Vector3 m_iconPosition;
+
+    ///
+    /// <summary>   距離の情報を取得するためのナビライン.   </summary>
+    ///
 
     [SerializeField]
-    Canvas testCanvas;
+    NavLines m_navLines;
+
+    ///
+    /// <summary>   パレードフロートオブジェクト（走行距離を算出）.    </summary>
+    ///
 
     [SerializeField]
-    NavLines nav;
+    GameObject m_ParadeFloatObject;
 
-    [SerializeField]
-    GameObject m_float;
+    ///
+    /// <summary>   フロートの今の位置.   </summary>
+    ///
 
-    Vector3 m_current;
-    Vector3 m_pre;
+    Vector3 m_currentPositionOfParadeFloat;
+
+    ///
+    /// <summary>   フロートの前の位置.   </summary>
+    ///
+
+    Vector3 m_prePositionOfParadeFloat;
     // Use this for initialization
     void Start ()
     {
-        for (int i = 0; i < nav.table.Length-1;i++)
-        {
-            m_distanceOfCourse += Vector3.Distance(nav.table[i], nav.table[i + 1]);
-        }
-        
-        Vector2 size = GetComponent<Image>().rectTransform.sizeDelta;
-        pos = new Vector3(0, -size.y * 0.5f, 0);
-        m_floatIcon.rectTransform.localPosition = pos;
-        m_current = m_float.transform.position;
+        // ナビラインから地点の情報をもらってくる
+        m_distanceOfCourse = m_navLines.table[m_navLines.table.Length -1].y;
+        m_distanceImage = GetComponent<Image>();
+        m_iconPosition = new Vector3(0, -m_distanceImage.rectTransform.sizeDelta.y * 0.5f, 0);
+        m_floatIcon.rectTransform.localPosition = m_iconPosition;
+        m_currentPositionOfParadeFloat = m_ParadeFloatObject.transform.position;
 
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        m_pre = m_current;
-        m_current = m_float.transform.position;
+        m_prePositionOfParadeFloat = m_currentPositionOfParadeFloat;
+        m_currentPositionOfParadeFloat = m_ParadeFloatObject.transform.position;
 
-        m_currrentDistance += Vector3.Distance(m_pre, m_current);
-
-        Vector2 size = GetComponent<Image>().rectTransform.sizeDelta;
-        pos = new Vector3(0, -size.y * 0.5f + (m_currrentDistance / m_distanceOfCourse) * size.y, 0);
-        m_floatIcon.rectTransform.localPosition = pos;
+        m_currrentDistance += Vector3.Distance(m_prePositionOfParadeFloat, m_currentPositionOfParadeFloat);
+        
+        m_iconPosition = new Vector3(0, -m_distanceImage.rectTransform.sizeDelta.y * 0.5f + (m_currrentDistance / m_distanceOfCourse) * m_distanceImage.rectTransform.sizeDelta.y, 0);
+        m_floatIcon.rectTransform.localPosition = m_iconPosition;
     }
 }
