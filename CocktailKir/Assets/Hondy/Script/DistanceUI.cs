@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 ///
-/// <summary>   距離UI ここで情報を受け取ってパーツを制御.  </summary>
+/// <summary>   距離UI .  </summary>
 ///
 /// <remarks>   Hondy, 2016/11/02.  </remarks>
 ///
@@ -65,6 +65,14 @@ public class DistanceUI : MonoBehaviour {
     ///
 
     Vector3 m_prePositionOfParadeFloat;
+
+    ///
+    /// <summary>   レーダーのフレーム 被ったらワープ.  </summary>
+    ///
+
+    [SerializeField]
+    Image m_radarFrameImage;
+
     // Use this for initialization
     void Start ()
     {
@@ -85,7 +93,14 @@ public class DistanceUI : MonoBehaviour {
 
         m_currrentDistance += Vector3.Distance(m_prePositionOfParadeFloat, m_currentPositionOfParadeFloat);
         
-        m_iconPosition = new Vector3(0, -m_distanceImage.rectTransform.sizeDelta.y * 0.5f + (m_currrentDistance / m_distanceOfCourse) * m_distanceImage.rectTransform.sizeDelta.y, 0);
+        m_iconPosition = new Vector3(0, -(m_distanceImage.rectTransform.sizeDelta.y ) * 0.5f + (m_currrentDistance / m_distanceOfCourse) * (m_distanceImage.rectTransform.sizeDelta.y - m_radarFrameImage.rectTransform.sizeDelta.y), 0);
+       
+        if ( - m_radarFrameImage.rectTransform.sizeDelta.y*0.5f < m_iconPosition.y )
+        {
+            m_iconPosition = new Vector3(0, m_radarFrameImage.rectTransform.sizeDelta.y * 0.5f - (m_distanceImage.rectTransform.sizeDelta.y) * 0.5f + m_radarFrameImage.rectTransform.sizeDelta.y*0.5f + (m_currrentDistance / m_distanceOfCourse) * (m_distanceImage.rectTransform.sizeDelta.y - m_radarFrameImage.rectTransform.sizeDelta.y), 0);
+
+        }
         m_floatIcon.rectTransform.localPosition = m_iconPosition;
+       
     }
 }

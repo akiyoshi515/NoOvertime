@@ -70,7 +70,7 @@ public class UserScoreUI
 	void Update ()
     {
         // カウントアップ演出はアルファ終わってから?
-
+        m_userScore = GuestScores.GetScore(m_userID);
         int temp = m_userScore;
 
 
