@@ -21,14 +21,26 @@ public class ResultSceneCtrl : MonoBehaviour {
     Color[] m_userColor;
 
     UserScore[] scores = new UserScore[4];
-	// Use this for initialization
-	void Start ()
+
+
+
+    [SerializeField]
+    Image[] m_1stImages;
+
+    [SerializeField]
+    Image[] m_rankImages;
+
+    [SerializeField]
+    Sprite[] m_rankSprites;
+
+    // Use this for initialization
+    void Start ()
     {
         
         for (int i = 0;i < m_userScores.Length;i++)
 	    {
             scores[i].id = (UserID)(i);
-            scores[i].score = GuestScores.GetScore(scores[i].id);
+            scores[i].score = GuestScores.GetScore(scores[i].id) ;
 	    }
 
 
@@ -58,11 +70,22 @@ public class ResultSceneCtrl : MonoBehaviour {
                     break;
 
             }
+            if (i == 0)
+            {
+                m_1stImages[(int)scores[i].id].enabled = true;
+            }
+            else
+            {
+                m_1stImages[(int)scores[i].id].enabled = false;
+            }
+
+            m_rankImages[(int)scores[i].id].sprite = m_rankSprites[i];
         }
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 	
 	}
 }

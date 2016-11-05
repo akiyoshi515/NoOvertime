@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 5a37a227528148142893a4544b30a618
-timeCreated: 1478352289
+guid: 422c87f27f7a628439e09e9de3976af9
+timeCreated: 1478352965
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: testResultRank_0
-    21300002: testResultRank_1
-    21300004: testResultRank_2
-    21300006: testResultRank_3
+    21300000: rank_num_0
+    21300002: rank_num_1
+    21300004: rank_num_2
+    21300006: rank_num_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -57,52 +57,52 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: testResultRank_0
+      name: rank_num_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
-        width: 256
-        height: 256
+        y: 512
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: testResultRank_1
+      name: rank_num_1
       rect:
         serializedVersion: 2
-        x: 256
-        y: 256
-        width: 256
-        height: 256
+        x: 512
+        y: 512
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: testResultRank_2
+      name: rank_num_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: testResultRank_3
+      name: rank_num_3
       rect:
         serializedVersion: 2
-        x: 256
+        x: 512
         y: 0
-        width: 256
-        height: 256
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

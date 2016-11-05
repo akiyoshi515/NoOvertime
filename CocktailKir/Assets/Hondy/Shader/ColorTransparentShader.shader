@@ -4,7 +4,7 @@ Shader "Custom/ColorTransparentShader"
 	Properties
 	{
 		_MainTex("Main", 2D) = "white" {}
-		_Color("Tint", Color) = (1,1,1,1)
+		_Color("_Color", Color) = (1,1,1,1)
 	}
 
 		SubShader
