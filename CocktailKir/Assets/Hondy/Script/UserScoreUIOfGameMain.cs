@@ -3,10 +3,12 @@ using System.Collections;
 using UnityEngine.UI;
 
 
-public class UserScoreUI
+public class UserScoreUIOfGameMain
     : 
     MonoBehaviour
 {
+    [SerializeField, Header("X")]
+    Image m_mulImage;
 
     [SerializeField,Header("フォントのスプライト")]
     Sprite[] m_numberSpriteArray;
@@ -50,6 +52,7 @@ public class UserScoreUI
         {
             m_userID = value;
             // 色変更
+            m_mulImage.color = m_userColor[(int)m_userID];
             for (int i = 0; i < m_numberImage.Length; i++)
             {
                 m_numberImage[i].color = m_userColor[(int)m_userID];
@@ -60,6 +63,7 @@ public class UserScoreUI
     void Start () {
 
         // 色変更
+        m_mulImage.color = m_userColor[(int)m_userID];
         for (int i = 0; i < m_numberImage.Length; i++)
         {
             m_numberImage[i].color = m_userColor[(int)m_userID];

@@ -4,16 +4,16 @@ using System.Collections;
 public class UserScoreUICtrl : MonoBehaviour {
 
     [SerializeField]
-    UserScoreUI m_userScoreUI1;
+    UserScoreUIOfGameMain m_userScoreUI1;
 
     [SerializeField]
-    UserScoreUI m_userScoreUI2;
+    UserScoreUIOfGameMain m_userScoreUI2;
 
     [SerializeField]
-    UserScoreUI m_userScoreUI3;
+    UserScoreUIOfGameMain m_userScoreUI3;
 
     [SerializeField]
-    UserScoreUI m_userScoreUI4;
+    UserScoreUIOfGameMain m_userScoreUI4;
     // Use this for initialization
     void Start () {
 	
