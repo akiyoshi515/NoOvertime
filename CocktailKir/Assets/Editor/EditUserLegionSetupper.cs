@@ -261,6 +261,18 @@ public class EditUserLegionSetupper : Editor
 
             });
 
+        GameObject magazineUIRenders = GameObject.Find("MagazineUIRenderLegion");
+        for (int i = 0; i < magazineUIRenders.GetChildCount(); ++i)
+        {
+            GameObject user = targetLegion.GetChild(i).gameObject;
+            EDUtilFunctions.EditSerializedObject<MeshUIMagazine>(
+                magazineUIRenders.GetChild(i),
+                (ser) =>
+                {
+                    ser.FindProperty("m_magazine").objectReferenceValue = user.GetComponentInChildren<LauncherMagazine>();
+                });
+        }
+
     }
 
     private void SetupUnit(GameObject ctrl, GameObject camera, int index)
@@ -303,9 +315,12 @@ public class EditUserLegionSetupper : Editor
 
         // UserNoUI
         {
-            UIBillboard cs = ctrl.GetComponentInChildren<UIBillboard>();
+            UIBillboard[] table = ctrl.GetComponentsInChildren<UIBillboard>();
             Camera csCamera = camera.GetComponentInChildren<Camera>();
-            cs.TargetCamera = csCamera;
+            foreach (UIBillboard cs in table)
+            {
+                cs.TargetCamera = csCamera;
+            }
         }
 
     }
