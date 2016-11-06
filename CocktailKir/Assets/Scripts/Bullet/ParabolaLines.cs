@@ -34,7 +34,7 @@ public class ParabolaLines
             RaycastHit[] hitInfo = Physics.RaycastAll(prev, offset, offset.magnitude);
             foreach (RaycastHit hit in hitInfo)
             {
-                if ((hit.collider.tag != "Bullet") && (hit.collider.tag != "BulletTrigger") && (hit.collider.tag != "FieldWall"))
+                if ((hit.collider.tag != "Bullet") && (hit.collider.tag != "BulletTrigger") && (hit.collider.tag != "FieldWall") && (hit.collider.tag != "AttractField"))
                 {
                     if (hit.distance < minDistance)
                     {
