@@ -268,9 +268,10 @@ public class LauncherCtrl : MonoBehaviour {
             act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
             act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
         }
-
-        // TODO
-        m_magazine.SubBullet(m_costBullet);
+        else
+        {
+            m_magazine.SubBullet(m_costBullet);
+        }
 
         m_knockback += m_knockbackTime;
     }
@@ -298,10 +299,10 @@ public class LauncherCtrl : MonoBehaviour {
             act.Invoke(Quaternion.AngleAxis(-m_shot3WayAngle, Vector3.up) * this.transform.forward);
             act.Invoke(Quaternion.AngleAxis(m_shot3WayAngle, Vector3.up) * this.transform.forward);
         }
-
-        // TODO
-        m_magazine.SubBullet(m_costChargeBullet);
-
+        else
+        {
+            m_magazine.SubBullet(m_costChargeBullet);
+        }
         m_knockback += m_knockbackTime;
     }
 }
