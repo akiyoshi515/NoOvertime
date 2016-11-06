@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameSceneCtrl : MonoBehaviour
@@ -21,5 +22,21 @@ public class GameSceneCtrl : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void EventTimeUp()
+    {
+        AkiVACO.XEventTimer obj;
+        AkiVACO.XEventTimer.AttachTimer(out obj, this.gameObject, 5.0f,
+            () => 
+            {
+                GoToNextScene();
+            });
+        obj.StartTimer();
+    }
+
+    public void GoToNextScene()
+    {
+        SceneManager.LoadScene("GameResult");
     }
 }

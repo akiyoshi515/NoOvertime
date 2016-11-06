@@ -52,6 +52,10 @@ namespace AkiVACO
         void Awake()
         {
             this.enabled = m_playOnAwake;
+            if (m_playOnAwake)
+            {
+                m_nowTime = m_time;
+            }
         }
 
         // Update is called once per frame
