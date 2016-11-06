@@ -82,8 +82,8 @@ public class LauncherCtrl : MonoBehaviour {
     void Awake()
     {
         XLogger.LogValidObject(m_parent == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Parent"), gameObject);
-        XLogger.LogValidObject(m_bullet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Ballte"), gameObject);
-        XLogger.LogValidObject(m_bulletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BallteBouquet"), gameObject);
+        XLogger.LogValidObject(m_bullet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Bullte"), gameObject);
+        XLogger.LogValidObject(m_bulletBouquet == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("BullteBouquet"), gameObject);
         XLogger.LogValidObject(m_hitPoint == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("HitPoint"), gameObject);
 
         XLogger.LogValidObject(m_efReload == null, LibConstants.ErrorMsg.GetMsgNotBoundComponent("Effect Reload"), gameObject);
