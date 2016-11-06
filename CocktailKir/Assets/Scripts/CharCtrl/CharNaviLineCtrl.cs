@@ -140,6 +140,7 @@ public class CharNaviLineCtrl : MonoBehaviour
 
     private void ValidMovement()
     {
+        return;
         Vector3 movement = (m_navLineAgent.m_vecTarget - this.transform.position).normalized;
         float dt = Vector3.Dot(m_prevDirection, movement);
         while (dt < 0.0f)

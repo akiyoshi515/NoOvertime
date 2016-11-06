@@ -242,24 +242,36 @@ public class EditUserLegionSetupper : Editor
 
                 //
                 SerializedProperty uiUserNo1 = ser.FindProperty("m_uiUserNo1");
-                uiUserNo1.objectReferenceValue = user1.GetComponentInChildren<UIBillboard>();
+                uiUserNo1.objectReferenceValue = user1.FindChild("UserUnitCtrl").FindChild("UIUserNo").GetComponent<UIBillboard>();
                 SerializedProperty uiUserNo2 = ser.FindProperty("m_uiUserNo2");
-                uiUserNo2.objectReferenceValue = user2.GetComponentInChildren<UIBillboard>();
+                uiUserNo2.objectReferenceValue = user2.FindChild("UserUnitCtrl").FindChild("UIUserNo").GetComponent<UIBillboard>();
                 SerializedProperty uiUserNo3 = ser.FindProperty("m_uiUserNo3");
-                uiUserNo3.objectReferenceValue = user3.GetComponentInChildren<UIBillboard>();
+                uiUserNo3.objectReferenceValue = user3.FindChild("UserUnitCtrl").FindChild("UIUserNo").GetComponent<UIBillboard>();
                 SerializedProperty uiUserNo4 = ser.FindProperty("m_uiUserNo4");
-                uiUserNo4.objectReferenceValue = user4.GetComponentInChildren<UIBillboard>();
+                uiUserNo4.objectReferenceValue = user4.FindChild("UserUnitCtrl").FindChild("UIUserNo").GetComponent<UIBillboard>();
 
                 SerializedProperty uiMagazine1 = ser.FindProperty("m_uiMagazine1");
-                uiMagazine1.objectReferenceValue = user1.GetComponentInChildren<UIBillboard>();
+                uiMagazine1.objectReferenceValue = user1.FindChild("UserUnitCtrl").FindChild("UIMagazine").GetComponent<UIBillboard>();
                 SerializedProperty uiMagazine2 = ser.FindProperty("m_uiMagazine2");
-                uiMagazine2.objectReferenceValue = user2.GetComponentInChildren<UIBillboard>();
+                uiMagazine2.objectReferenceValue = user2.FindChild("UserUnitCtrl").FindChild("UIMagazine").GetComponent<UIBillboard>();
                 SerializedProperty uiMagazine3 = ser.FindProperty("m_uiMagazine3");
-                uiMagazine3.objectReferenceValue = user3.GetComponentInChildren<UIBillboard>();
+                uiMagazine3.objectReferenceValue = user3.FindChild("UserUnitCtrl").FindChild("UIMagazine").GetComponent<UIBillboard>();
                 SerializedProperty uiMagazine4 = ser.FindProperty("m_uiMagazine4");
-                uiMagazine4.objectReferenceValue = user4.GetComponentInChildren<UIBillboard>();
+                uiMagazine4.objectReferenceValue = user4.FindChild("UserUnitCtrl").FindChild("UIMagazine").GetComponent<UIBillboard>();
 
             });
+
+        GameObject magazineUIRenders = GameObject.Find("MagazineUIRenderLegion");
+        for (int i = 0; i < magazineUIRenders.GetChildCount(); ++i)
+        {
+            GameObject user = targetLegion.GetChild(i).gameObject;
+            EDUtilFunctions.EditSerializedObject<MeshUIMagazine>(
+                magazineUIRenders.GetChild(i),
+                (ser) =>
+                {
+                    ser.FindProperty("m_magazine").objectReferenceValue = user.GetComponentInChildren<LauncherMagazine>();
+                });
+        }
 
     }
 
@@ -303,9 +315,12 @@ public class EditUserLegionSetupper : Editor
 
         // UserNoUI
         {
-            UIBillboard cs = ctrl.GetComponentInChildren<UIBillboard>();
+            UIBillboard[] table = ctrl.GetComponentsInChildren<UIBillboard>();
             Camera csCamera = camera.GetComponentInChildren<Camera>();
-            cs.TargetCamera = csCamera;
+            foreach (UIBillboard cs in table)
+            {
+                cs.TargetCamera = csCamera;
+            }
         }
 
     }

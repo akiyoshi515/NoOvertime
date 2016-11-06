@@ -206,6 +206,8 @@ public class MeshUIMagazine
         set { m_feverTimeRate = value; }
     }
 
+    [SerializeField]
+    private LauncherMagazine m_magazine = null;
 
     // 後で破棄
     enum TestReloadState
@@ -311,6 +313,8 @@ public class MeshUIMagazine
 //             m_isPetitFever = !m_isPetitFever;
 //         }
         // test code end
+
+        UpdateMagazineState();
 
         // ゲージ制御
         ControllReloadGauge();
@@ -461,6 +465,14 @@ public class MeshUIMagazine
         }
     }
 
-    
+    private void UpdateMagazineState()
+    {
+        m_numberOfBullet = (uint)m_magazine.bulletNum;
+        m_numberOf3wayCharmBullet = (uint)m_magazine.bonus3WayBullet;
+        m_numberOfCharmBullet = (uint)m_magazine.bonusCharmBullet;
+
+        m_isPetitFever = m_magazine.isUnlimitedBullet;
+        m_isReloading = m_magazine.isReloading;
+    }
 
 }
