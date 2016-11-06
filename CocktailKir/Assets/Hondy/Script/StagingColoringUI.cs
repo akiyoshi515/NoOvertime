@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class StagingColoringUI : IStagingUI {
-
-
-
+    
     ///
     /// <summary>   スクロールのフラグ管理.    </summary>
     ///
@@ -23,46 +21,71 @@ public class StagingColoringUI : IStagingUI {
 
     
 
-
     [SerializeField]
     bool m_isColoring;
 
-    ///
-    /// <summary>   カラー変更速度(秒速). </summary>
-    ///
     [SerializeField]
-    Color m_changeColoringSpeedPerSecond;
+    bool m_isRepeat;
+
+
+    [SerializeField]
+    bool m_isRepeatReverse;
+    
 
     ///
     /// <summary>   初期カラー.    </summary>
     ///
 
     [SerializeField]
-    float m_startColor;
+    Color m_startColor;
 
     ///
     /// <summary>   最終カラー.  </summary>
     ///
 
-    float m_endColor;
+    [SerializeField]
+    Color m_endColor;
 
- 
-    
+    [SerializeField]
+    Color m_CurrentColor;
+
+
+
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
 	
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        if (m_stopTime < m_deltaTime)
+        {
+            if (m_isRepeat)
+            {
+                m_deltaTime = 0;
+
+                if (m_isRepeatReverse)
+                {
+                    Color temp;
+                    temp = m_endColor;
+                    m_endColor = m_startColor;
+                    m_startColor = temp;
+                }
+            }
+        }
+        else
+        {
+            m_deltaTime += AkiVACO.XTime.deltaTime;
+            Trans();
+        }
+        m_controlUIImage.color = m_CurrentColor;
 
     }
-    void Coloring()
-    {
-        if (m_isColoring)
-        {
 
-            m_controlUIImage.color += (m_changeColoringSpeedPerSecond * AkiVACO.XTime.deltaTime);
-        }
+    void Trans()
+    {
+        m_CurrentColor = Color.Lerp(m_startColor,m_endColor,m_deltaTime/m_stopTime);
     }
 }

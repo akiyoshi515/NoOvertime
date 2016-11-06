@@ -13,8 +13,20 @@ using AkiVACO;
 
 public class IStagingUI : MonoBehaviour
 {
-    
-    
+    ///
+    /// <summary>   回転経過時間.  </summary>
+    ///
+
+    [SerializeField]
+    protected float m_deltaTime;
+
+    ///
+    /// <summary>  停止時間.  </summary>
+    ///
+
+    [SerializeField]
+    protected float m_stopTime;
+
     ///
     /// <summary>   UI画像(nullの場合start時にコンポーネントを探索).  </summary>
     ///

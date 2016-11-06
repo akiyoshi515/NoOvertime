@@ -97,17 +97,6 @@ public class StagingRotatingUI : IStagingUI {
     float m_stoppedTotalAbsoluteAmountOfRotate;
 
     ///
-    /// <summary>   回転経過時間.  </summary>
-    ///
-
-    float m_deltaTime;
-
-    ///
-    /// <summary>  停止時間.  </summary>
-    ///
-
-    float m_stopTime;
-
     ///
     /// <summary>   Use this for initialization.    </summary>
     ///

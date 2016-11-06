@@ -14,8 +14,14 @@ public class MeshUIMagazine
     bool m_isReloading = false;
     public bool IsReloading
     {
-        get { return m_isReloading; }
-        set { m_isReloading = value; }
+        get
+        {
+            return m_isReloading;
+        }
+        set
+        {
+            m_isReloading = value;
+        }
     }
 
     ///
@@ -36,8 +42,14 @@ public class MeshUIMagazine
     uint m_numberOfBullet;
     public uint NumberOfBullet
     {
-        get { return m_numberOfBullet; }
-        set { m_numberOfBullet = value; }
+        get
+        {
+            return m_numberOfBullet;
+        }
+        set
+        {
+            m_numberOfBullet = value;
+        }
     }
 
     ///
@@ -386,7 +398,8 @@ public class MeshUIMagazine
     }
 
     void ControllBulletIcon()
-    {     // 3wayチャーム弾が放てるか
+    {     
+        // 3wayチャーム弾が放てるか
         // アクセサからの情報によってはもういらんかも
         if (0 < m_numberOfCharmBullet && 0 < m_numberOf3WayBullet)
         {
