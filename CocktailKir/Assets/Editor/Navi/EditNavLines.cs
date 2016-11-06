@@ -112,6 +112,12 @@ public class EditNavLines : Editor
 
             SerializedProperty loopPoint = serializedObject.FindProperty("m_loopPoint");
 
+            SerializedProperty waitPoint = serializedObject.FindProperty("m_tableWaitPoint");
+            SerializedProperty waitTime = serializedObject.FindProperty("m_tableWaitTime");
+            waitPoint.ClearArray();
+            waitTime.ClearArray();
+            int idxWaitPoint = 0;
+
             int idx = 0;
             loopPoint.intValue = -1;
             System.Func<Vector3> funcNameless = () => 
@@ -123,6 +129,20 @@ public class EditNavLines : Editor
                     if (pointer.isLoop)
                     {
                         loopPoint.intValue = idx;
+                    }
+                }
+                else
+                {
+                    NavLineWaitPointer csWait = transBasis.GetComponent<NavLineWaitPointer>();
+                    if (csWait != null)
+                    {
+                        waitPoint.InsertArrayElementAtIndex(idxWaitPoint);
+                        waitTime.InsertArrayElementAtIndex(idxWaitPoint);
+
+                        waitPoint.GetArrayElementAtIndex(idxWaitPoint).intValue = (idx - 1).MinLimitedZero() * resolution;
+                        waitTime.GetArrayElementAtIndex(idxWaitPoint).floatValue = csWait.waitTime;
+
+                        ++idxWaitPoint;
                     }
                 }
                 ++idx;
@@ -165,11 +185,6 @@ public class EditNavLines : Editor
                 v2 = v;
             };
 
-            SerializedProperty waitPoint = serializedObject.FindProperty("m_tableWaitPoint");
-            SerializedProperty waitTime = serializedObject.FindProperty("m_tableWaitTime");
-            waitPoint.ClearArray();
-            waitTime.ClearArray();
-            int idxWaitPoint = 0;
             for (; idx < gen.transform.childCount; )
             {
                 Transform trans = gen.transform.GetChild(idx);
