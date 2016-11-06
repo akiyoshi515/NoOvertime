@@ -370,6 +370,7 @@ public class MeshUIMagazine
         }
         else
         {
+            maskvaule = -0.01f;
             m_reloadGaugeMaterial.SetFloat("_Mask", maskvaule);
         }
     }
@@ -398,7 +399,7 @@ public class MeshUIMagazine
     }
 
     void ControllBulletIcon()
-    {     
+    {
         // 3wayチャーム弾が放てるか
         // アクセサからの情報によってはもういらんかも
         if (0 < m_numberOfCharmBullet && 0 < m_numberOf3WayBullet)
@@ -417,7 +418,10 @@ public class MeshUIMagazine
             m_numberOfCharmBullet -= m_numberOf3wayCharmBullet;
             m_numberOf3WayBullet -= m_numberOf3wayCharmBullet;
         }
-
+        else
+        {
+            m_numberOf3wayCharmBullet = 0;
+        }
 
         int i = 0;
 
@@ -445,12 +449,17 @@ public class MeshUIMagazine
                 m_3wayBulletQuadMeshRenderer[(int)(i * 0.5)].enabled = true;
                 i += 2;
                 _3cb--;
+                _b = 0;
+                _cb = 0;
             }
             else if (0 < _3b)
             {
                 m_3wayBulletQuadMeshRenderer[(int)(i * 0.5)].enabled = true;
+                m_3wayBulletHeartIconQuadMeshRenderer[(int)(i * 0.5)].enabled = false;
                 i += 2;
                 _3b--;
+                _b = 0;
+                _cb = 0;
             }
 
             else if (0 < _cb)
@@ -459,6 +468,7 @@ public class MeshUIMagazine
                 m_normalBullletQuadMeshRenderer[i].enabled = true;
                 i++;
                 _cb--;
+                _b = 0;
             }
             else if (0 < _b)
             {
@@ -477,11 +487,12 @@ public class MeshUIMagazine
     private void UpdateMagazineState()
     {
         m_numberOfBullet = (uint)m_magazine.bulletNum;
-        m_numberOf3wayCharmBullet = (uint)m_magazine.bonus3WayBullet;
+        m_numberOf3WayBullet = (uint)m_magazine.bonus3WayBullet;
         m_numberOfCharmBullet = (uint)m_magazine.bonusCharmBullet;
 
         m_isPetitFever = m_magazine.isUnlimitedBullet;
         m_isReloading = m_magazine.isReloading;
+        m_reloadTimeRate = m_magazine.reloadTimeRate;
     }
 
 }
