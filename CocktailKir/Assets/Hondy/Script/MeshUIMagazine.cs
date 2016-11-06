@@ -232,13 +232,9 @@ public class MeshUIMagazine
         {
             maskvaule = -0.01f;
         }
-#if DEBUG
-        if (m_reloadGaugeMaterial.shader.name == "Custom/GaugeSpriteShader")
-#endif
-        {
-            AkiVACO.XLogger.LogWarning("shader間違ってるよ");
-            m_reloadGaugeMaterial.SetFloat("_Mask", maskvaule);
-        }
+
+        m_reloadGaugeMaterial.SetFloat("_Mask", maskvaule);
+        
     }
 
     // Update is called once per frame
