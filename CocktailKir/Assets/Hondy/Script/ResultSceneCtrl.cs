@@ -99,7 +99,6 @@ public class ResultSceneCtrl : MonoBehaviour {
     {
         if (Input.anyKeyDown)
         {
-
             SceneManager.LoadScene("Title");
         }
 	    
