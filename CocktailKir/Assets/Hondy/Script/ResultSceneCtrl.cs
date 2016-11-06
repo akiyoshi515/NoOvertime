@@ -6,6 +6,16 @@ using System;
 
 public class ResultSceneCtrl : MonoBehaviour {
 
+    enum ResultSceneState
+    {
+        FADE_IN,
+        WAIT,   // 待機
+        MOVE,   // キャラ移動
+        COUNT_UP,   // スコアカウントアップ
+        PRESENT, // 順位発表
+        FADE_OUT
+    }
+
     [SerializeField]
     Text[] m_userScores;
 
@@ -86,6 +96,22 @@ public class ResultSceneCtrl : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-	
+	    
 	}
+
+
+    void TransitionState()
+    {
+
+    }
+
+    void UpdateForState()
+    {
+
+    }
+
+    void UpdateForFadeIn()
+    {
+
+    }
 }
