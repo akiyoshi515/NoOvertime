@@ -97,6 +97,14 @@ public class EditUserLegionSetupper : Editor
                 UpdateEditorObjectField("MagazineP4", ref gen.m_baseUserUIMagazine[3]);
                 EditorGUI.indentLevel--;
 
+                EditorGUILayout.LabelField("UI Radar");
+                EditorGUI.indentLevel++;
+                UpdateEditorObjectField("RadarMeshP1", ref gen.m_baseUserUIRadarMesh[0]);
+                UpdateEditorObjectField("RadarMeshP2", ref gen.m_baseUserUIRadarMesh[1]);
+                UpdateEditorObjectField("RadarMeshP3", ref gen.m_baseUserUIRadarMesh[2]);
+                UpdateEditorObjectField("RadarMeshP4", ref gen.m_baseUserUIRadarMesh[3]);
+                EditorGUI.indentLevel--;
+
                 EditorGUILayout.Space();
                 UpdateEditorObjectField("UserCamera", ref gen.m_baseUserCamera);
             });
@@ -198,6 +206,11 @@ public class EditUserLegionSetupper : Editor
             GameObject uiMagazine = GameObject.Instantiate(setupper.m_baseUserUIMagazine[idx]);
             uiMagazine.name = "UIMagazine";
             uiMagazine.SetParent(ctrl, false);
+
+            // UI Magazine
+            GameObject uiRadar = GameObject.Instantiate(setupper.m_baseUserUIRadarMesh[idx]);
+            uiRadar.name = "UIRadar";
+            uiRadar.SetParent(ctrl, false);
             
             // Switch Mesh
             GameObject defmesh = ctrl.FindChild("DefMesh");
