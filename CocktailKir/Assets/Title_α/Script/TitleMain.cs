@@ -36,7 +36,7 @@ public class TitleMain : MonoBehaviour {
         switch (_titleState)
         {
             case TITLE_STATE.MAIN:
-                if(Input.GetKeyUp(KeyCode.Return))
+                if(Input.anyKeyDown)
                 {
                     se.PlaySE();
                     _titleState = TITLE_STATE.FADE_IN;
