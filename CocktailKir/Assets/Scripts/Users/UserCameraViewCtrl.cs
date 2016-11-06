@@ -20,15 +20,11 @@ public class UserCameraViewCtrl : MonoBehaviour
         m_userID = m_ctrl.targetUser.GetComponent<UserData>().userID;
     }
 
-    void OnPreRender()
+    void OnPreCull()
     {
         // TODO
         m_legionCtrl.SetEnables(m_userID, this.GetComponent<Camera>());
     }
-
-    void OnPostRender()
-    {
-        // TODO
-    }
+    
 
 }

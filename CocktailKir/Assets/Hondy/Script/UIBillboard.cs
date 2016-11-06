@@ -47,8 +47,13 @@ public class UIBillboard : MonoBehaviour
     {
 
         // Billlboard
-        transform.LookAt(transform.position - m_targetCamera.transform.rotation * Vector3.back, m_targetCamera.transform.rotation * Vector3.up);
+        Vector3 difference = TargetCamera.transform.position - transform.position;
+        transform.LookAt(transform.position - difference, TargetCamera.transform.up);
 
+        if (m_meshRenderer != null)
+        {
+            m_meshRenderer.enabled = m_isDisplay;
+        }
     }
 
     ///
@@ -65,6 +70,17 @@ public class UIBillboard : MonoBehaviour
         if (m_meshRenderer != null)
         {
             m_meshRenderer.enabled = m_isDisplay;
-        } 
+        }
+        if (m_isDisplay)
+        {
+            Vector3 difference = Camera.current.transform.position - transform.position;
+            transform.LookAt(transform.position - difference, Camera.current.transform.up);
+        }
+        else
+        {
+        }
+
     }
+
+    
 }

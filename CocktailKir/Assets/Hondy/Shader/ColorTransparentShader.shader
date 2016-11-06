@@ -1,13 +1,10 @@
 ﻿
-Shader "Custom/MagazineGaugeShader"
+Shader "Custom/ColorTransparentShader"
 {
 	Properties
 	{
 		_MainTex("Main", 2D) = "white" {}
-		_MaskTex("Mask", 2D) = "white" {}
-		_MaskTex("Frame", 2D) = "white" {}
-		_Color("Tint", Color) = (1,1,1,1)
-		_Mask("MaskVaule", Float) = 0
+		_Color("_Color", Color) = (1,1,1,1)
 	}
 
 		SubShader
@@ -50,14 +47,13 @@ Shader "Custom/MagazineGaugeShader"
 	};
 
 	fixed4 _Color;
-	float _Mask;
 
 	v2f vert(appdata_t IN)
 	{
 		v2f OUT;
 		OUT.vertex = UnityObjectToClipPos(IN.vertex);
 		OUT.texcoord = IN.texcoord;
-		OUT.color = IN.color * _Color;
+		OUT.color = IN.color;
 #ifdef PIXELSNAP_ON
 		OUT.vertex = UnityPixelSnap(OUT.vertex);
 #endif
@@ -71,10 +67,9 @@ Shader "Custom/MagazineGaugeShader"
 
 	fixed4 frag(v2f IN) : SV_Target
 	{
-		fixed4 c = tex2D(_MainTex, IN.texcoord);
-		// マスクの閾値で表示するか判断
-		c *= step(tex2D(_MaskTex, IN.texcoord).a,_Mask);
-		return c;
+		fixed4 c = tex2D(_MainTex, IN.texcoord) *_Color;
+		c.rgb *= c.a;
+	return c;
 	}
 		ENDCG
 	}
