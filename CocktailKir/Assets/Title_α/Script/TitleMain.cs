@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class TitleMain : MonoBehaviour {
@@ -53,7 +54,7 @@ public class TitleMain : MonoBehaviour {
             case TITLE_STATE.UNINIT:
                 Debug.Log("load");
                 //TODO ロード
-
+                SceneManager.LoadScene("UserEntry");
                 break;
         }
 	}

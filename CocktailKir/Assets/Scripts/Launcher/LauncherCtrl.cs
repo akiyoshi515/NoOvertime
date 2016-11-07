@@ -204,7 +204,14 @@ public class LauncherCtrl : MonoBehaviour {
 
         if (m_input.IsShot() && m_charCtrl.isLauncherStance)
         {
-            m_chargeTime += Time.deltaTime;
+            if (m_magazine.bulletNum < m_costBullet)
+            {
+                StartReload();
+            }
+            else
+            {
+                m_chargeTime += Time.deltaTime;
+            }
         }
         else
         {
