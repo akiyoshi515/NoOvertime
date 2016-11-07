@@ -99,6 +99,7 @@ public class GuestPopDestinationCtrl : MonoBehaviour
             slot.Initialize();
         }
 
+        m_slotTime = m_slotStrategy[m_slotIndex].m_time;
         m_typeStrategy = new GuestPopStrategyInternal.GuestTypeStrategy_Random();
     }
 
