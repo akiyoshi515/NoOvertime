@@ -48,6 +48,10 @@ namespace AkiVACO
         }
 
         protected float m_nowTime = 0.0f;
+        public float nowTime
+        {
+            get { return m_nowTime; }
+        }
 
         void Awake()
         {
