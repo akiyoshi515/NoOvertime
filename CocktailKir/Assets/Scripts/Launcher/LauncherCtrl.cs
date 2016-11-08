@@ -25,6 +25,9 @@ public class LauncherCtrl : MonoBehaviour {
     private float m_maxPitchAngle = 60.0f;
 
     [SerializeField]
+    private float m_stdPitchAngle = 20.0f;
+
+    [SerializeField]
     private float m_yawSpeed = 30.0f;
 
     [SerializeField]
@@ -124,8 +127,12 @@ public class LauncherCtrl : MonoBehaviour {
         if (m_charCtrl.isLauncherStance)
         {
             vec = m_input.RotateLauncher();
+            m_pitchAngle = (m_pitchAngle + vec.y * m_pitchSpeed * Time.deltaTime).MaxLimited(m_maxPitchAngle).MinLimited(m_minPitchAngle);
         }
-        m_pitchAngle = (m_pitchAngle + vec.y * m_pitchSpeed * Time.deltaTime).MaxLimited(m_maxPitchAngle).MinLimited(m_minPitchAngle);
+        else
+        {
+            m_pitchAngle = Mathf.LerpAngle(m_pitchAngle, m_stdPitchAngle, m_pitchSpeed * Time.deltaTime * 0.050f);  // HACK NUM
+        }
         this.transform.localRotation = Quaternion.AngleAxis(-m_pitchAngle, Vector3.right);
 
         m_parent.Rotate(Vector3.up, vec.x * m_yawSpeed * Time.deltaTime, Space.World);
