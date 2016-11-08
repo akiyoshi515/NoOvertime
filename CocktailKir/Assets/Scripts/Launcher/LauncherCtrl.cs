@@ -75,6 +75,7 @@ public class LauncherCtrl : MonoBehaviour {
     private LauncherMagazine m_magazine = null;
 
     private LineRenderer m_lineRenderer = null;
+    private IEffect m_csEfCharging = null;
     private IEffect m_csEfMaxCharge = null;
     private IEffect m_csEfReload = null;
 
@@ -98,9 +99,11 @@ public class LauncherCtrl : MonoBehaviour {
         m_magazine = this.GetComponent<LauncherMagazine>();
         m_lineRenderer = this.GetComponent<LineRenderer>();
 
+        GameObject efCharging = XFunctions.InstanceChild(m_efCharging, Vector3.zero, Quaternion.identity, this.gameObject);
         GameObject efObj = XFunctions.InstanceChild(m_efMaxCharge, Vector3.zero, Quaternion.identity, this.gameObject);
         GameObject efReloadObj = XFunctions.InstanceChild(m_efReload, Vector3.zero, Quaternion.identity, this.gameObject);
 
+        m_csEfCharging = efCharging.GetComponent<IEffect>();
         m_csEfMaxCharge = efObj.GetComponent<IEffect>();
         m_csEfReload = efReloadObj.GetComponent<IEffect>();
     }
@@ -273,10 +276,16 @@ public class LauncherCtrl : MonoBehaviour {
 
         if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.bulletNum >= m_costChargeBullet))
         {
+            m_csEfCharging.SleepEffect();
             m_csEfMaxCharge.WakeupEffect();
+        }
+        else if ((m_chargeTime >= 0.250f) && (m_magazine.bulletNum >= m_costChargeBullet))
+        {
+            m_csEfCharging.WakeupEffect();
         }
         else
         {
+            m_csEfCharging.SleepEffect();
             m_csEfMaxCharge.SleepEffect();
         }
     }
