@@ -30,6 +30,11 @@ namespace XVInputInternal
             return false;
         }
 
+        public bool IsShotHolded()
+        {
+            return false;
+        }
+
         public bool IsLauncherStance()
         {
             return false;

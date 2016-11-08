@@ -61,6 +61,9 @@ public class LauncherCtrl : MonoBehaviour {
     private GameObject m_hitPoint = null;
 
     [SerializeField]
+    private GameObject m_efCharging = null;
+
+    [SerializeField]
     private GameObject m_efMaxCharge = null;
 
     [SerializeField]
@@ -209,22 +212,22 @@ public class LauncherCtrl : MonoBehaviour {
             return;
         }
 
-        if (m_input.IsShot() && m_charCtrl.isLauncherStance)
+        if (m_charCtrl.isLauncherStance)
         {
-            if (m_magazine.bulletNum < m_costBullet)
+            if (m_input.IsShotHolded())
             {
-                StartReload();
+                if (m_magazine.bulletNum < m_costBullet)
+                {
+                    StartReload();
+                }
+                else
+                {
+                    m_chargeTime += Time.deltaTime;
+                }
             }
             else
             {
-                m_chargeTime += Time.deltaTime;
-            }
-        }
-        else
-        {
-            if (m_chargeTime > 0.0f)
-            {
-                if (!m_magazine.isReloading)
+                if (m_chargeTime > 0.0f)
                 {
                     if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.bulletNum >= m_costChargeBullet))
                     {
@@ -234,12 +237,37 @@ public class LauncherCtrl : MonoBehaviour {
                     {
                         LaunchBullet();
                     }
+                    m_chargeTime = 0.0f;
+                }
+            }
+        }
+        else
+        {
+            if (m_input.IsShotHolded())
+            {
+                if (m_magazine.bulletNum < m_costBullet)
+                {
+                    StartReload();
+                }
+                else
+                {
+                    m_chargeTime += Time.deltaTime;
+                }
+            }
+            else
+            {
+                if (m_chargeTime > 0.0f)
+                {
+                    if (m_magazine.bulletNum >= m_costBullet)
+                    {
+                        LaunchBullet();
+                    }
                     else
                     {
                         StartReload();
                     }
+                    m_chargeTime = 0.0f;
                 }
-                m_chargeTime = 0.0f;
             }
         }
 

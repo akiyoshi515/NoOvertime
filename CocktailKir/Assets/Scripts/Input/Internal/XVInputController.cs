@@ -70,11 +70,12 @@ namespace XVInputInternal
 
         public bool IsShot()
         {
-            if (IsLauncherStance())
-            {
-                return XBGamePad.IsPressed(XBKeyCode.Button.X, m_userCode);
-            }
-            return false;
+            return XBGamePad.IsTriggered(XBKeyCode.Button.X, m_userCode);
+        }
+
+        public bool IsShotHolded()
+        {
+            return XBGamePad.IsPressed(XBKeyCode.Button.X, m_userCode);
         }
 
         public bool IsLauncherStance()
