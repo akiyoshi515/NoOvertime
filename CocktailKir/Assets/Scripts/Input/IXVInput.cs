@@ -29,6 +29,11 @@ public interface IXVInput
     bool IsShot();
 
     /// <summary>
+    /// 射撃キーを押し続けているか？
+    /// </summary>
+    bool IsShotHolded();
+
+    /// <summary>
     /// 構えキーを押しているか？
     /// </summary>
     bool IsLauncherStance();

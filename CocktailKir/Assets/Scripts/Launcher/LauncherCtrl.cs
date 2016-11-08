@@ -61,6 +61,9 @@ public class LauncherCtrl : MonoBehaviour {
     private GameObject m_hitPoint = null;
 
     [SerializeField]
+    private GameObject m_efCharging = null;
+
+    [SerializeField]
     private GameObject m_efMaxCharge = null;
 
     [SerializeField]
@@ -72,6 +75,7 @@ public class LauncherCtrl : MonoBehaviour {
     private LauncherMagazine m_magazine = null;
 
     private LineRenderer m_lineRenderer = null;
+    private IEffect m_csEfCharging = null;
     private IEffect m_csEfMaxCharge = null;
     private IEffect m_csEfReload = null;
 
@@ -95,9 +99,11 @@ public class LauncherCtrl : MonoBehaviour {
         m_magazine = this.GetComponent<LauncherMagazine>();
         m_lineRenderer = this.GetComponent<LineRenderer>();
 
+        GameObject efCharging = XFunctions.InstanceChild(m_efCharging, Vector3.zero, Quaternion.identity, this.gameObject);
         GameObject efObj = XFunctions.InstanceChild(m_efMaxCharge, Vector3.zero, Quaternion.identity, this.gameObject);
         GameObject efReloadObj = XFunctions.InstanceChild(m_efReload, Vector3.zero, Quaternion.identity, this.gameObject);
 
+        m_csEfCharging = efCharging.GetComponent<IEffect>();
         m_csEfMaxCharge = efObj.GetComponent<IEffect>();
         m_csEfReload = efReloadObj.GetComponent<IEffect>();
     }
@@ -209,22 +215,22 @@ public class LauncherCtrl : MonoBehaviour {
             return;
         }
 
-        if (m_input.IsShot() && m_charCtrl.isLauncherStance)
+        if (m_charCtrl.isLauncherStance)
         {
-            if (m_magazine.bulletNum < m_costBullet)
+            if (m_input.IsShotHolded())
             {
-                StartReload();
+                if (m_magazine.bulletNum < m_costBullet)
+                {
+                    StartReload();
+                }
+                else
+                {
+                    m_chargeTime += Time.deltaTime;
+                }
             }
             else
             {
-                m_chargeTime += Time.deltaTime;
-            }
-        }
-        else
-        {
-            if (m_chargeTime > 0.0f)
-            {
-                if (!m_magazine.isReloading)
+                if (m_chargeTime > 0.0f)
                 {
                     if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.bulletNum >= m_costChargeBullet))
                     {
@@ -234,21 +240,52 @@ public class LauncherCtrl : MonoBehaviour {
                     {
                         LaunchBullet();
                     }
+                    m_chargeTime = 0.0f;
+                }
+            }
+        }
+        else
+        {
+            if (m_input.IsShotHolded())
+            {
+                if (m_magazine.bulletNum < m_costBullet)
+                {
+                    StartReload();
+                }
+                else
+                {
+                    m_chargeTime += Time.deltaTime;
+                }
+            }
+            else
+            {
+                if (m_chargeTime > 0.0f)
+                {
+                    if (m_magazine.bulletNum >= m_costBullet)
+                    {
+                        LaunchBullet();
+                    }
                     else
                     {
                         StartReload();
                     }
+                    m_chargeTime = 0.0f;
                 }
-                m_chargeTime = 0.0f;
             }
         }
 
         if ((m_chargeTime >= m_chargeShotTime) && (m_magazine.bulletNum >= m_costChargeBullet))
         {
+            m_csEfCharging.SleepEffect();
             m_csEfMaxCharge.WakeupEffect();
+        }
+        else if ((m_chargeTime >= 0.250f) && (m_magazine.bulletNum >= m_costChargeBullet))
+        {
+            m_csEfCharging.WakeupEffect();
         }
         else
         {
+            m_csEfCharging.SleepEffect();
             m_csEfMaxCharge.SleepEffect();
         }
     }

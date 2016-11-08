@@ -188,7 +188,7 @@ public class TestLauncherCtrl : MonoBehaviour {
             return;
         }
 
-        if (m_input.IsShot())
+        if (m_input.IsShotHolded())
         {
             m_chargeTime += Time.deltaTime;
         }

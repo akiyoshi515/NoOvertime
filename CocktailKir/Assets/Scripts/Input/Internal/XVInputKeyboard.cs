@@ -36,11 +36,12 @@ namespace XVInputInternal
 
         public bool IsShot()
         {
-            if (IsLauncherStance())
-            {
-                return Input.GetKey(KeyCode.C);
-            }
-            return false;
+            return Input.GetKeyDown(KeyCode.C);
+        }
+
+        public bool IsShotHolded()
+        {
+            return Input.GetKey(KeyCode.C);
         }
 
         public bool IsLauncherStance()
