@@ -18,6 +18,8 @@ using System.Collections;
 
 public class StagingMovingUI : IStagingUI {
 
+    
+
     ///
     /// <summary>   スクロールするかのフラグ.   </summary>
     ///
@@ -92,7 +94,7 @@ public class StagingMovingUI : IStagingUI {
     ///
     /// <summary>   The scroll stop distance.   </summary>
     ///
-
+    [SerializeField]
     float m_scrollStopDistance;
 
     ///
@@ -100,25 +102,8 @@ public class StagingMovingUI : IStagingUI {
     ///
 
     Vector3 m_deltaPosition;
-
-    ///
-    /// <summary>   The scroll stop time.   </summary>
-    ///
-
-    float m_MovingStopTime;
-
-    ///
-    /// <summary>   The scroll delta time.  </summary>
-    ///
-
-    float m_deltaTime;
-
-    ///
-    /// <summary>   UI画像.   </summary>
-    ///
-
-    [SerializeField]
-    Image m_controlUIImage;
+    
+    
 
     ///
     /// <summary>   The canvas. </summary>
@@ -217,7 +202,7 @@ public class StagingMovingUI : IStagingUI {
                 }
                 break;
             case MOVE_STOP_SETTING_ENUM.TIME_STOP:
-                if (m_deltaTime < m_MovingStopTime)
+                if (m_deltaTime < m_stopTime)
                 {
                     result = true;
                 }
