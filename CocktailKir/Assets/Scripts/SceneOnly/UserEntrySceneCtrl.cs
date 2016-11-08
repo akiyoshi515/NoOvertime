@@ -86,7 +86,7 @@ public class UserEntrySceneCtrl : MonoBehaviour
                         || Input.GetKeyDown(KeyCode.Return))
                     {
                         XLogger.Log("GoTo NextScene");
-                        UnityEngine.SceneManagement.SceneManager.LoadScene("TestGameMain"); // HACK
+                        UnityEngine.SceneManagement.SceneManager.LoadScene("AlphaGameMain"); // HACK
                     }
                 }
                 break;
